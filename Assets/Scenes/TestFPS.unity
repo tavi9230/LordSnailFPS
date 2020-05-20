@@ -108,7 +108,7 @@ NavMeshSettings:
     agentRadius: 0.5
     agentHeight: 2
     agentSlope: 45
-    agentClimb: 0.4
+    agentClimb: 0.5
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 2
@@ -1938,86 +1938,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 36696155485644821, guid: 01e5b32efe1a11449899bb2049ee3010,
     type: 3}
   m_PrefabInstance: {fileID: 66946031}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &68538780
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1685198687}
-    m_Modifications:
-    - target: {fileID: 2417908056580041781, guid: c1931770143a02f459bc8172730bc609,
-        type: 3}
-      propertyPath: m_Name
-      value: Floor (9)
-      objectReference: {fileID: 0}
-    - target: {fileID: 2417908056580041781, guid: c1931770143a02f459bc8172730bc609,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2417908056580041769, guid: c1931770143a02f459bc8172730bc609,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2417908056580041769, guid: c1931770143a02f459bc8172730bc609,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 5.64
-      objectReference: {fileID: 0}
-    - target: {fileID: 2417908056580041769, guid: c1931770143a02f459bc8172730bc609,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2417908056580041769, guid: c1931770143a02f459bc8172730bc609,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2417908056580041769, guid: c1931770143a02f459bc8172730bc609,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2417908056580041769, guid: c1931770143a02f459bc8172730bc609,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2417908056580041769, guid: c1931770143a02f459bc8172730bc609,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2417908056580041769, guid: c1931770143a02f459bc8172730bc609,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2417908056580041769, guid: c1931770143a02f459bc8172730bc609,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2417908056580041769, guid: c1931770143a02f459bc8172730bc609,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2417908056580041769, guid: c1931770143a02f459bc8172730bc609,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c1931770143a02f459bc8172730bc609, type: 3}
---- !u!4 &68538781 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2417908056580041769, guid: c1931770143a02f459bc8172730bc609,
-    type: 3}
-  m_PrefabInstance: {fileID: 68538780}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &69385570
 GameObject:
@@ -14246,6 +14166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a66d38d74b93c145a34d63a93e0b946, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerController: {fileID: 0}
+  uiManager: {fileID: 0}
   mouseSensitivity: 100
   playerBody: {fileID: 865013744}
 --- !u!20 &519420031
@@ -22688,7 +22610,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffdfb1f52e8e88f4faf14a89b443ac61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 12
   gravity: -19.62
   jumpHeight: 3
   groundCheck: {fileID: 1574249496}
@@ -35325,7 +35246,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -35985,7 +35906,7 @@ GameObject:
   - component: {fileID: 1331527428}
   - component: {fileID: 1331527427}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: PatrolPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35999,7 +35920,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1331527425}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1461852185}
@@ -43757,7 +43678,6 @@ Transform:
   - {fileID: 628022009}
   - {fileID: 2088353242}
   - {fileID: 1374997514}
-  - {fileID: 68538781}
   m_Father: {fileID: 1461852185}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
