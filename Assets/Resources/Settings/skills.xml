@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<skills>
+  <spells>
+    <fire>
+      <spell>
+        <id>fire_1</id>
+        <tier>1</tier>
+        <name>Fire bolt</name>
+        <description>Fire bolt</description>
+        <skillType>0</skillType>
+        <attackRecoveryTime>0.4</attackRecoveryTime>
+        <manaConsumption>1</manaConsumption>
+        <gameobject>Prefabs/UI/Spells/fire_1</gameobject>
+        <projectile>Prefabs/Items/Ammo/Bow/Projectile1</projectile>
+        <requirements>
+          <experience>1</experience>
+          <intelligence>1</intelligence>
+        </requirements>
+        <range>5</range>
+        <damage>
+          <fire>
+            <min>1</min>
+            <max>6</max>
+          </fire>
+        </damage>
+        <chargeSpeed>0.4</chargeSpeed>
+      </spell>
+    </fire>
+    <cold>
+      <spell>
+        <id>cold_1</id>
+        <tier>1</tier>
+        <name>Frost bolt</name>
+        <description>Frost bolt</description>
+        <skillType>0</skillType>
+        <attackRecoveryTime>0.4</attackRecoveryTime>
+        <manaConsumption>1</manaConsumption>
+        <gameobject>Prefabs/UI/Spells/cold_1</gameobject>
+        <projectile>Prefabs/Items/Ammo/Bow/Projectile1</projectile>
+        <requirements>
+          <experience>1</experience>
+          <intelligence>1</intelligence>
+        </requirements>
+        <range>5</range>
+        <damage>
+          <cold>
+            <min>1</min>
+            <max>6</max>
+          </cold>
+        </damage>
+        <chargeSpeed>0.4</chargeSpeed>
+      </spell>
+    </cold>
+    <lightning>
+      <spell>
+        <id>lightning_1</id>
+        <tier>1</tier>
+        <name>Lightning bolt</name>
+        <description>Lightning bolt</description>
+        <skillType>0</skillType>
+        <attackRecoveryTime>0.4</attackRecoveryTime>
+        <manaConsumption>1</manaConsumption>
+        <gameobject>Prefabs/UI/Spells/lightning_1</gameobject>
+        <projectile>Prefabs/Items/Ammo/Bow/Projectile1</projectile>
+        <requirements>
+          <experience>1</experience>
+          <intelligence>1</intelligence>
+        </requirements>
+        <range>5</range>
+        <damage>
+          <lightning>
+            <min>1</min>
+            <max>6</max>
+          </lightning>
+        </damage>
+        <chargeSpeed>0.4</chargeSpeed>
+      </spell>
+    </lightning>
+    <poison>
+      <spell>
+        <id>poison_1</id>
+        <tier>1</tier>
+        <name>Poison bolt</name>
+        <description>Poison bolt</description>
+        <skillType>0</skillType>
+        <attackRecoveryTime>0.4</attackRecoveryTime>
+        <manaConsumption>1</manaConsumption>
+        <gameobject>Prefabs/UI/Spells/poison_1</gameobject>
+        <projectile>Prefabs/Items/Ammo/Bow/Projectile1</projectile>
+        <requirements>
+          <experience>1</experience>
+          <intelligence>1</intelligence>
+        </requirements>
+        <range>5</range>
+        <damage>
+          <poison>
+            <min>1</min>
+            <max>6</max>
+          </poison>
+        </damage>
+        <chargeSpeed>0.4</chargeSpeed>
+      </spell>
+    </poison>
+  </spells>
+</skills>

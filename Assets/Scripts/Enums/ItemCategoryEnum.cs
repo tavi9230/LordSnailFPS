@@ -1,0 +1,20 @@
+﻿public enum ItemCategoryEnum
+{
+    Axe,
+    Bow,
+    Club,
+    Crossbow,
+    Dagger,
+    Hammer,
+    Other,
+    Spear,
+    Sword,
+    Armor,
+    Shield,
+    Amulet,
+    Ring,
+    BowAmmo,
+    CrossbowAmmo,
+    Potion,
+    Food,
+}

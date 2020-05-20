@@ -1,0 +1,19 @@
+﻿public enum InventoryLocationEnum
+{
+    None,
+    Head,
+    Neck,
+    Torso,
+    RightHand,
+    LeftHand,
+    Hip,
+    RightRing,
+    LeftRing,
+    Feet,
+    Inventory,
+    ObjectInventory,
+    ObjectEnemyInventory,
+    AlternateRightHand,
+    AlternateLeftHand,
+    Hands
+}

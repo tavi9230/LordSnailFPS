@@ -1,0 +1,13 @@
+- show battle log in descriptions box
+- fix item swapping for same type consumables (if item to replace has less quantity than max, just add quantity; if quantity == max => swap items)
+- if enemy gets "stuck" in object, make him push it away or move it somewhere else
+- fix enemy cone of view color
+- fix enemy detection (player should have a few moments before enemies begin hunting the player)
+- add hotbar to place inventory items there and use them when needed
+- enemy should go to players last seen position not players last position and then check around for a bit before returning to patrolling
+- leave enemies unconcious
+- implement jump/dodge mechanic
+
+- display if enemy is resistant when he's hit (-D%)
+- display somewhere if item is broken
+- Inspecting mode should only work in things within line of sight of player
