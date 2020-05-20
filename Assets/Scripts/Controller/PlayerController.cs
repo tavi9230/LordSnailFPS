@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
     private UIManager uiManager;
     #endregion
 
-    void Start()
+    void Awake()
     {
         Hotbar = new Dictionary<KeyCode, HotbarItem>
         {
