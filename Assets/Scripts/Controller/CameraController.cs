@@ -7,8 +7,8 @@ public class CameraController : MonoBehaviour
 
     public Transform target;
     public float smoothing;
-    public Vector2 minPosition;
-    public Vector2 maxPosition;
+    public Vector3 minPosition;
+    public Vector3 maxPosition;
 
     public float zoomSpeed = 1;
     public float defaultTargetOrtho;
@@ -18,12 +18,14 @@ public class CameraController : MonoBehaviour
 
     private GameManager gm;
     private float targetOrtho;
+    private Camera cameraComponent;
     #endregion
 
     void Start()
     {
         gm = FindObjectOfType<GameManager>();
-        defaultTargetOrtho = Camera.main.orthographicSize;
+        cameraComponent = GetComponent<Camera>();
+        defaultTargetOrtho = cameraComponent.orthographicSize;
         targetOrtho = defaultTargetOrtho;
     }
 
@@ -46,7 +48,7 @@ public class CameraController : MonoBehaviour
         }
         targetOrtho = Mathf.Clamp(targetOrtho, minOrtho, maxOrtho);
         //}
-        Camera.main.orthographicSize = Mathf.MoveTowards(Camera.main.orthographicSize, targetOrtho, smoothSpeed * Time.deltaTime);
+        cameraComponent.orthographicSize = Mathf.MoveTowards(cameraComponent.orthographicSize, targetOrtho, smoothSpeed * Time.deltaTime);
     }
 
     void LateUpdate()
@@ -56,7 +58,7 @@ public class CameraController : MonoBehaviour
             Vector3 targetPosition = new Vector3(target.position.x, target.position.y, transform.position.z);
 
             targetPosition.x = Mathf.Clamp(targetPosition.x, minPosition.x, maxPosition.x);
-            targetPosition.y = Mathf.Clamp(targetPosition.y, minPosition.y - CLAMP, maxPosition.y);
+            targetPosition.y = Mathf.Clamp(targetPosition.y, minPosition.y, maxPosition.y);
 
             transform.position = Vector3.Lerp(transform.position, targetPosition, smoothing);
         }

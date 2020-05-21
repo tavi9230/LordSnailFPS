@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private PlayerController playerController;
     private Vector3 velocity;
     private bool isGrounded;
+    private Vector3 forward, right;
 
     void Start()
     {
@@ -32,12 +33,24 @@ public class PlayerMovement : MonoBehaviour
 
         if (!playerController.State.Exists(s => s == StateEnum.Attacking))
         {
-            float x = Input.GetAxis("Horizontal");
-            float z = Input.GetAxis("Vertical");
+            forward = Camera.main.transform.forward;
+            forward.y = 0;
+            forward = Vector3.Normalize(forward);
 
-            Vector3 move = transform.right * x + transform.forward * z;
+            right = Quaternion.Euler(0, 90, 0) * forward;            
 
-            controller.Move(move * playerController.Stats.TotalSpeed * Time.deltaTime);
+            float x = Input.GetAxis("HorizontalIsometric");
+            float z = Input.GetAxis("VerticalIsometric");
+
+            Vector3 direction = new Vector3(x, 0, z);
+            Vector3 rightMovement = right * playerController.Stats.TotalSpeed * Time.deltaTime * x;
+            Vector3 upMovement = forward * playerController.Stats.TotalSpeed * Time.deltaTime * z;
+            Vector3 heading = Vector3.Normalize(rightMovement + upMovement);
+
+            //Vector3 move = transform.right * x + transform.forward * z;
+            Vector3 move = rightMovement + upMovement;
+
+            controller.Move(move);
 
             if (Input.GetButtonDown("Jump") && isGrounded)
             {

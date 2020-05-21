@@ -389,8 +389,8 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerAnimateMove()
     {
-        var axisH = Input.GetAxisRaw("Horizontal");
-        var axisV = Input.GetAxisRaw("Vertical");
+        var axisH = Input.GetAxisRaw("HorizontalIsometric");
+        var axisV = Input.GetAxisRaw("VerticalIsometric");
 
         Vector2 movement = new Vector2(axisH, axisV);
         //animationController.SetMoveSpeed(movement.x, movement.y);
