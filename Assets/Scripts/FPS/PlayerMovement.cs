@@ -41,11 +41,9 @@ public class PlayerMovement : MonoBehaviour
 
             float x = Input.GetAxis("HorizontalIsometric");
             float z = Input.GetAxis("VerticalIsometric");
-
-            Vector3 direction = new Vector3(x, 0, z);
+            
             Vector3 rightMovement = right * playerController.Stats.TotalSpeed * Time.deltaTime * x;
             Vector3 upMovement = forward * playerController.Stats.TotalSpeed * Time.deltaTime * z;
-            Vector3 heading = Vector3.Normalize(rightMovement + upMovement);
 
             //Vector3 move = transform.right * x + transform.forward * z;
             Vector3 move = rightMovement + upMovement;

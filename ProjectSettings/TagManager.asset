@@ -16,6 +16,7 @@ TagManager:
   - SightCollider
   - Pickup
   - ItemDetails
+  - Floor
   layers:
   - Default
   - TransparentFX

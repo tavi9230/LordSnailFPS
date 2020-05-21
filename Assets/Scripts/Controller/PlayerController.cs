@@ -376,10 +376,41 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    RaycastHit cameraRayHit;
+    Ray cameraRay;
     private void PlayerPointInDirectionOfMouse()
     {
-        var distanceToPlayer = Helpers.DistanceFromMouseCustom(transform);
-        //animationController.SetLastMoveSpeed(distanceToPlayer.x, distanceToPlayer.y);
+        // Cast a ray from the camera to the mouse cursor
+        cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        // If the ray strikes an object...
+        if (Physics.Raycast(cameraRay, out cameraRayHit))
+        {
+            // ...and if that object is the ground...
+            if (cameraRayHit.transform.CompareTag("Floor"))
+            {
+                // ...make the cube rotate (only on the Y axis) to face the ray hit's position 
+                Vector3 targetPosition = new Vector3(cameraRayHit.point.x, transform.position.y, cameraRayHit.point.z);
+                transform.LookAt(targetPosition);
+            }
+        }
+
+
+
+        //var crosshair = transform.GetChild(0).gameObject;
+        //var clickedPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //crosshair.transform.position = Vector3.Lerp(crosshair.transform.position, clickedPosition, Time.deltaTime);
+
+
+        //var mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z));
+
+        //crosshair.transform.position = new Vector3(Input.mousePosition.x, 0, Input.mousePosition.z);
+
+        //Vector3 direction = crosshair.transform.position - transform.position;
+
+        //Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
+        //Debug.Log(rotation.eulerAngles);
+        ////transform.Rotate(rotation.eulerAngles);
     }
 
     public bool PickUp(InventoryItem inventoryItem)
