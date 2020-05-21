@@ -22661,6 +22661,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 865013744}
+  - component: {fileID: 865013750}
+  - component: {fileID: 865013749}
   - component: {fileID: 865013745}
   - component: {fileID: 865013746}
   - component: {fileID: 865013748}
@@ -22680,7 +22682,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 865013743}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 11.88, z: 0}
+  m_LocalPosition: {x: 8.52, y: 1.96, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1574249496}
@@ -22761,6 +22763,37 @@ MonoBehaviour:
   KnockBackDifference: {x: 0, y: 0, z: 0}
   StunTimer: 0
   knockbackTimer: 0.25
+--- !u!114 &865013749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 865013743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d3882640b3ff0e4c8d2a92853531cba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &865013750
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 865013743}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d3112c9d983c93d418bf3bdeb3be9c19, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &866026002
 GameObject:
   m_ObjectHideFlags: 0

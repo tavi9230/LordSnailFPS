@@ -1,28 +1,28 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimationController
+public class PlayerAnimationController : MonoBehaviour
 {
     private Animator animator;
 
-    public PlayerAnimationController(Animator animator)
+    public void Start()
     {
-        this.animator = animator;
+        animator = GetComponent<Animator>();
     }
 
-    public void SetMoveSpeed(float moveX, float moveY)
+    public void SetMove(float moveX, float moveY, float moveZ)
     {
         animator.SetFloat("moveX", moveX);
         animator.SetFloat("moveY", moveY);
+        animator.SetFloat("moveZ", moveZ);
     }
 
-    public void SetLastMoveSpeed(float lastMoveX, float lastMoveY)
+    public void SetCrouching(bool isCrouching)
     {
-        animator.SetFloat("lastMoveX", lastMoveX);
-        animator.SetFloat("lastMoveY", lastMoveY);
+        animator.SetBool("isCrouching", isCrouching);
     }
 
-    public void SetIsAttacking(bool isAttacking)
+    public void SetAttacking(bool isAttacking)
     {
         animator.SetBool("isAttacking", isAttacking);
     }

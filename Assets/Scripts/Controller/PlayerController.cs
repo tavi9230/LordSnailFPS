@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public GameObject DraggedObject = null;
     public GameObject Hidespot = null;
     public PlayerAttackEnum PlayerAttackType;
+    public PlayerAnimationController animationController;
     public bool IsHeavyAttack;
     public Vector3 KnockBackDifference = Vector2.zero;
     public float StunTimer = 0;
@@ -51,6 +52,7 @@ public class PlayerController : MonoBehaviour
         ConditionImmunities = new List<ConditionEnum>();
         gameManager = FindObjectOfType<GameManager>();
         uiManager = FindObjectOfType<UIManager>();
+        animationController = GetComponent<PlayerAnimationController>();
 
         Stats = new Stats(
             5f,
@@ -437,13 +439,21 @@ public class PlayerController : MonoBehaviour
                 string rightHandText = string.Format("{0}ightHand", InventoryManager.IsUsingAlternateWeapons ? "alternateR" : "r");
                 string leftHandText = string.Format("{0}eftHand", InventoryManager.IsUsingAlternateWeapons ? "alternateL" : "l");
 
-                if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+                if (Input.GetMouseButton(0))
                 {
+                    animationController.SetAttacking(true);
+                    chargeAttackCounter += Time.deltaTime;
+                }
+
+                if (Input.GetMouseButton(1))
+                {
+                    animationController.SetAttacking(true);
                     chargeAttackCounter += Time.deltaTime;
                 }
 
                 if (Input.GetMouseButtonUp(1))
                 {
+                    animationController.SetAttacking(false);
                     PlayerAttackType = PlayerAttackEnum.Right;
                     AttackPower attackPower = Stats.RightHandAttack;
                     IsHeavyAttack = false;
@@ -468,6 +478,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (Input.GetMouseButtonUp(0))
                 {
+                    animationController.SetAttacking(false);
                     PlayerAttackType = PlayerAttackEnum.Left;
                     AttackPower attackPower = Stats.LeftHandAttack;
                     IsHeavyAttack = false;

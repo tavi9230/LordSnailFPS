@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
 
+    private PlayerAnimationController animationController;
     private CharacterController controller;
     private PlayerController playerController;
     private Vector3 velocity;
@@ -19,10 +20,11 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         playerController = GetComponent<PlayerController>();
+        animationController = GetComponent<PlayerAnimationController>();
         controller = GetComponent<CharacterController>();
     }
 
-    void Update()
+    void LateUpdate()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
@@ -37,11 +39,12 @@ public class PlayerMovement : MonoBehaviour
             forward.y = 0;
             forward = Vector3.Normalize(forward);
 
-            right = Quaternion.Euler(0, 90, 0) * forward;            
+            right = Quaternion.Euler(0, 90, 0) * forward;
 
             float x = Input.GetAxis("HorizontalIsometric");
+            float y = Input.GetAxis("Jump");
             float z = Input.GetAxis("VerticalIsometric");
-            
+
             Vector3 rightMovement = right * playerController.Stats.TotalSpeed * Time.deltaTime * x;
             Vector3 upMovement = forward * playerController.Stats.TotalSpeed * Time.deltaTime * z;
 
@@ -58,6 +61,7 @@ public class PlayerMovement : MonoBehaviour
             velocity.y += gravity * Time.deltaTime;
 
             controller.Move(velocity * Time.deltaTime);
+            animationController.SetMove(x, 0, z);
         }
     }
 }
