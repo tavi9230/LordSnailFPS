@@ -112,7 +112,8 @@ public class PlayerController : MonoBehaviour
             attackCounter -= Time.deltaTime;
             if (attackCounter <= 0)
             {
-                //animationController.SetIsAttacking(false);
+                animationController.SetAttackingLeft(false);
+                animationController.SetAttackingRight(false);
                 State.Remove(StateEnum.Attacking);
             }
         }
@@ -439,48 +440,33 @@ public class PlayerController : MonoBehaviour
                 string rightHandText = string.Format("{0}ightHand", InventoryManager.IsUsingAlternateWeapons ? "alternateR" : "r");
                 string leftHandText = string.Format("{0}eftHand", InventoryManager.IsUsingAlternateWeapons ? "alternateL" : "l");
 
-                if (Input.GetMouseButton(0))
+                if (Input.GetMouseButton(0) && !State.Exists(s => s == StateEnum.IsChargingRightAttack))
                 {
-                    animationController.SetIsPreparingLeftAttack(true);
-                    chargeAttackCounter += Time.deltaTime;
+                    if (Stats.ActiveSkill != null
+                        || Stats.LeftHandAttack.Attack.Skill != null
+                        || Stats.LeftHandAttack.Attack.Item != null && Stats.LeftHandAttack.Attack.Item.Type != ItemTypeEnum.Ammo)
+                    {
+                        animationController.SetIsPreparingLeftAttack(true);
+                        chargeAttackCounter += Time.deltaTime;
+                        if (!State.Exists(s => s == StateEnum.IsChargingLeftAttack))
+                        {
+                            State.Add(StateEnum.IsChargingLeftAttack);
+                        }
+                    }
                 }
 
-                if (Input.GetMouseButton(1))
+                if (Input.GetMouseButton(1) && !State.Exists(s => s == StateEnum.IsChargingLeftAttack))
                 {
                     animationController.SetIsPreparingRightAttack(true);
                     chargeAttackCounter += Time.deltaTime;
+                    if (!State.Exists(s => s == StateEnum.IsChargingRightAttack))
+                    {
+                        State.Add(StateEnum.IsChargingRightAttack);
+                    }
                 }
 
-                if (Input.GetMouseButtonUp(1))
+                if (Input.GetMouseButtonUp(0))
                 {
-                    animationController.SetIsPreparingRightAttack(false);
-                    animationController.SetAttackingRight(true);
-                    PlayerAttackType = PlayerAttackEnum.Right;
-                    AttackPower attackPower = Stats.RightHandAttack;
-                    IsHeavyAttack = false;
-                    if (attackPower.Attack.Item != null)
-                    {
-                        // TODO: Decrease Charge Speed value by armor weight and special stats if necessary
-                        if (chargeAttackCounter >= attackPower.ChargeAttackSpeed)
-                        {
-                            IsHeavyAttack = true;
-                        }
-                    }
-                    else if (attackPower.Attack.Skill != null)
-                    {
-                        if (chargeAttackCounter >= attackPower.Attack.Skill.ChargeSpeed)
-                        {
-                            IsHeavyAttack = true;
-                        }
-                    }
-                    chargeAttackCounter = 0;
-
-                    CheckPlayerAttackHand(InventoryManager.Inventory[rightHandText], InventoryManager.Inventory[leftHandText], attackPower);
-                }
-                else if (Input.GetMouseButtonUp(0))
-                {
-                    animationController.SetIsPreparingLeftAttack(false);
-                    animationController.SetAttackingLeft(true);
                     PlayerAttackType = PlayerAttackEnum.Left;
                     AttackPower attackPower = Stats.LeftHandAttack;
                     IsHeavyAttack = false;
@@ -509,6 +495,40 @@ public class PlayerController : MonoBehaviour
                     chargeAttackCounter = 0;
 
                     CheckPlayerAttackHand(InventoryManager.Inventory[leftHandText], InventoryManager.Inventory[rightHandText], attackPower, true);
+
+                    animationController.SetIsPreparingLeftAttack(false);
+                    animationController.SetIsPreparingRightAttack(false);
+                    State.Remove(StateEnum.IsChargingRightAttack);
+                    State.Remove(StateEnum.IsChargingLeftAttack);
+                }
+                else if (Input.GetMouseButtonUp(1))
+                {
+                    PlayerAttackType = PlayerAttackEnum.Right;
+                    AttackPower attackPower = Stats.RightHandAttack;
+                    IsHeavyAttack = false;
+                    if (attackPower.Attack.Item != null)
+                    {
+                        // TODO: Decrease Charge Speed value by armor weight and special stats if necessary
+                        if (chargeAttackCounter >= attackPower.ChargeAttackSpeed)
+                        {
+                            IsHeavyAttack = true;
+                        }
+                    }
+                    else if (attackPower.Attack.Skill != null)
+                    {
+                        if (chargeAttackCounter >= attackPower.Attack.Skill.ChargeSpeed)
+                        {
+                            IsHeavyAttack = true;
+                        }
+                    }
+                    chargeAttackCounter = 0;
+
+                    CheckPlayerAttackHand(InventoryManager.Inventory[rightHandText], InventoryManager.Inventory[leftHandText], attackPower);
+
+                    animationController.SetIsPreparingLeftAttack(false);
+                    animationController.SetIsPreparingRightAttack(false);
+                    State.Remove(StateEnum.IsChargingRightAttack);
+                    State.Remove(StateEnum.IsChargingLeftAttack);
                 }
             }
         }
@@ -525,6 +545,16 @@ public class PlayerController : MonoBehaviour
                 manaRecoveryCounter = Stats.TotalMana <= 0 ? Stats.TotalManaRecoveryTime * 2 : Stats.TotalManaRecoveryTime;
                 attackCounter = Stats.ActiveSkill.AttackRecoveryTime;
                 State.Add(StateEnum.Attacking);
+                if (PlayerAttackType == PlayerAttackEnum.Left || PlayerAttackType == PlayerAttackEnum.ActiveSkill)
+                {
+                    animationController.SetAttackingLeft(true);
+                    animationController.SetIsPreparingLeftAttack(false);
+                }
+                else
+                {
+                    animationController.SetAttackingRight(true);
+                    animationController.SetIsPreparingRightAttack(false);
+                }
 
                 var posCollider = transform.GetChild(0).gameObject;
                 var mousePosition = Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
@@ -598,6 +628,16 @@ public class PlayerController : MonoBehaviour
                     manaRecoveryCounter = Stats.TotalMana <= 0 ? Stats.TotalManaRecoveryTime * 2 : Stats.TotalManaRecoveryTime;
                     attackCounter = attackPower.Attack.Skill.AttackRecoveryTime;
                     State.Add(StateEnum.Attacking);
+                    if (PlayerAttackType == PlayerAttackEnum.Left || PlayerAttackType == PlayerAttackEnum.ActiveSkill)
+                    {
+                        animationController.SetAttackingLeft(true);
+                        animationController.SetIsPreparingLeftAttack(false);
+                    }
+                    else
+                    {
+                        animationController.SetAttackingRight(true);
+                        animationController.SetIsPreparingRightAttack(false);
+                    }
 
                     var posCollider = transform.GetChild(0).gameObject;
                     var mousePosition = Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
@@ -628,6 +668,16 @@ public class PlayerController : MonoBehaviour
             staminaRecoveryCounter = Stats.TotalStamina <= 0 ? Stats.TotalStaminaRecoveryTime * 2 : Stats.TotalStaminaRecoveryTime;
             attackCounter = attackPower.AttackRecoveryTime;
             State.Add(StateEnum.Attacking);
+            if (PlayerAttackType == PlayerAttackEnum.Left || PlayerAttackType == PlayerAttackEnum.ActiveSkill)
+            {
+                animationController.SetAttackingLeft(true);
+                animationController.SetIsPreparingLeftAttack(false);
+            }
+            else
+            {
+                animationController.SetAttackingRight(true);
+                animationController.SetIsPreparingRightAttack(false);
+            }
 
             var posCollider = transform.GetChild(0).gameObject;
             var mousePosition = Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
@@ -656,6 +706,16 @@ public class PlayerController : MonoBehaviour
             staminaRecoveryCounter = Stats.TotalStamina <= 0 ? Stats.TotalStaminaRecoveryTime * 2 : Stats.TotalStaminaRecoveryTime;
             attackCounter = attackPower.AttackRecoveryTime;
             State.Add(StateEnum.Attacking);
+            if (PlayerAttackType == PlayerAttackEnum.Left || PlayerAttackType == PlayerAttackEnum.ActiveSkill)
+            {
+                animationController.SetAttackingLeft(true);
+                animationController.SetIsPreparingLeftAttack(false);
+            }
+            else
+            {
+                animationController.SetAttackingRight(true);
+                animationController.SetIsPreparingRightAttack(false);
+            }
 
             var posCollider = transform.GetChild(0).gameObject;
             var mousePosition = Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
@@ -686,7 +746,16 @@ public class PlayerController : MonoBehaviour
 
         attackCounter = attackPower.AttackRecoveryTime;
         State.Add(StateEnum.Attacking);
-        //animationController.SetIsAttacking(true);
+        if (PlayerAttackType == PlayerAttackEnum.Left || PlayerAttackType == PlayerAttackEnum.ActiveSkill)
+        {
+            animationController.SetAttackingLeft(true);
+            animationController.SetIsPreparingLeftAttack(false);
+        }
+        else
+        {
+            animationController.SetAttackingRight(true);
+            animationController.SetIsPreparingRightAttack(false);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)

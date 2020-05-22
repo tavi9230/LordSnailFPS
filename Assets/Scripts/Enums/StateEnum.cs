@@ -10,6 +10,8 @@
     InCombat,
     Crouching,
     Attacking,
+    IsChargingLeftAttack,
+    IsChargingRightAttack,
     Pickup,
     Inspecting,
     Running,
