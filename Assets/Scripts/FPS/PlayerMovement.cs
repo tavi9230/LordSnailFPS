@@ -48,6 +48,12 @@ public class PlayerMovement : MonoBehaviour
             Vector3 rightMovement = right * playerController.Stats.TotalSpeed * Time.deltaTime * x;
             Vector3 upMovement = forward * playerController.Stats.TotalSpeed * Time.deltaTime * z;
 
+            if(rightMovement != Vector3.zero || upMovement != Vector3.zero)
+            {
+                Debug.Log(rightMovement);
+                Debug.Log(upMovement);
+            }
+
             //Vector3 move = transform.right * x + transform.forward * z;
             Vector3 move = rightMovement + upMovement;
 
