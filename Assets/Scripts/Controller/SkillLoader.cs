@@ -38,10 +38,6 @@ public static class SkillLoader
         {
             Debug.Log("Error loading " + xmlFile.name + ":\n" + ex);
         }
-        finally
-        {
-            Debug.Log(xmlFile.name + " loaded");
-        }
 
         return skills;
     }

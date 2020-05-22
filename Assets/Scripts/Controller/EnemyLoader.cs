@@ -37,10 +37,6 @@ public static class EnemyLoader
         {
             Debug.Log("Error loading " + xmlFile.name + ":\n" + ex);
         }
-        finally
-        {
-            Debug.Log(xmlFile.name + " loaded");
-        }
 
         return enemies;
     }

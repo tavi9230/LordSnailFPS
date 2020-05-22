@@ -124,7 +124,6 @@
     <Compile Include="Assets\Scripts\Helpers\SpecialStats.cs" />
     <Compile Include="Assets\Scripts\Helpers\Stats.cs" />
     <Compile Include="Assets\Scripts\Helpers\TooltipHandler.cs" />
-    <Compile Include="Assets\Scripts\Map\AreaTransitions.cs" />
     <Compile Include="Assets\Scripts\Map\MapManager.cs" />
     <Compile Include="Assets\Scripts\Pickup\Pickable.cs" />
     <Compile Include="Assets\Scripts\Position\EnemyCollissionChecker.cs" />

@@ -441,19 +441,20 @@ public class PlayerController : MonoBehaviour
 
                 if (Input.GetMouseButton(0))
                 {
-                    animationController.SetAttacking(true);
+                    animationController.SetIsPreparingLeftAttack(true);
                     chargeAttackCounter += Time.deltaTime;
                 }
 
                 if (Input.GetMouseButton(1))
                 {
-                    animationController.SetAttacking(true);
+                    animationController.SetIsPreparingRightAttack(true);
                     chargeAttackCounter += Time.deltaTime;
                 }
 
                 if (Input.GetMouseButtonUp(1))
                 {
-                    animationController.SetAttacking(false);
+                    animationController.SetIsPreparingRightAttack(false);
+                    animationController.SetAttackingRight(true);
                     PlayerAttackType = PlayerAttackEnum.Right;
                     AttackPower attackPower = Stats.RightHandAttack;
                     IsHeavyAttack = false;
@@ -478,7 +479,8 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (Input.GetMouseButtonUp(0))
                 {
-                    animationController.SetAttacking(false);
+                    animationController.SetIsPreparingLeftAttack(false);
+                    animationController.SetAttackingLeft(true);
                     PlayerAttackType = PlayerAttackEnum.Left;
                     AttackPower attackPower = Stats.LeftHandAttack;
                     IsHeavyAttack = false;

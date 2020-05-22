@@ -10,6 +10,11 @@ public class PlayerAnimationController : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    public void SetIsMoving(bool isMoving)
+    {
+        animator.SetBool("isMoving", isMoving);
+    }
+
     public void SetMove(float moveX, float moveY, float moveZ)
     {
         animator.SetFloat("moveX", moveX);
@@ -22,8 +27,23 @@ public class PlayerAnimationController : MonoBehaviour
         animator.SetBool("isCrouching", isCrouching);
     }
 
-    public void SetAttacking(bool isAttacking)
+    public void SetIsPreparingRightAttack(bool isAttacking)
     {
-        animator.SetBool("isAttacking", isAttacking);
+        animator.SetBool("isPreparingRightAttack", isAttacking);
+    }
+
+    public void SetAttackingRight(bool isAttacking)
+    {
+        animator.SetBool("isAttackingRight", isAttacking);
+    }
+
+    public void SetIsPreparingLeftAttack(bool isAttacking)
+    {
+        animator.SetBool("isPreparingLeftAttack", isAttacking);
+    }
+
+    public void SetAttackingLeft(bool isAttacking)
+    {
+        animator.SetBool("isAttackingLeft", isAttacking);
     }
 }

@@ -52,10 +52,6 @@ public static class ObjectLoader
         {
             Debug.Log("Error loading " + xmlFile.name + ":\n" + ex);
         }
-        finally
-        {
-            Debug.Log(xmlFile.name + " loaded");
-        }
 
         return items;
     }
