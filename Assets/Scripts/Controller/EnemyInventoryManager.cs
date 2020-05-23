@@ -7,8 +7,8 @@ public class EnemyInventoryManager : InventoryManager
 
     public override void Start()
     {
-        enemyController.Stats.RightHandAttack.Attack.Item = Inventory["rightHand"];
-        enemyController.Stats.LeftHandAttack.Attack.Item = Inventory["leftHand"];
+        //enemyController.Stats.RightHandAttack.Attack.Item = Inventory["rightHand"];
+        //enemyController.Stats.LeftHandAttack.Attack.Item = Inventory["leftHand"];
     }
 
     public override void SetupInventory()

@@ -132,9 +132,9 @@ public class EnemyController : MonoBehaviour
             };
         }
 
-        moveCollider = transform.GetChild(0).gameObject;
-        var moveColliderCol = moveCollider.GetComponent<Collider2D>();
-        moveCollideOffset = new Vector3(moveColliderCol.offset.x, moveColliderCol.offset.y, 0);
+        //moveCollider = transform.GetChild(0).gameObject;
+        //var moveColliderCol = moveCollider.GetComponent<Collider2D>();
+        //moveCollideOffset = new Vector3(moveColliderCol.offset.x, moveColliderCol.offset.y, 0);
     }
 
     public void SetupEnemyStats(Stats stats, Dictionary<string, int> skills, Dictionary<string, InventoryItem> inventory, List<Vector3> patrolPoints)
@@ -280,9 +280,9 @@ public class EnemyController : MonoBehaviour
 
     private void Start()
     {
-        fieldOfView = Instantiate(pfFieldOfView, transform).GetComponent<FieldOfView>();
-        fieldOfView.SetFoV(Stats.FoV);
-        fieldOfView.SetViewDistance(Stats.ViewDistance);
+        //fieldOfView = Instantiate(pfFieldOfView, transform).GetComponent<FieldOfView>();
+        //fieldOfView.SetFoV(Stats.FoV);
+        //fieldOfView.SetViewDistance(Stats.ViewDistance);
         defaultViewDistance = Stats.ViewDistance;
         defaultFoV = Stats.FoV;
         waitToEndHuntTimer = 10f;
@@ -293,273 +293,273 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (State.Exists(s => s == StateEnum.Dead) || Stats.TotalHealth <= 0)
-        {
-            State.RemoveRange(0, State.Count);
-            State.Add(StateEnum.Dead);
-        }
+    //private void Update()
+    //{
+    //    if (State.Exists(s => s == StateEnum.Dead) || Stats.TotalHealth <= 0)
+    //    {
+    //        State.RemoveRange(0, State.Count);
+    //        State.Add(StateEnum.Dead);
+    //    }
 
-        if (!State.Exists(s => s == StateEnum.Dead) || Stats.TotalHealth > 0)
-        {
-            playerPosition = playerController.transform.GetChild(0).transform.position;
-            myPosition = moveCollider.transform.position;
+    //    if (!State.Exists(s => s == StateEnum.Dead) || Stats.TotalHealth > 0)
+    //    {
+    //        playerPosition = playerController.transform.GetChild(0).transform.position;
+    //        myPosition = moveCollider.transform.position;
 
-            SetAttackPower();
-            float attackRange = GetAttackRange();
+    //        SetAttackPower();
+    //        float attackRange = GetAttackRange();
 
-            var isWithinViewRange = playerController.State.Exists(s => s == StateEnum.Dead) ? false : Vector3.Distance(playerPosition, myPosition) <= Stats.ViewDistance;
+    //        var isWithinViewRange = playerController.State.Exists(s => s == StateEnum.Dead) ? false : Vector3.Distance(playerPosition, myPosition) <= Stats.ViewDistance;
 
-            var colliderObj = moveCollider.GetComponent<Collider2D>();
-            fieldOfView.SetOrigin(myPosition + new Vector3(colliderObj.offset.x, colliderObj.offset.y, myPosition.z));
-            RecalculateStamina(true);
+    //        var colliderObj = moveCollider.GetComponent<Collider2D>();
+    //        fieldOfView.SetOrigin(myPosition + new Vector3(colliderObj.offset.x, colliderObj.offset.y, myPosition.z));
+    //        RecalculateStamina(true);
 
-            if (State.Exists(s => s == StateEnum.Attacking))
-            {
-                attackCounter -= Time.deltaTime;
-                // The animation will be stuck if we don't check like this
-                if (attackCounter - .2f <= 0)
-                {
-                    animationController.SetIsAttacking(false);
-                }
-                if (attackCounter <= 0)
-                {
-                    animationController.StopMove();
-                    State.Remove(StateEnum.Attacking);
-                }
-            }
+    //        if (State.Exists(s => s == StateEnum.Attacking))
+    //        {
+    //            attackCounter -= Time.deltaTime;
+    //            // The animation will be stuck if we don't check like this
+    //            if (attackCounter - .2f <= 0)
+    //            {
+    //                animationController.SetIsAttacking(false);
+    //            }
+    //            if (attackCounter <= 0)
+    //            {
+    //                animationController.StopMove();
+    //                State.Remove(StateEnum.Attacking);
+    //            }
+    //        }
 
-            if (Conditions.Exists(c => c == ConditionEnum.KnockedBack))
-            {
-                var kbPosition = new Vector3(transform.position.x + KnockBackDifference.x, transform.position.y + KnockBackDifference.y, transform.position.z);
+    //        if (Conditions.Exists(c => c == ConditionEnum.KnockedBack))
+    //        {
+    //            var kbPosition = new Vector3(transform.position.x + KnockBackDifference.x, transform.position.y + KnockBackDifference.y, transform.position.z);
 
-                if (!Conditions.Exists(c => c == ConditionEnum.Stunned))
-                {
-                    Conditions.Add(ConditionEnum.Stunned);
-                }
+    //            if (!Conditions.Exists(c => c == ConditionEnum.Stunned))
+    //            {
+    //                Conditions.Add(ConditionEnum.Stunned);
+    //            }
 
-                if (knockbackCounter <= 0)
-                {
-                    knockbackCounter = knockbackTimer;
-                    Conditions.Remove(ConditionEnum.KnockedBack);
-                    Conditions.Remove(ConditionEnum.Stunned);
-                    KnockBackDifference = Vector3.zero;
-                }
-                else
-                {
-                    knockbackCounter -= Time.deltaTime;
-                    transform.position = Vector3.Lerp(transform.position, kbPosition, Time.deltaTime);
-                }
-            }
+    //            if (knockbackCounter <= 0)
+    //            {
+    //                knockbackCounter = knockbackTimer;
+    //                Conditions.Remove(ConditionEnum.KnockedBack);
+    //                Conditions.Remove(ConditionEnum.Stunned);
+    //                KnockBackDifference = Vector3.zero;
+    //            }
+    //            else
+    //            {
+    //                knockbackCounter -= Time.deltaTime;
+    //                transform.position = Vector3.Lerp(transform.position, kbPosition, Time.deltaTime);
+    //            }
+    //        }
 
-            if (Conditions.Exists(c => c == ConditionEnum.Staggered))
-            {
-                Conditions.Remove(ConditionEnum.Staggered);
-                animationController.StopMove();
-                animationController.SetIsAttacking(false);
-                attackCounter = 1.2f;
-            }
+    //        if (Conditions.Exists(c => c == ConditionEnum.Staggered))
+    //        {
+    //            Conditions.Remove(ConditionEnum.Staggered);
+    //            animationController.StopMove();
+    //            animationController.SetIsAttacking(false);
+    //            attackCounter = 1.2f;
+    //        }
 
-            if (State.Exists(s => s == StateEnum.Inspecting))
-            {
-                animationController.SetIsMoving(false);
-                inspectCounter -= Time.deltaTime;
-                if (inspectCounter <= 0 || fieldOfView.IsPlayerInSight)
-                {
-                    inspectCounter = inspectTimer;
-                    State.Remove(StateEnum.Inspecting);
-                    Debug.Log("End Inspecting");
-                }
-                if (fieldOfView.IsPlayerInSight)
-                {
-                    State.Remove(StateEnum.Inspecting);
-                    if (!State.Exists(s => s == StateEnum.InCombat))
-                    {
-                        StartHunt();
-                    }
-                }
-            }
+    //        if (State.Exists(s => s == StateEnum.Inspecting))
+    //        {
+    //            animationController.SetIsMoving(false);
+    //            inspectCounter -= Time.deltaTime;
+    //            if (inspectCounter <= 0 || fieldOfView.IsPlayerInSight)
+    //            {
+    //                inspectCounter = inspectTimer;
+    //                State.Remove(StateEnum.Inspecting);
+    //                Debug.Log("End Inspecting");
+    //            }
+    //            if (fieldOfView.IsPlayerInSight)
+    //            {
+    //                State.Remove(StateEnum.Inspecting);
+    //                if (!State.Exists(s => s == StateEnum.InCombat))
+    //                {
+    //                    StartHunt();
+    //                }
+    //            }
+    //        }
 
-            if (State.Exists(s => s == StateEnum.InCombat) && huntCounter <= 0)
-            {
-                State.Remove(StateEnum.InCombat);
-                huntCounter = waitToEndHuntTimer;
-                Debug.Log("End Hunt");
-            }
+    //        if (State.Exists(s => s == StateEnum.InCombat) && huntCounter <= 0)
+    //        {
+    //            State.Remove(StateEnum.InCombat);
+    //            huntCounter = waitToEndHuntTimer;
+    //            Debug.Log("End Hunt");
+    //        }
 
-            if (Stats.TotalHealth <= Stats.TotalMaxHealth / 3)
-            {
-                if (!Conditions.Exists(c => c == ConditionEnum.Stunned) && !Conditions.Exists(c => c == ConditionEnum.Staggered)
-                && !Conditions.Exists(c => c == ConditionEnum.KnockedBack && !State.Exists(s => s == StateEnum.Attacking)))
-                {
-                    // TODO: Heal
-                }
-            }
+    //        if (Stats.TotalHealth <= Stats.TotalMaxHealth / 3)
+    //        {
+    //            if (!Conditions.Exists(c => c == ConditionEnum.Stunned) && !Conditions.Exists(c => c == ConditionEnum.Staggered)
+    //            && !Conditions.Exists(c => c == ConditionEnum.KnockedBack && !State.Exists(s => s == StateEnum.Attacking)))
+    //            {
+    //                // TODO: Heal
+    //            }
+    //        }
 
-            if (!Conditions.Exists(c => c == ConditionEnum.Stunned) && !State.Exists(s => s == StateEnum.Inspecting))
-            {
-                // When seeing something suspicious for the first time
-                if (PlayerShadow == null && fieldOfView.IsPlayerInSight && Vector3.Distance(myPosition, playerPosition) >= .2f
-                    && !State.Exists(s => s == StateEnum.SawSomethingSuspicious)
-                    && !State.Exists(s => s == StateEnum.InCombat))
-                {
-                    State.Remove(StateEnum.Lookout);
-                    State.Remove(StateEnum.Patrolling);
-                    State.Add(StateEnum.SawSomethingSuspicious);
-                    PlayerShadow = Instantiate(gameManager.InventoryItems["ammo1"].GameObject, playerPosition, Quaternion.identity);
-                }
+    //        if (!Conditions.Exists(c => c == ConditionEnum.Stunned) && !State.Exists(s => s == StateEnum.Inspecting))
+    //        {
+    //            // When seeing something suspicious for the first time
+    //            if (PlayerShadow == null && fieldOfView.IsPlayerInSight && Vector3.Distance(myPosition, playerPosition) >= .2f
+    //                && !State.Exists(s => s == StateEnum.SawSomethingSuspicious)
+    //                && !State.Exists(s => s == StateEnum.InCombat))
+    //            {
+    //                State.Remove(StateEnum.Lookout);
+    //                State.Remove(StateEnum.Patrolling);
+    //                State.Add(StateEnum.SawSomethingSuspicious);
+    //                PlayerShadow = Instantiate(gameManager.InventoryItems["ammo1"].GameObject, playerPosition, Quaternion.identity);
+    //            }
 
-                // Move the player shadow while enemy is suspicious
-                if (State.Exists(s => s == StateEnum.SawSomethingSuspicious))
-                {
-                    State.Remove(StateEnum.Dragging);
-                    DraggedObject = null;
-                    DeadEnemyInSight = null;
-                    animationController.SetIsMoving(false);
-                    suspicionCounter -= Time.deltaTime;
-                    if (fieldOfView.IsPlayerInSight)
-                    {
-                        Destroy(PlayerShadow);
-                        PlayerShadow = Instantiate(gameManager.InventoryItems["ammo1"].GameObject, playerPosition, Quaternion.identity);
-                    }
+    //            // Move the player shadow while enemy is suspicious
+    //            if (State.Exists(s => s == StateEnum.SawSomethingSuspicious))
+    //            {
+    //                State.Remove(StateEnum.Dragging);
+    //                DraggedObject = null;
+    //                DeadEnemyInSight = null;
+    //                animationController.SetIsMoving(false);
+    //                suspicionCounter -= Time.deltaTime;
+    //                if (fieldOfView.IsPlayerInSight)
+    //                {
+    //                    Destroy(PlayerShadow);
+    //                    PlayerShadow = Instantiate(gameManager.InventoryItems["ammo1"].GameObject, playerPosition, Quaternion.identity);
+    //                }
 
-                    if (suspicionCounter <= 0)
-                    {
-                        State.Remove(StateEnum.SawSomethingSuspicious);
-                        suspicionCounter = suspicionTimer;
-                    }
-                }
+    //                if (suspicionCounter <= 0)
+    //                {
+    //                    State.Remove(StateEnum.SawSomethingSuspicious);
+    //                    suspicionCounter = suspicionTimer;
+    //                }
+    //            }
 
-                if (State.Exists(s => s == StateEnum.InCombat))
-                {
-                    State.Remove(StateEnum.Dragging);
-                    DraggedObject = null;
-                    DeadEnemyInSight = null;
-                    //if in combat but not in range, go to player
-                    if (fieldOfView.IsPlayerInSight && Vector3.Distance(myPosition, playerPosition) > attackRange)
-                    {
-                        huntCounter = waitToEndHuntTimer;
-                        Destroy(PlayerShadow);
-                        PlayerShadow = Instantiate(gameManager.InventoryItems["ammo1"].GameObject, playerPosition, Quaternion.identity);
-                        animationController.SetIsMoving(true);
-                        path = new List<Location>();
-                        MoveToPoint(gameManager.MapManager.GetGridPosition(playerPosition));
-                    }
-                    // if in combat and in range, attack the player
-                    else if (fieldOfView.IsPlayerInSight && Vector3.Distance(myPosition, playerPosition) <= attackRange)
-                    {
-                        Destroy(PlayerShadow);
-                        PlayerShadow = Instantiate(gameManager.InventoryItems["ammo1"].GameObject, playerPosition, Quaternion.identity);
-                        huntCounter = waitToEndHuntTimer;
-                        Attack();
-                    }
-                    // if in combat state but lost player
-                    else if (!fieldOfView.IsPlayerInSight)
-                    {
-                        huntCounter -= Time.deltaTime;
-                        // go to player last seen position
-                        if (PlayerShadow != null)
-                        {
-                            GoToPlayerLastSeenPosition();
-                        }
-                        // "follow" the player's footsteps for a while (while huntCounter is > 0)
-                        else
-                        {
-                            // TODO: Search for player or go to random spots?
-                            // TODO: Check playerPosition +/- offset
-                            MoveToPoint(gameManager.MapManager.GetGridPosition(playerPosition));
-                            if (Vector3.Distance(myPosition, playerPosition) <= 1f)
-                            {
-                                huntCounter = 0;
-                            }
-                            //if (Vector3.Distance(myPosition, playerPosition) <= 1)
-                            //{
-                            //    Attack();
-                            //    huntCounter = waitToEndHuntTimer;
-                            //}
-                        }
-                    }
-                }
-                // if no combat and no suspicion state
-                else if (!State.Exists(s => s == StateEnum.InCombat))
-                {
-                    if (!State.Exists(s => s == StateEnum.SawSomethingSuspicious))
-                    {
-                        fieldOfView.SetFoV(defaultFoV);
-                        if (fieldOfView.IsPlayerInSight)
-                        {
-                            StartHunt();
-                        }
-                        // but the player shadow is still there
-                        else if (PlayerShadow != null)
-                        {
-                            GoToPlayerLastSeenPosition();
-                        }
-                        // if nothing out of the ordinary, just patrol
-                        else
-                        {
-                            if (fieldOfView.IsDeadEnemyInSight || DeadEnemyInSight != null)
-                            {
-                                if (DeadEnemyInSight == null)
-                                {
-                                    DeadEnemyInSight = fieldOfView.DeadEnemy;
-                                }
+    //            if (State.Exists(s => s == StateEnum.InCombat))
+    //            {
+    //                State.Remove(StateEnum.Dragging);
+    //                DraggedObject = null;
+    //                DeadEnemyInSight = null;
+    //                //if in combat but not in range, go to player
+    //                if (fieldOfView.IsPlayerInSight && Vector3.Distance(myPosition, playerPosition) > attackRange)
+    //                {
+    //                    huntCounter = waitToEndHuntTimer;
+    //                    Destroy(PlayerShadow);
+    //                    PlayerShadow = Instantiate(gameManager.InventoryItems["ammo1"].GameObject, playerPosition, Quaternion.identity);
+    //                    animationController.SetIsMoving(true);
+    //                    path = new List<Location>();
+    //                    MoveToPoint(gameManager.MapManager.GetGridPosition(playerPosition));
+    //                }
+    //                // if in combat and in range, attack the player
+    //                else if (fieldOfView.IsPlayerInSight && Vector3.Distance(myPosition, playerPosition) <= attackRange)
+    //                {
+    //                    Destroy(PlayerShadow);
+    //                    PlayerShadow = Instantiate(gameManager.InventoryItems["ammo1"].GameObject, playerPosition, Quaternion.identity);
+    //                    huntCounter = waitToEndHuntTimer;
+    //                    Attack();
+    //                }
+    //                // if in combat state but lost player
+    //                else if (!fieldOfView.IsPlayerInSight)
+    //                {
+    //                    huntCounter -= Time.deltaTime;
+    //                    // go to player last seen position
+    //                    if (PlayerShadow != null)
+    //                    {
+    //                        GoToPlayerLastSeenPosition();
+    //                    }
+    //                    // "follow" the player's footsteps for a while (while huntCounter is > 0)
+    //                    else
+    //                    {
+    //                        // TODO: Search for player or go to random spots?
+    //                        // TODO: Check playerPosition +/- offset
+    //                        MoveToPoint(gameManager.MapManager.GetGridPosition(playerPosition));
+    //                        if (Vector3.Distance(myPosition, playerPosition) <= 1f)
+    //                        {
+    //                            huntCounter = 0;
+    //                        }
+    //                        //if (Vector3.Distance(myPosition, playerPosition) <= 1)
+    //                        //{
+    //                        //    Attack();
+    //                        //    huntCounter = waitToEndHuntTimer;
+    //                        //}
+    //                    }
+    //                }
+    //            }
+    //            // if no combat and no suspicion state
+    //            else if (!State.Exists(s => s == StateEnum.InCombat))
+    //            {
+    //                if (!State.Exists(s => s == StateEnum.SawSomethingSuspicious))
+    //                {
+    //                    fieldOfView.SetFoV(defaultFoV);
+    //                    if (fieldOfView.IsPlayerInSight)
+    //                    {
+    //                        StartHunt();
+    //                    }
+    //                    // but the player shadow is still there
+    //                    else if (PlayerShadow != null)
+    //                    {
+    //                        GoToPlayerLastSeenPosition();
+    //                    }
+    //                    // if nothing out of the ordinary, just patrol
+    //                    else
+    //                    {
+    //                        if (fieldOfView.IsDeadEnemyInSight || DeadEnemyInSight != null)
+    //                        {
+    //                            if (DeadEnemyInSight == null)
+    //                            {
+    //                                DeadEnemyInSight = fieldOfView.DeadEnemy;
+    //                            }
 
-                                if (path.Count > 0 && path[path.Count - 1].x != DeadEnemyInSight.transform.position.x
-                                    && path[path.Count - 1].y != DeadEnemyInSight.transform.position.y
-                                    && !State.Exists(s => s == StateEnum.Dragging))
-                                {
-                                    path = new List<Location>();
-                                }
+    //                            if (path.Count > 0 && path[path.Count - 1].x != DeadEnemyInSight.transform.position.x
+    //                                && path[path.Count - 1].y != DeadEnemyInSight.transform.position.y
+    //                                && !State.Exists(s => s == StateEnum.Dragging))
+    //                            {
+    //                                path = new List<Location>();
+    //                            }
 
-                                if (Vector3.Distance(DeadEnemyInSight.transform.position, myPosition) >= 1.2)
-                                {
-                                    var p = gameManager.MapManager.GetGridPosition(DeadEnemyInSight.transform.position);
-                                    MoveToPoint(p);
-                                }
-                                else
-                                {
-                                    if (!State.Exists(s => s == StateEnum.Dragging))
-                                    {
-                                        State.Add(StateEnum.Dragging);
-                                        DraggedObject = DeadEnemyInSight;
-                                    }
+    //                            if (Vector3.Distance(DeadEnemyInSight.transform.position, myPosition) >= 1.2)
+    //                            {
+    //                                var p = gameManager.MapManager.GetGridPosition(DeadEnemyInSight.transform.position);
+    //                                MoveToPoint(p);
+    //                            }
+    //                            else
+    //                            {
+    //                                if (!State.Exists(s => s == StateEnum.Dragging))
+    //                                {
+    //                                    State.Add(StateEnum.Dragging);
+    //                                    DraggedObject = DeadEnemyInSight;
+    //                                }
 
-                                    if (State.Exists(s => s == StateEnum.Dragging))
-                                    {
-                                        DraggedObject.layer = Constants.LAYER_DEFAULT;
-                                        SetDraggedObjectPosition();
-                                        var ec = DraggedObject.GetComponent<EnemyController>();
-                                        if (ec != null && ec.State.Exists(s => s == StateEnum.Dead))
-                                        {
-                                            if (Vector3.Distance(myPosition, gameManager.MapManager.GetWorldPosition(gameManager.MapManager.DeadSpot)) >= 1.2)
-                                            {
-                                                MoveToPoint(gameManager.MapManager.DeadSpot);
-                                            }
-                                            else
-                                            {
-                                                EnemyEndDragAction();
-                                                DeadEnemyInSight = null;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                Patrol();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        else
-        {
-            ShowDeadState();
-        }
-    }
+    //                                if (State.Exists(s => s == StateEnum.Dragging))
+    //                                {
+    //                                    DraggedObject.layer = Constants.LAYER_DEFAULT;
+    //                                    SetDraggedObjectPosition();
+    //                                    var ec = DraggedObject.GetComponent<EnemyController>();
+    //                                    if (ec != null && ec.State.Exists(s => s == StateEnum.Dead))
+    //                                    {
+    //                                        if (Vector3.Distance(myPosition, gameManager.MapManager.GetWorldPosition(gameManager.MapManager.DeadSpot)) >= 1.2)
+    //                                        {
+    //                                            MoveToPoint(gameManager.MapManager.DeadSpot);
+    //                                        }
+    //                                        else
+    //                                        {
+    //                                            EnemyEndDragAction();
+    //                                            DeadEnemyInSight = null;
+    //                                        }
+    //                                    }
+    //                                }
+    //                            }
+    //                        }
+    //                        else
+    //                        {
+    //                            Patrol();
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
+    //    else
+    //    {
+    //        ShowDeadState();
+    //    }
+    //}
 
     private void GoToPlayerLastSeenPosition()
     {

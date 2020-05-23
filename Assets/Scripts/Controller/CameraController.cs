@@ -7,7 +7,6 @@ public class CameraController : MonoBehaviour
     public Transform target;
     [Range(0.01f, 1.0f)]
     public float smoothing;
-    public float distance;
 
     private GameManager gm;
     private Camera cameraComponent;
@@ -24,12 +23,13 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
-        //if(target)
-        //{
-        //    Vector3 newPos = target.position - (transform.rotation * Vector3.forward * distance);
-        //    transform.position = Vector3.Slerp(transform.position, newPos, smoothing);
-        //}
         Vector3 newPos = target.position + cameraOffset;
         transform.position = Vector3.Slerp(transform.position, newPos, smoothing);
+
+        //if (transform.position != target.position)
+        //{
+        //    Vector3 targetPosition = new Vector3(target.position.x - 9.5f, transform.position.y, target.position.z - 31);
+        //    transform.position = Vector3.Lerp(transform.position, targetPosition, smoothing);
+        //}
     }
 }

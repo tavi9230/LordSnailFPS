@@ -47,14 +47,7 @@ public class PlayerMovement : MonoBehaviour
 
             Vector3 rightMovement = right * playerController.Stats.TotalSpeed * Time.deltaTime * x;
             Vector3 upMovement = forward * playerController.Stats.TotalSpeed * Time.deltaTime * z;
-
-            if(rightMovement != Vector3.zero || upMovement != Vector3.zero)
-            {
-                Debug.Log(rightMovement);
-                Debug.Log(upMovement);
-            }
-
-            //Vector3 move = transform.right * x + transform.forward * z;
+            
             Vector3 move = rightMovement + upMovement;
 
             controller.Move(move);
@@ -67,7 +60,6 @@ public class PlayerMovement : MonoBehaviour
             velocity.y += gravity * Time.deltaTime;
 
             controller.Move(velocity * Time.deltaTime);
-            //animationController.SetMove(x, 0, z);
             animationController.SetIsMoving(x != 0 || z != 0);
         }
     }
