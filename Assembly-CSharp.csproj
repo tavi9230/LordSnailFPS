@@ -81,6 +81,7 @@
     <Compile Include="Assets\Scripts\Controller\EnemyInventoryManager.cs" />
     <Compile Include="Assets\Scripts\Controller\EnemyLoader.cs" />
     <Compile Include="Assets\Scripts\Controller\FieldOfView.cs" />
+    <Compile Include="Assets\Scripts\Controller\FieldOfViewEditor.cs" />
     <Compile Include="Assets\Scripts\Controller\GameManager.cs" />
     <Compile Include="Assets\Scripts\Controller\InventoryManager.cs" />
     <Compile Include="Assets\Scripts\Controller\ObjectController.cs" />
@@ -103,7 +104,6 @@
     <Compile Include="Assets\Scripts\Enums\SkillTypeEnum.cs" />
     <Compile Include="Assets\Scripts\Enums\StateEnum.cs" />
     <Compile Include="Assets\Scripts\Enums\WeightEnum.cs" />
-    <Compile Include="Assets\Scripts\FPS\EnemyMovement.cs" />
     <Compile Include="Assets\Scripts\FPS\MouseLook.cs" />
     <Compile Include="Assets\Scripts\FPS\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Helpers\AStarSearch.cs" />

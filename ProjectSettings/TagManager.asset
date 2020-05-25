@@ -17,6 +17,7 @@ TagManager:
   - Pickup
   - ItemDetails
   - Floor
+  - PatrolPoint
   layers:
   - Default
   - TransparentFX
@@ -28,7 +29,7 @@ TagManager:
   - 
   - SolidObjects
   - Ground
-  - 
+  - Targets
   - 
   - 
   - 

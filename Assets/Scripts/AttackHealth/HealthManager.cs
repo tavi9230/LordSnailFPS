@@ -4,12 +4,8 @@ using UnityEngine;
 public class HealthManager : MonoBehaviour
 {
     #region Variables
-    public SpriteRenderer Sprite;
     public List<BodyPartHitChance> bodyPartHitChance = new List<BodyPartHitChance>();
 
-    public bool isFlashActive = false;
-    public float flashLength = 0.5f;
-    public float flashCounter = 0f;
     public float bleedingCounter = 0f;
     public float bleedingTimer = 1f;
     public int bleedTimes = 3;
@@ -25,7 +21,6 @@ public class HealthManager : MonoBehaviour
     public void Start()
     {
         playerController = GetComponent<PlayerController>();
-        Sprite = GetComponent<SpriteRenderer>();
         SetAllBodyPartsHitChance();
     }
 
@@ -60,7 +55,6 @@ public class HealthManager : MonoBehaviour
     // Update is called once per frame
     public virtual void Update()
     {
-        CheckFlash();
         if (playerController.Conditions.Exists(c => c == ConditionEnum.Bleeding))
         {
             if (bleedingCounter <= 0)
@@ -83,56 +77,8 @@ public class HealthManager : MonoBehaviour
         }
     }
 
-    public void CheckFlash()
-    {
-        if (isFlashActive)
-        {
-            if (flashCounter > flashLength * .99f)
-            {
-                Sprite.color = new Color(Sprite.color.r, Sprite.color.g, Sprite.color.b, 0f);
-            }
-            else if (flashCounter > flashLength * .82f)
-            {
-                Sprite.color = new Color(Sprite.color.r, Sprite.color.g, Sprite.color.b, 1f);
-            }
-            else if (flashCounter > flashLength * .66f)
-            {
-                Sprite.color = new Color(Sprite.color.r, Sprite.color.g, Sprite.color.b, 0f);
-            }
-            else if (flashCounter > flashLength * .49)
-            {
-                Sprite.color = new Color(Sprite.color.r, Sprite.color.g, Sprite.color.b, 1f);
-            }
-            else if (flashCounter > flashLength * .33f)
-            {
-                Sprite.color = new Color(Sprite.color.r, Sprite.color.g, Sprite.color.b, 0f);
-            }
-            else if (flashCounter > flashLength * .16f)
-            {
-                Sprite.color = new Color(Sprite.color.r, Sprite.color.g, Sprite.color.b, 1f);
-            }
-            else if (flashCounter > 0)
-            {
-                Sprite.color = new Color(Sprite.color.r, Sprite.color.g, Sprite.color.b, 0f);
-            }
-            else
-            {
-                Sprite.color = new Color(Sprite.color.r, Sprite.color.g, Sprite.color.b, aHue);
-                isFlashActive = false;
-            }
-            flashCounter -= Time.deltaTime;
-        }
-        else
-        {
-            aHue = Sprite.color.a;
-        }
-    }
-
     public float HurtPlayer(Dictionary<DamageTypeEnum, Damage> damageList, EnemyController enemyController)
     {
-        isFlashActive = true;
-        flashCounter = flashLength;
-
         float damageToGive = Attack.CalculateDamage(playerController, enemyController, damageList);
 
         int hit = Random.Range(1, 100);

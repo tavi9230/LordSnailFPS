@@ -7,7 +7,7 @@
         <level>1</level>
         <experience>25</experience>
         <name>human</name>
-        <gameobject>Prefabs/Enemies/Skeleton</gameobject>
+        <gameobject>Prefabs/Enemies/HumanoidEnemy</gameobject>
         <speed>
           <min>2</min>
           <max>4</max>
@@ -90,7 +90,7 @@
         <level>1</level>
         <experience>25</experience>
         <name>human</name>
-        <gameobject>Prefabs/Enemies/Skeleton</gameobject>
+        <gameobject>Prefabs/Enemies/HumanoidEnemy</gameobject>
         <speed>
           <min>2</min>
           <max>4</max>

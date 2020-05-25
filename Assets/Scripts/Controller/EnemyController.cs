@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 
 // Not called, used as template for enemies
 public class EnemyController : MonoBehaviour
@@ -63,12 +64,10 @@ public class EnemyController : MonoBehaviour
     private float attackCounter = 1.2f;
 
     private GameObject DeadEnemyInSight;
-
-    private GameObject moveCollider;
+    
     private UIManager uiManager;
-
-    [SerializeField]
-    private Transform pfFieldOfView;
+    private NavMeshAgent navMeshAgent;
+    
     private FieldOfView fieldOfView;
     private float defaultViewDistance;
     private float defaultFoV;
@@ -76,10 +75,8 @@ public class EnemyController : MonoBehaviour
 
     void Awake()
     {
-        if (pfFieldOfView == null)
-        {
-            pfFieldOfView = transform;
-        }
+        fieldOfView = transform.GetChild(1).GetComponent<FieldOfView>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
         uiManager = FindObjectOfType<UIManager>();
         State.Add(StateEnum.Lookout);
         Conditions = new List<ConditionEnum>() { ConditionEnum.Visible };
@@ -127,14 +124,9 @@ public class EnemyController : MonoBehaviour
         if (PatrolPoints.Count == 0)
         {
             PatrolPoints = new List<Vector3> {
-                new Vector3(21, 1, 0),
-                new Vector3(21, 10, 0)
+                new Vector3(5, 1, -3)
             };
         }
-
-        //moveCollider = transform.GetChild(0).gameObject;
-        //var moveColliderCol = moveCollider.GetComponent<Collider2D>();
-        //moveCollideOffset = new Vector3(moveColliderCol.offset.x, moveColliderCol.offset.y, 0);
     }
 
     public void SetupEnemyStats(Stats stats, Dictionary<string, int> skills, Dictionary<string, InventoryItem> inventory, List<Vector3> patrolPoints)
@@ -280,16 +272,62 @@ public class EnemyController : MonoBehaviour
 
     private void Start()
     {
-        //fieldOfView = Instantiate(pfFieldOfView, transform).GetComponent<FieldOfView>();
-        //fieldOfView.SetFoV(Stats.FoV);
-        //fieldOfView.SetViewDistance(Stats.ViewDistance);
         defaultViewDistance = Stats.ViewDistance;
         defaultFoV = Stats.FoV;
+        fieldOfView.SetFoV(Stats.FoV);
+        fieldOfView.SetViewDistance(Stats.ViewDistance);
         waitToEndHuntTimer = 10f;
         Stats.ExperiencePoints = Stats.ExperiencePoints == 0 ? 1 : Stats.ExperiencePoints;
         if (InventoryManager.Inventory == null)
         {
             InventoryManager.SetupInventory();
+        }
+    }
+
+    private void Update()
+    {
+        if (State.Exists(s => s == StateEnum.Dead) || Stats.TotalHealth <= 0)
+        {
+            State.RemoveRange(0, State.Count);
+            State.Add(StateEnum.Dead);
+        }
+        if (!State.Exists(s => s == StateEnum.Dead) || Stats.TotalHealth > 0)
+        {
+            playerPosition = playerController.transform.GetChild(0).transform.position;
+            myPosition = transform.position;
+
+            SetAttackPower();
+            float attackRange = GetAttackRange();
+
+            var isWithinViewRange = playerController.State.Exists(s => s == StateEnum.Dead) ? false : Vector3.Distance(playerPosition, myPosition) <= Stats.ViewDistance;
+
+            RecalculateStamina(true);
+
+            NewPatrol();
+        }
+        else
+        {
+            ShowDeadState();
+        }
+    }
+
+    private void NewPatrol()
+    {
+        if (gameManager != null)
+        {
+            navMeshAgent.speed = Stats.TotalSpeed;
+            Vector3 patrolPoint = PatrolPoints[lastPatrolPoint];
+            navMeshAgent.SetDestination(patrolPoint);
+            Vector2 thisXZ = new Vector2(transform.position.x, transform.position.z);
+            Vector2 patrolPointXZ = new Vector2(patrolPoint.x, patrolPoint.z);
+            if (Vector2.Distance(thisXZ, patrolPointXZ) <= .5)
+            {
+                lastPatrolPoint++;
+                if (lastPatrolPoint >= PatrolPoints.Count)
+                {
+                    lastPatrolPoint = 0;
+                }
+            }
         }
     }
 
@@ -571,7 +609,7 @@ public class EnemyController : MonoBehaviour
             path = new List<Location>();
         }
         // go to shadow
-        MoveToPoint(gameManager.MapManager.GetGridPosition(PlayerShadow.transform.position));
+        //MoveToPoint(gameManager.MapManager.GetGridPosition(PlayerShadow.transform.position));
         // once reached, start inspecting
         if (Vector3.Distance(myGridPosition, playerGridPosition) <= 1.5f)
         {
@@ -956,11 +994,9 @@ public class EnemyController : MonoBehaviour
                     Vector2 direction = playerPosition - myPosition;
                     direction.Normalize();
 
-                    SetAimDirection(direction.x, direction.y);
-
                     var projectileGameObject = Instantiate(Stats.RightHandAttack.Attack.Skill.Projectile, GameObject.Find("Projectiles").transform);
                     ProjectileController pc = projectileGameObject.GetComponent<ProjectileController>();
-                    projectileGameObject.transform.position = moveCollider.transform.position - new Vector3(pc.Offset.x, pc.Offset.y, 0);
+                    projectileGameObject.transform.position = myPosition - new Vector3(pc.Offset.x, pc.Offset.y, 0);
 
                     Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
                     pc.Setup(gameObject, rotation, Stats.RightHandAttack.Attack.Skill.Range);
@@ -987,11 +1023,9 @@ public class EnemyController : MonoBehaviour
             Vector2 direction = playerPosition - myPosition;
             direction.Normalize();
 
-            SetAimDirection(direction.x, direction.y);
-
             Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
             var projectileGameObject = Instantiate(mainHand.Projectile, GameObject.Find("Projectiles").transform);
-            projectileGameObject.transform.position = moveCollider.transform.position;
+            projectileGameObject.transform.position = myPosition;
             projectileGameObject.GetComponent<ProjectileController>().Setup(gameObject, rotation, mainHand.Range.Value);
             var r = UnityEngine.Random.Range(0, 100);
             IsHeavyAttack = r >= 75;
@@ -1022,11 +1056,9 @@ public class EnemyController : MonoBehaviour
             Vector2 direction = playerPosition - myPosition;
             direction.Normalize();
 
-            SetAimDirection(direction.x, direction.y);
-
             Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
             var projectileGameObject = Instantiate(offHand.Projectile, GameObject.Find("Projectiles").transform);
-            projectileGameObject.transform.position = moveCollider.transform.position;
+            projectileGameObject.transform.position = myPosition;
             projectileGameObject.GetComponent<ProjectileController>().Setup(gameObject, rotation, mainHand.Range.Value);
             var r = UnityEngine.Random.Range(0, 100);
             IsHeavyAttack = r >= 75;
@@ -1097,11 +1129,8 @@ public class EnemyController : MonoBehaviour
             State.Add(StateEnum.Dead);
         }
 
-        if (transform.eulerAngles.z != 90)
-        {
-            transform.eulerAngles = Vector3.Lerp(new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z), new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 90), Time.deltaTime * 4);
-            animationController.StopMove();
-        }
+        animationController.SetIsDead(true);
+        navMeshAgent.isStopped = true;
         gameManager.CombatEnemyList.Remove(gameObject);
     }
 
@@ -1144,7 +1173,7 @@ public class EnemyController : MonoBehaviour
         {
             followCounter -= Time.deltaTime;
         }
-        MoveToPoint(gameManager.MapManager.GetGridPosition(PlayerShadow.transform.position));
+        //MoveToPoint(gameManager.MapManager.GetGridPosition(PlayerShadow.transform.position));
         if (PlayerShadow != null && Vector3.Distance(myPosition, PlayerShadow.transform.position) <= 1)
         {
             animationController.SetIsMoving(false);
@@ -1160,43 +1189,6 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    public void Patrol()
-    {
-        if (patrolCounter <= 0)
-        {
-            MoveToPoint(PatrolPoints[lastPatrolPoint]);
-
-            if (Vector3.Distance(myPosition + moveCollideOffset, gameManager.MapManager.GetWorldPosition(PatrolPoints[lastPatrolPoint])) <= 0.1)
-            {
-                lastPatrolPoint++;
-                if (lastPatrolPoint >= PatrolPoints.Count)
-                {
-                    lastPatrolPoint = 0;
-                }
-                animationController.SetIsMoving(false);
-                patrolCounter = patrolTimer;
-                State.Remove(StateEnum.Patrolling);
-                if (!State.Exists(s => s == StateEnum.Lookout))
-                {
-                    State.Add(StateEnum.Lookout);
-                }
-            }
-            else
-            {
-                animationController.SetIsMoving(true);
-                State.Remove(StateEnum.Lookout);
-                if (!State.Exists(s => s == StateEnum.Patrolling))
-                {
-                    State.Add(StateEnum.Patrolling);
-                }
-            }
-        }
-        else
-        {
-            patrolCounter -= Time.deltaTime;
-        }
-    }
-
     public void StartHunt()
     {
         fieldOfView.SetFoV(360);
@@ -1207,67 +1199,6 @@ public class EnemyController : MonoBehaviour
             State.Add(StateEnum.InCombat);
         }
         huntCounter = waitToEndHuntTimer;
-    }
-
-    private void MoveToPoint(Vector3 point, bool shouldResetPath = false)
-    {
-        Vector3 pathPoint = GetPathPoint(point, shouldResetPath);
-        float moveX = pathPoint.x - myPosition.x - moveCollideOffset.x;
-        float moveY = pathPoint.y - myPosition.y - moveCollideOffset.y;
-
-        if (moveX != 0 || moveY != 0)
-        {
-            animationController.SetMoveSpeed(moveX, moveY);
-        }
-        //var offset = transform.position - myPosition;
-        var goToPosition = pathPoint - moveCollideOffset;
-        if (Vector3.Distance(transform.position, pathPoint - moveCollideOffset) <= 1 && State.Exists(s => s == StateEnum.InCombat))
-        {
-            goToPosition = playerPosition;
-        }
-        animationController.SetIsMoving(true);
-        var rb = GetComponent<Rigidbody2D>();
-        rb.MovePosition(rb.position + new Vector2(moveX, moveY).normalized * Stats.TotalSpeed * Time.fixedDeltaTime);
-        //transform.position = Vector3.MoveTowards(myPosition, goToPosition, Stats.TotalSpeed * Time.deltaTime);
-        SetAimDirection(moveX, moveY);
-    }
-
-    private Vector3 GetPathPoint(Vector3 point, bool shouldResetPath = false)
-    {
-        if (path.Count <= 0 || shouldResetPath)
-        {
-            try
-            {
-                var pos = myPosition + moveCollideOffset;
-                var startPos = gameManager.MapManager.GetGridPosition(pos);
-                var endPos = point;
-                path = gameManager.MapManager.FindPath(startPos, endPos);
-            }
-            catch (Exception e)
-            {
-                Debug.Log("Path not found. EnemyManager.c 324" + e?.Message);
-                path = new List<Location>();
-            }
-        }
-        Vector3 pathPointWorldPosition;
-        if (path.Count > 0)
-        {
-            var offset = moveCollider.GetComponent<Collider2D>().offset;
-            pathPointWorldPosition = gameManager.MapManager.GetWorldPosition(new Vector3(path[0].x, path[0].y, 0));
-            if (Vector3.Distance(pathPointWorldPosition, myPosition + new Vector3(offset.x, offset.y, myPosition.z)) <= 0.1)
-            {
-                path.RemoveAt(0);
-                if (path.Count > 0)
-                {
-                    pathPointWorldPosition = gameManager.MapManager.GetWorldPosition(new Vector3(path[0].x, path[0].y, 0));
-                }
-            }
-        }
-        else
-        {
-            pathPointWorldPosition = gameManager.MapManager.GetWorldPosition(point);
-        }
-        return pathPointWorldPosition;
     }
 
     public void CheckIfStashedAways(Collider2D other)
@@ -1392,14 +1323,6 @@ public class EnemyController : MonoBehaviour
             {
                 manaRecoveryCounter -= Time.deltaTime;
             }
-        }
-    }
-
-    private void SetAimDirection(float moveX, float moveY)
-    {
-        if (moveX != 0 || moveY != 0)
-        {
-            fieldOfView.SetAimDirection(new Vector3(moveX, moveY, 0));
         }
     }
 }

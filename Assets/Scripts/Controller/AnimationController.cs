@@ -10,6 +10,11 @@ public class AnimationController
         this.animator = animator;
     }
 
+    public void SetIsDead(bool isDead)
+    {
+        animator.SetBool("isDead", isDead);
+    }
+
     public void StopMove()
     {
         animator.SetBool("isMoving", false);

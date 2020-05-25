@@ -11,12 +11,19 @@ public class GameManager : MonoBehaviour
     public Dictionary<string, Enemy> Enemies;
     public Dictionary<InventoryLocationEnum, List<ItemTypeEnum>> InventorySlotType;
     public Dictionary<int, int> LevelRequirements;
+    public List<Transform> PatrolPoints;
 
     public MapManager MapManager;
     public bool isDebugging = false;
 
     void Awake()
     {
+        PatrolPoints = new List<Transform>();
+        var patrolPoints = GameObject.FindGameObjectWithTag("PatrolPoint");
+        for (var i = 0; i < patrolPoints.transform.childCount; i++)
+        {
+            PatrolPoints.Add(patrolPoints.transform.GetChild(i));
+        }
         CombatEnemyList = new List<GameObject>();
         EnemyList = new List<GameObject>();
         InventoryItems = ObjectLoader.LoadItems();
@@ -26,42 +33,14 @@ public class GameManager : MonoBehaviour
         SetInventorySlotType();
         SetLevelRequirements();
 
-        //SpawnEnemy(Enemies["human_2"], new Vector3(15, 1, 0), new List<Vector3> {
-        //        new Vector3(15, 1, 0),
-        //        new Vector3(15, 10, 0)
-        //    });
-        //SpawnEnemy(Enemies["human_2"], new Vector3(14, 1, 0), new List<Vector3> {
-        //        new Vector3(14, 1, 0),
-        //        new Vector3(14, 10, 0)
-        //    }, 25);
-        //SpawnEnemy(Enemies["human_2"], new Vector3(15, 1, 0), new List<Vector3> {
-        //        new Vector3(15, 1, 0),
-        //        new Vector3(15, 10, 0)
-        //    }, 25);
-        //SpawnEnemy(Enemies["human_2"], new Vector3(16, 1, 0), new List<Vector3> {
-        //        new Vector3(16, 1, 0),
-        //        new Vector3(16, 10, 0)
-        //    }, 25);
-        //SpawnEnemy(Enemies["human_2"], new Vector3(17, 1, 0), new List<Vector3> {
-        //        new Vector3(17, 1, 0),
-        //        new Vector3(17, 10, 0)
-        //    }, 25);
-        //SpawnEnemy(Enemies["human_2"], new Vector3(16, 10, 0), new List<Vector3> {
-        //        new Vector3(16, 1, 0),
-        //        new Vector3(16, 10, 0)
-        //    }, 1);
-        //SpawnEnemy(Enemies["human_2"], new Vector3(1, 1, 0), new List<Vector3> {
-        //        new Vector3(1, 1, 0)
-        //    }, 1);
-        //SpawnEnemy(Enemies["human_1"], new Vector3(1, 10, 0), new List<Vector3> {
-        //        new Vector3(2, 10, 0),
-        //        new Vector3(2, 1, 0)
-        //    });
+        SpawnEnemy(Enemies["human_2"], new Vector3(5, 1, 5), new List<Vector3> {
+                new Vector3(1, 1, 1)
+            }, 1);
     }
 
     private void SpawnEnemy(Enemy enemy, Vector3 location, List<Vector3> patrolPoints, int level = 1)
     {
-        GameObject enemyObject = Instantiate(enemy.GameObject, MapManager.GetWorldPosition(location), Quaternion.identity);
+        GameObject enemyObject = Instantiate(enemy.GameObject, location, Quaternion.identity);
         EnemyController enemyController = enemyObject.GetComponent<EnemyController>();
 
         Stats stats = new Stats();

@@ -14,7 +14,6 @@ public class EnemyHealthManager : HealthManager
 
     public override void Update()
     {
-        CheckFlash();
         if (enemyController.Conditions.Exists(c => c == ConditionEnum.Bleeding))
         {
             if (bleedingCounter <= 0)
@@ -24,8 +23,6 @@ public class EnemyHealthManager : HealthManager
                 enemyController.InventoryManager.UpdateStats(enemyController.Stats);
                 bleedingCounter = bleedingTimer;
                 bleedIndex++;
-                isFlashActive = true;
-                flashCounter = flashLength;
                 if (bleedIndex >= bleedTimes)
                 {
                     enemyController.Conditions.Remove(ConditionEnum.Bleeding);
@@ -41,8 +38,6 @@ public class EnemyHealthManager : HealthManager
 
     public float HurtEnemy(Dictionary<DamageTypeEnum, Damage> damageList, PlayerController playerController, PlayerAttackEnum playerAttackType)
     {
-        isFlashActive = true;
-        flashCounter = flashLength;
         float damageToGive = Attack.CalculateDamage(enemyController, playerController, damageList, FindObjectOfType<GameManager>(), playerAttackType);
         int hit = Random.Range(1, 100);
         var hitBodyPart = bodyPartHitChance.Find(b => b.MinChance <= hit && b.MaxChance >= hit);
