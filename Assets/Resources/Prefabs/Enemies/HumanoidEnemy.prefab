@@ -2421,8 +2421,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3025a4d022b1b141a16881bc528eb9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewRadius: 0
-  viewAngle: 0
+  viewRadius: 5
+  viewAngle: 90
   targetMask:
     serializedVersion: 2
     m_Bits: 1024
@@ -2431,6 +2431,7 @@ MonoBehaviour:
     m_Bits: 256
   IsPlayerInSight: 0
   IsDeadEnemyInSight: 0
+  meshResoultion: 0.5
   visibleTargets: []
 --- !u!1 &3385517769581823345
 GameObject:

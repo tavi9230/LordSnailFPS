@@ -33,9 +33,9 @@ public class GameManager : MonoBehaviour
         SetInventorySlotType();
         SetLevelRequirements();
 
-        SpawnEnemy(Enemies["human_2"], new Vector3(5, 1, 5), new List<Vector3> {
-                new Vector3(1, 1, 1)
-            }, 1);
+        //SpawnEnemy(Enemies["human_2"], new Vector3(5, 1, 5), new List<Vector3> {
+        //        new Vector3(1, 1, 1)
+        //    }, 1);
     }
 
     private void SpawnEnemy(Enemy enemy, Vector3 location, List<Vector3> patrolPoints, int level = 1)

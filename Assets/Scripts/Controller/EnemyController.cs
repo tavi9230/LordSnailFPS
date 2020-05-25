@@ -75,7 +75,7 @@ public class EnemyController : MonoBehaviour
 
     void Awake()
     {
-        fieldOfView = transform.GetChild(1).GetComponent<FieldOfView>();
+        fieldOfView = transform.GetComponent<FieldOfView>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         uiManager = FindObjectOfType<UIManager>();
         State.Add(StateEnum.Lookout);
