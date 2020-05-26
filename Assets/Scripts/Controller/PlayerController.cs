@@ -672,25 +672,26 @@ public class PlayerController : MonoBehaviour
             State.Add(StateEnum.Attacking);
             if (PlayerAttackType == PlayerAttackEnum.Left || PlayerAttackType == PlayerAttackEnum.ActiveSkill)
             {
-                animationController.SetAttackingLeft(true);
+                //animationController.SetAttackingLeft(true);
                 animationController.SetIsPreparingLeftAttack(false);
             }
             else
             {
-                animationController.SetAttackingRight(true);
+                //animationController.SetAttackingRight(true);
                 animationController.SetIsPreparingRightAttack(false);
             }
-
-            var posCollider = transform.GetChild(0).gameObject;
-            var mousePosition = Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
-            var playerPosition = new Vector3(posCollider.transform.position.x, posCollider.transform.position.y, 0);
-            Vector2 direction = mousePosition - playerPosition;
+            
+            var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            // instead of 1 put y of target
+            mousePosition = new Vector3(mousePosition.x, 1, mousePosition.z);
+            var playerPosition = new Vector3(transform.position.x, 1, transform.position.z);
+            Vector3 direction = mousePosition - playerPosition;
 
             var projectileGameObject = Instantiate(offHand.Projectile, GameObject.Find("Projectiles").transform);
             ProjectileController pc = projectileGameObject.GetComponent<ProjectileController>();
-            //projectileGameObject.transform.position = moveCollider.transform.position - new Vector3(pc.Offset.x, pc.Offset.y, 0);
+            projectileGameObject.transform.position = playerPosition;
 
-            Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
+            Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg);
             pc.Setup(gameObject, rotation, mainHand.Range.Value);
 
             projectileGameObject.GetComponent<HurtEnemy>().SetupHurtObject(attackPower.Damage, PlayerAttackType, attackPower.Attack.Item);

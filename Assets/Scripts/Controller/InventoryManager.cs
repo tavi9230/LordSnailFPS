@@ -256,10 +256,11 @@ public class InventoryManager : MonoBehaviour
         var torso = new InventoryItem(gameManager.InventoryItems["HPSBTorso1"], true);
         Inventory.Add("torso", torso);
 
-        var rightHand = new InventoryItem(gameManager.InventoryItems["sword1"], true);
+        //var rightHand = new InventoryItem(gameManager.InventoryItems["sword1"], true);
+        var rightHand = new InventoryItem(gameManager.InventoryItems["bow1"], true);
         Inventory.Add("rightHand", rightHand);
 
-        var leftHand = new InventoryItem(gameManager.InventoryItems["crossbowAmmo1"], true);
+        var leftHand = new InventoryItem(gameManager.InventoryItems["ammo1"], true);
         Inventory.Add("leftHand", leftHand);
 
         var hip = new InventoryItem(gameManager.InventoryItems["hip1"], true);

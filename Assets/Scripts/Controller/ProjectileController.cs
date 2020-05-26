@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class ProjectileController : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class ProjectileController : MonoBehaviour
 
     [SerializeField]
     private float moveSpeed = 3f;
-    private Vector2 location;
+    private Vector3 location;
     private Rigidbody2D myRB;
     private float destroyCounter = 5f;
     private float range = 0;
@@ -22,41 +23,50 @@ public class ProjectileController : MonoBehaviour
         myRB = GetComponent<Rigidbody2D>();
         if (Owner.GetComponent<PlayerController>() != null)
         {
-            var mousePosition = Camera.main.ScreenToWorldPoint((Vector2)Input.mousePosition);
+            var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            // instead of 1 put y of target
+            mousePosition = new Vector3(mousePosition.x, 1, mousePosition.z);
             location = mousePosition - transform.position;
         }
         else
         {
             location = GameObject.Find("Player").transform.position - transform.position;
         }
+        
+        StartCoroutine("DebugDrawLine", location);
         location.Normalize();
         Destroy(gameObject, destroyCounter);
+    }
+
+    private IEnumerator DebugDrawLine(Vector3 location)
+    {
+        while (gameObject != null)
+        {
+            yield return new WaitForSeconds(0);
+            Debug.DrawLine(transform.position, location);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y);
-        Vector2 newPosition = currentPosition + location * moveSpeed * Time.deltaTime;
+        Vector3 currentPosition = transform.position;
+        Vector3 newPosition = currentPosition + location * moveSpeed * Time.deltaTime;
         transform.position = newPosition;
-        
-        RaycastHit2D[] hits = Physics2D.LinecastAll(currentPosition + Offset, newPosition + Offset);
 
-        if(Vector3.Distance(startPosition, currentPosition)> range)
+        if (Vector3.Distance(startPosition, currentPosition) > range)
         {
             Destroy(gameObject);
         }
 
-        foreach(RaycastHit2D hit in hits)
+        if (Physics.Linecast(currentPosition, newPosition, Constants.LAYER_SOLID_OBJECTS))
         {
-            if (hit.collider.gameObject.CompareTag("SolidObject"))
-            {
-                Debug.Log("HIT WALL");
-                Destroy(gameObject);
-            }
+            Debug.Log("HIT SolidObjects");
         }
-
-        Debug.DrawLine(currentPosition + Offset, newPosition + Offset, Color.green);
+        else if (Physics.Linecast(currentPosition, newPosition, Constants.LAYER_DEFAULT))
+        {
+            Debug.Log("HIT Default");
+        }
     }
 
     public void Setup(GameObject owner, Quaternion rotation, float range)

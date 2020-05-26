@@ -2218,7 +2218,7 @@
         <description>Arrow quiver</description>
         <gameobject>Prefabs/Items/Ammo/Bow/Ammo1Pickup</gameobject>
         <maxQuantity>20</maxQuantity>
-        <projectile>Prefabs/Items/Ammo/Bow/Projectile1</projectile>
+        <projectile>Prefabs/Items/Ammo/Bow/Arrow</projectile>
       </item>
     </bows>
     <crossbows>
