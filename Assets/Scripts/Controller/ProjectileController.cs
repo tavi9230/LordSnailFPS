@@ -50,22 +50,14 @@ public class ProjectileController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
         Vector3 currentPosition = transform.position;
         Vector3 newPosition = currentPosition + location * moveSpeed * Time.deltaTime;
-        transform.position = newPosition;
+        //transform.position = newPosition;
 
         if (Vector3.Distance(startPosition, currentPosition) > range)
         {
             Destroy(gameObject);
-        }
-
-        if (Physics.Linecast(currentPosition, newPosition, Constants.LAYER_SOLID_OBJECTS))
-        {
-            Debug.Log("HIT SolidObjects");
-        }
-        else if (Physics.Linecast(currentPosition, newPosition, Constants.LAYER_DEFAULT))
-        {
-            Debug.Log("HIT Default");
         }
     }
 
@@ -76,13 +68,14 @@ public class ProjectileController : MonoBehaviour
         transform.Rotate(rotation.eulerAngles);
     }
 
-    void OnTriggerEnter2D(Collider2D col)
+    void OnTriggerEnter(Collider col)
     {
         if (col != null && col.gameObject != null)
         {
             if (col.gameObject.CompareTag("HidingObject")
-            || (col.gameObject.CompareTag("Player") && col.gameObject.tag != Owner.tag)
-            || (col.gameObject.CompareTag("Enemy") && col.gameObject.tag != Owner.tag && !col.gameObject.GetComponent<EnemyController>().State.Exists(s => s == StateEnum.Dead)))
+                || col.gameObject.CompareTag("SolidObject")
+                || (col.gameObject.transform.parent.CompareTag("Player") && col.gameObject.transform.parent.tag != Owner.tag)
+                || (col.gameObject.transform.parent.CompareTag("Enemy") && col.gameObject.transform.parent.tag != Owner.tag && !col.gameObject.transform.GetComponentInParent<EnemyController>().State.Exists(s => s == StateEnum.Dead)))
             {
                 Destroy(gameObject);
             }

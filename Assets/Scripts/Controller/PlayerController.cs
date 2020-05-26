@@ -391,31 +391,28 @@ public class PlayerController : MonoBehaviour
         // If the ray strikes an object...
         if (Physics.Raycast(cameraRay, out cameraRayHit))
         {
-            // ...and if that object is the ground...
-            if (cameraRayHit.transform.CompareTag("Floor"))
-            {
-                // ...make the cube rotate (only on the Y axis) to face the ray hit's position 
-                Vector3 targetPosition = new Vector3(cameraRayHit.point.x, transform.position.y, cameraRayHit.point.z);
-                transform.LookAt(targetPosition);
-            }
+            //// ...and if that object is the ground...
+            //if (cameraRayHit.transform.CompareTag("Floor")
+            //    || cameraRayHit.transform.CompareTag("SolidObject")
+            //    || cameraRayHit.transform.CompareTag("Enemy"))
+            //{
+            //    // ...make the cube rotate (only on the Y axis) to face the ray hit's position 
+            //    Vector3 targetPosition = new Vector3(cameraRayHit.point.x, transform.position.y, cameraRayHit.point.z);
+            //    transform.LookAt(targetPosition);
+            //}
+            Vector3 targetPosition = new Vector3(cameraRayHit.point.x, transform.position.y, cameraRayHit.point.z);
+            transform.LookAt(targetPosition);
         }
 
 
+        ////Save current x rotation
+        //float tempX = transform.EulerAngles.x;
 
-        //var crosshair = transform.GetChild(0).gameObject;
-        //var clickedPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //crosshair.transform.position = Vector3.Lerp(crosshair.transform.position, clickedPosition, Time.deltaTime);
+        ////Look where you need to
+        //Transform.LookAt(Target);
 
-
-        //var mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z));
-
-        //crosshair.transform.position = new Vector3(Input.mousePosition.x, 0, Input.mousePosition.z);
-
-        //Vector3 direction = crosshair.transform.position - transform.position;
-
-        //Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
-        //Debug.Log(rotation.eulerAngles);
-        ////transform.Rotate(rotation.eulerAngles);
+        ////Reset the x rotation
+        //Transform.EulerAngles = new vector3(tempX, Transform.EulerAngles.y, Transform.EulerAngles.z);
     }
 
     public bool PickUp(InventoryItem inventoryItem)
@@ -689,10 +686,10 @@ public class PlayerController : MonoBehaviour
 
             var projectileGameObject = Instantiate(offHand.Projectile, GameObject.Find("Projectiles").transform);
             ProjectileController pc = projectileGameObject.GetComponent<ProjectileController>();
-            projectileGameObject.transform.position = playerPosition;
+            projectileGameObject.transform.position = playerPosition + transform.forward;
 
             Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg);
-            pc.Setup(gameObject, rotation, mainHand.Range.Value);
+            pc.Setup(gameObject, transform.rotation, mainHand.Range.Value);
 
             projectileGameObject.GetComponent<HurtEnemy>().SetupHurtObject(attackPower.Damage, PlayerAttackType, attackPower.Attack.Item);
             offHand.Quantity.Value--;

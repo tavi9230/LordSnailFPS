@@ -261,6 +261,8 @@ public class InventoryManager : MonoBehaviour
         Inventory.Add("rightHand", rightHand);
 
         var leftHand = new InventoryItem(gameManager.InventoryItems["ammo1"], true);
+        leftHand.Quantity.Value = 200;
+        leftHand.Quantity.MaxValue = 200;
         Inventory.Add("leftHand", leftHand);
 
         var hip = new InventoryItem(gameManager.InventoryItems["hip1"], true);
