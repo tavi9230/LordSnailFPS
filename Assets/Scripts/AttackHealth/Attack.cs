@@ -103,7 +103,6 @@ public static class Attack
             if (playerController.IsHeavyAttack)
             {
                 d = damageList[dmgType].MaxValue;
-                Debug.Log("MAX Damage");
             }
             else
             {
