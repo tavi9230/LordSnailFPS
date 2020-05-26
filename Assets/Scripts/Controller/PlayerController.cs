@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     public Vector3 KnockBackDifference = Vector2.zero;
     public float StunTimer = 0;
     public Dictionary<KeyCode, HotbarItem> Hotbar;
+    public FieldOfView fieldOfView;
 
     private float staminaRecoveryCounter = 0f;
     private float healthRecoveryCounter = 0f;
@@ -53,6 +54,7 @@ public class PlayerController : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
         uiManager = FindObjectOfType<UIManager>();
         animationController = GetComponent<PlayerAnimationController>();
+        fieldOfView = transform.GetChild(1).GetComponent<FieldOfView>();
 
         Stats = new Stats(
             5f,

@@ -64,7 +64,7 @@ public class FieldOfView : MonoBehaviour
         viewMesh = new Mesh();
         viewMesh.name = "View Mesh";
         viewMeshFilter.mesh = viewMesh;
-        StartCoroutine("FindTargetsWithDelay", .2f);
+        StartCoroutine("FindTargetsWithDelay", 0f);
     }
 
     private void LateUpdate()
@@ -190,7 +190,8 @@ public class FieldOfView : MonoBehaviour
             Vector3 dirToTarget = (target.position - transform.position).normalized;
             if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)
             {
-                float disToTarget = Vector3.Distance(transform.position, target.position);
+                Vector3 targetPos = new Vector3(target.position.x, transform.position.y, target.position.z);
+                float disToTarget = Vector3.Distance(transform.position, targetPos);
                 if (!Physics.Raycast(transform.position, dirToTarget, disToTarget, obstacleMask))
                 {
                     visibleTargets.Add(target);

@@ -33,41 +33,45 @@ public class HurtEnemy : MonoBehaviour
         var isProjectile = DamageToGive.Count > 0;
 
         // if player attacks with melee
-        if (other.GetComponentInParent<EnemyController>() != null && !isProjectile && gameObject.GetComponentInParent<EnemyController>() == null)
+        if (playerController.fieldOfView.visibleTargets.Count > 0 && playerController.fieldOfView.visibleTargets.Find(t => t.GetComponentInParent<EnemyController>() != null && t.GetComponentInParent<EnemyController>().Equals(other.GetComponentInParent<EnemyController>())))
         {
-            EnemyController enemyController = other.GetComponentInParent<EnemyController>();
-            if (!enemyController.State.Exists(s => s == StateEnum.Dead))
+            if (other.GetComponentInParent<EnemyController>() != null && !isProjectile && gameObject.GetComponentInParent<EnemyController>() == null)
             {
-                EnemyHealthManager enemyHealthManager = other.GetComponentInParent<EnemyHealthManager>();
-                var dmg = isProjectile ? DamageToGive : GetDamage();
-                var dmgToGive = enemyHealthManager.HurtEnemy(dmg, playerController, playerAttackType);
+                EnemyController enemyController = other.GetComponentInParent<EnemyController>();
+                if (!enemyController.State.Exists(s => s == StateEnum.Dead))
+                {
+                    EnemyHealthManager enemyHealthManager = other.GetComponentInParent<EnemyHealthManager>();
+                    var dmg = isProjectile ? DamageToGive : GetDamage();
+                    var dmgToGive = enemyHealthManager.HurtEnemy(dmg, playerController, playerAttackType);
 
-                if (dmg[DamageTypeEnum.Bludgeoning].MinValue > 0 && dmg[DamageTypeEnum.Bludgeoning].MaxValue > 0)
-                {
-                    if (!enemyController.Conditions.Exists(c => c == ConditionEnum.KnockedBack))
+                    if (dmg[DamageTypeEnum.Bludgeoning].MinValue > 0 && dmg[DamageTypeEnum.Bludgeoning].MaxValue > 0)
                     {
-                        enemyController.Conditions.Add(ConditionEnum.KnockedBack);
-                        enemyController.KnockBackDifference = enemyController.gameObject.transform.position - transform.position;
+                        if (!enemyController.Conditions.Exists(c => c == ConditionEnum.KnockedBack))
+                        {
+                            enemyController.Conditions.Add(ConditionEnum.KnockedBack);
+                            enemyController.KnockBackDifference = enemyController.gameObject.transform.position - transform.position;
+                        }
                     }
-                }
-                if (dmg[DamageTypeEnum.Piercing].MinValue > 0 && dmg[DamageTypeEnum.Piercing].MaxValue > 0)
-                {
-                    if (!enemyController.Conditions.Exists(c => c == ConditionEnum.Bleeding))
+                    if (dmg[DamageTypeEnum.Piercing].MinValue > 0 && dmg[DamageTypeEnum.Piercing].MaxValue > 0)
                     {
-                        enemyHealthManager.bleedDamage = dmgToGive / 2;
-                        enemyController.Conditions.Add(ConditionEnum.Bleeding);
+                        if (!enemyController.Conditions.Exists(c => c == ConditionEnum.Bleeding))
+                        {
+                            enemyHealthManager.bleedDamage = dmgToGive / 2;
+                            enemyController.Conditions.Add(ConditionEnum.Bleeding);
+                        }
                     }
-                }
-                if (dmg[DamageTypeEnum.Slashing].MinValue > 0 && dmg[DamageTypeEnum.Slashing].MaxValue > 0)
-                {
-                    if (!enemyController.Conditions.Exists(c => c == ConditionEnum.Staggered))
+                    if (dmg[DamageTypeEnum.Slashing].MinValue > 0 && dmg[DamageTypeEnum.Slashing].MaxValue > 0)
                     {
-                        enemyController.StunTimer = 1.2f;
-                        enemyController.Conditions.Add(ConditionEnum.Staggered);
+                        if (!enemyController.Conditions.Exists(c => c == ConditionEnum.Staggered))
+                        {
+                            enemyController.StunTimer = 1.2f;
+                            enemyController.Conditions.Add(ConditionEnum.Staggered);
+                        }
                     }
                 }
             }
         }
+
         //Debug.Log("Hit Enemy");
         //var isProjectile = DamageToGive.Count > 0;
 
@@ -188,7 +192,7 @@ public class HurtEnemy : MonoBehaviour
                 }
                 if (dmg[DamageTypeEnum.Slashing].MinValue > 0 && dmg[DamageTypeEnum.Slashing].MaxValue > 0)
                 {
-                    if(!enemyController.Conditions.Exists(c=>c == ConditionEnum.Staggered))
+                    if (!enemyController.Conditions.Exists(c => c == ConditionEnum.Staggered))
                     {
                         enemyController.StunTimer = 1.2f;
                         enemyController.Conditions.Add(ConditionEnum.Staggered);
@@ -251,7 +255,7 @@ public class HurtEnemy : MonoBehaviour
         switch (playerController.PlayerAttackType)
         {
             case PlayerAttackEnum.Right:
-                if(playerController.Stats.RightHandAttack.Attack.Item != null)
+                if (playerController.Stats.RightHandAttack.Attack.Item != null)
                 {
                     damageList = playerController.Stats.RightHandAttack.Damage;
                     Item = playerController.Stats.RightHandAttack.Attack.Item;

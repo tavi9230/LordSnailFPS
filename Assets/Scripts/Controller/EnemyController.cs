@@ -75,7 +75,7 @@ public class EnemyController : MonoBehaviour
 
     void Awake()
     {
-        fieldOfView = transform.GetComponent<FieldOfView>();
+        fieldOfView = transform.GetChild(1).GetComponent<FieldOfView>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         uiManager = FindObjectOfType<UIManager>();
         State.Add(StateEnum.Lookout);
@@ -123,9 +123,10 @@ public class EnemyController : MonoBehaviour
         // row, column
         if (PatrolPoints.Count == 0)
         {
-            PatrolPoints = new List<Vector3> {
-                new Vector3(5, 1, -3)
-            };
+            //PatrolPoints = new List<Vector3> {
+            //    new Vector3(5, 0, -3)
+            //};
+            PatrolPoints.Add(gameManager.PatrolPoints[0].transform.position);
         }
     }
 
@@ -303,7 +304,7 @@ public class EnemyController : MonoBehaviour
 
             RecalculateStamina(true);
 
-            NewPatrol();
+            Patrol();
         }
         else
         {
@@ -311,7 +312,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void NewPatrol()
+    private void Patrol()
     {
         if (gameManager != null)
         {
