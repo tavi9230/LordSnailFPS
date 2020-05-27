@@ -14,6 +14,8 @@ public class ProjectileController : MonoBehaviour
     private float destroyCounter = 5f;
     private float range = 0;
     private Vector3 startPosition;
+
+    private Vector3 direction;
     #endregion
 
     // Start is called before the first frame update
@@ -25,12 +27,14 @@ public class ProjectileController : MonoBehaviour
         {
             var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             // instead of 1 put y of target
-            mousePosition = new Vector3(mousePosition.x, 1, mousePosition.z);
+            //mousePosition = new Vector3(mousePosition.x, 1, mousePosition.z);
             location = mousePosition - transform.position;
+            direction = Vector3.forward;
         }
         else
         {
             location = GameObject.Find("Player").transform.position - transform.position;
+            direction = location;
         }
         
         StartCoroutine("DebugDrawLine", location);
@@ -50,7 +54,7 @@ public class ProjectileController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+        transform.Translate(direction * moveSpeed * Time.deltaTime);
         Vector3 currentPosition = transform.position;
         Vector3 newPosition = currentPosition + location * moveSpeed * Time.deltaTime;
         //transform.position = newPosition;

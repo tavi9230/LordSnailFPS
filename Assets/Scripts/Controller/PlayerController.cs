@@ -234,11 +234,6 @@ public class PlayerController : MonoBehaviour
                     CheckIfHidingInObject();
                 }
             }
-
-            if (!State.Exists(s => s == StateEnum.Attacking))
-            {
-                PlayerPointInDirectionOfMouse();
-            }
         }
         else if (Conditions.Exists(c => c == ConditionEnum.Stunned) && !Conditions.Exists(c => c == ConditionEnum.KnockedBack))
         {
@@ -379,40 +374,6 @@ public class PlayerController : MonoBehaviour
                 manaRecoveryCounter -= Time.deltaTime;
             }
         }
-    }
-
-    RaycastHit cameraRayHit;
-    Ray cameraRay;
-    private void PlayerPointInDirectionOfMouse()
-    {
-        // Cast a ray from the camera to the mouse cursor
-        cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        // If the ray strikes an object...
-        if (Physics.Raycast(cameraRay, out cameraRayHit))
-        {
-            //// ...and if that object is the ground...
-            //if (cameraRayHit.transform.CompareTag("Floor")
-            //    || cameraRayHit.transform.CompareTag("SolidObject")
-            //    || cameraRayHit.transform.CompareTag("Enemy"))
-            //{
-            //    // ...make the cube rotate (only on the Y axis) to face the ray hit's position 
-            //    Vector3 targetPosition = new Vector3(cameraRayHit.point.x, transform.position.y, cameraRayHit.point.z);
-            //    transform.LookAt(targetPosition);
-            //}
-            Vector3 targetPosition = new Vector3(cameraRayHit.point.x, transform.position.y, cameraRayHit.point.z);
-            transform.LookAt(targetPosition);
-        }
-
-
-        ////Save current x rotation
-        //float tempX = transform.EulerAngles.x;
-
-        ////Look where you need to
-        //Transform.LookAt(Target);
-
-        ////Reset the x rotation
-        //Transform.EulerAngles = new vector3(tempX, Transform.EulerAngles.y, Transform.EulerAngles.z);
     }
 
     public bool PickUp(InventoryItem inventoryItem)
@@ -682,7 +643,7 @@ public class PlayerController : MonoBehaviour
             // instead of 1 put y of target
             mousePosition = new Vector3(mousePosition.x, 1, mousePosition.z);
             var playerPosition = new Vector3(transform.position.x, 1, transform.position.z);
-            Vector3 direction = mousePosition - playerPosition;
+            Vector3 direction = playerPosition;
 
             var projectileGameObject = Instantiate(offHand.Projectile, GameObject.Find("Projectiles").transform);
             ProjectileController pc = projectileGameObject.GetComponent<ProjectileController>();
