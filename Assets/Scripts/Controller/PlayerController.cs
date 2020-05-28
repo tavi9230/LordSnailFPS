@@ -639,15 +639,12 @@ public class PlayerController : MonoBehaviour
                 animationController.SetIsPreparingRightAttack(false);
             }
             
-            var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            // instead of 1 put y of target
-            mousePosition = new Vector3(mousePosition.x, 1, mousePosition.z);
-            var playerPosition = new Vector3(transform.position.x, 1, transform.position.z);
+            var playerPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
             Vector3 direction = playerPosition;
 
             var projectileGameObject = Instantiate(offHand.Projectile, GameObject.Find("Projectiles").transform);
             ProjectileController pc = projectileGameObject.GetComponent<ProjectileController>();
-            projectileGameObject.transform.position = playerPosition + transform.forward;
+            projectileGameObject.transform.position = playerPosition;// + transform.forward;
 
             Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg);
             pc.Setup(gameObject, transform.rotation, mainHand.Range.Value);

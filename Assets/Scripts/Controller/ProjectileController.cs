@@ -10,56 +10,53 @@ public class ProjectileController : MonoBehaviour
     [SerializeField]
     private float moveSpeed = 3f;
     private Vector3 location;
-    private Rigidbody2D myRB;
+    private Rigidbody myRB;
     private float destroyCounter = 5f;
     private float range = 0;
     private Vector3 startPosition;
 
     private Vector3 direction;
+    private Ray ray;
     #endregion
-
-    // Start is called before the first frame update
+    
     void Start()
     {
-        startPosition = transform.position;
-        myRB = GetComponent<Rigidbody2D>();
+        startPosition = Owner.gameObject.transform.GetChild(2).position;
+        transform.position = startPosition;
+        myRB = GetComponent<Rigidbody>();
         if (Owner.GetComponent<PlayerController>() != null)
         {
-            var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            // instead of 1 put y of target
-            //mousePosition = new Vector3(mousePosition.x, 1, mousePosition.z);
-            location = mousePosition - transform.position;
-            direction = Vector3.forward;
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 100))
+            {
+                direction = hit.point;
+            }
+            else
+            {
+                direction = Input.mousePosition;
+                direction.z = range * 5;
+                direction = Camera.main.ScreenToWorldPoint(direction);
+            }
+            transform.LookAt(direction);
+            location = direction;
         }
         else
         {
-            location = GameObject.Find("Player").transform.position - transform.position;
+            // TODO: Check when enemy shoots
             direction = location;
         }
         
-        StartCoroutine("DebugDrawLine", location);
-        location.Normalize();
         Destroy(gameObject, destroyCounter);
     }
-
-    private IEnumerator DebugDrawLine(Vector3 location)
-    {
-        while (gameObject != null)
-        {
-            yield return new WaitForSeconds(0);
-            Debug.DrawLine(transform.position, location);
-        }
-    }
-
-    // Update is called once per frame
+    
     void Update()
     {
-        transform.Translate(direction * moveSpeed * Time.deltaTime);
-        Vector3 currentPosition = transform.position;
-        Vector3 newPosition = currentPosition + location * moveSpeed * Time.deltaTime;
-        //transform.position = newPosition;
+        Debug.DrawLine(startPosition, location, Color.blue);
+        
+        myRB.velocity = transform.forward * moveSpeed;
 
-        if (Vector3.Distance(startPosition, currentPosition) > range)
+        if (Vector3.Distance(startPosition, transform.position) > range * 5)
         {
             Destroy(gameObject);
         }
@@ -78,8 +75,8 @@ public class ProjectileController : MonoBehaviour
         {
             if (col.gameObject.CompareTag("HidingObject")
                 || col.gameObject.CompareTag("SolidObject")
-                || (col.gameObject.transform.parent.CompareTag("Player") && col.gameObject.transform.parent.tag != Owner.tag)
-                || (col.gameObject.transform.parent.CompareTag("Enemy") && col.gameObject.transform.parent.tag != Owner.tag && !col.gameObject.transform.GetComponentInParent<EnemyController>().State.Exists(s => s == StateEnum.Dead)))
+                || (col.gameObject.transform.CompareTag("Player") && col.gameObject.transform.tag != Owner.tag)
+                || (col.gameObject.transform.CompareTag("Enemy") && col.gameObject.transform.tag != Owner.tag && !col.gameObject.transform.GetComponentInParent<EnemyController>().State.Exists(s => s == StateEnum.Dead)))
             {
                 Destroy(gameObject);
             }

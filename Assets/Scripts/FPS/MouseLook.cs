@@ -16,7 +16,8 @@ public class MouseLook : MonoBehaviour
 
     void Start()
     {
-        playerHead = GameObject.Find("Player").transform.GetChild(2).GetChild(0).GetChild(0).transform;
+        Transform playerTransform = GameObject.Find("Player").transform;
+        playerHead = playerTransform.GetChild(playerTransform.childCount - 1).GetChild(0).GetChild(0).transform;
         fov = GameObject.Find("Player").transform.GetChild(1).transform;
         playerController = GetComponentInParent<PlayerController>();
         uiManager = FindObjectOfType<UIManager>();
