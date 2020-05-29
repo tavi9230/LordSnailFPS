@@ -9,10 +9,17 @@ public class FieldOfView : MonoBehaviour
     public float viewAngle;
     public LayerMask targetMask;
     public LayerMask obstacleMask;
-    public bool IsPlayerInSight;
     public bool IsDeadEnemyInSight;
     public int edgeResolveIterations;
     public float edgeDistanceThreshold;
+    public bool IsPlayerInSight
+    {
+        get
+        {
+            Transform player = visibleTargets.Find(t => t.GetComponentInParent<PlayerController>() != null);
+            return player != null;
+        }
+    }
 
     public float meshResoultion;
     public MeshFilter viewMeshFilter;
