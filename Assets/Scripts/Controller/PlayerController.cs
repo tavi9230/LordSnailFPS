@@ -500,35 +500,7 @@ public class PlayerController : MonoBehaviour
         {
             if (Stats.TotalMana >= Stats.ActiveSkill.ManaConsumption)
             {
-                Stats.TotalMana -= Stats.ActiveSkill.ManaConsumption;
-                Stats.Mana -= Stats.ActiveSkill.ManaConsumption;
-                manaRecoveryCounter = Stats.TotalMana <= 0 ? Stats.TotalManaRecoveryTime * 2 : Stats.TotalManaRecoveryTime;
-                attackCounter = Stats.ActiveSkill.AttackRecoveryTime;
-                State.Add(StateEnum.Attacking);
-                if (PlayerAttackType == PlayerAttackEnum.Left || PlayerAttackType == PlayerAttackEnum.ActiveSkill)
-                {
-                    animationController.SetAttackingLeft(true);
-                    animationController.SetIsPreparingLeftAttack(false);
-                }
-                else
-                {
-                    animationController.SetAttackingRight(true);
-                    animationController.SetIsPreparingRightAttack(false);
-                }
-
-                var posCollider = transform.GetChild(0).gameObject;
-                var mousePosition = Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
-                var playerPosition = new Vector3(posCollider.transform.position.x, posCollider.transform.position.y, 0);
-                Vector2 direction = mousePosition - playerPosition;
-
-                var projectileGameObject = Instantiate(Stats.ActiveSkill.Projectile, GameObject.Find("Projectiles").transform);
-                ProjectileController pc = projectileGameObject.GetComponent<ProjectileController>();
-                //projectileGameObject.transform.position = moveCollider.transform.position - new Vector3(pc.Offset.x, pc.Offset.y, 0);
-
-                Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
-                pc.Setup(gameObject, rotation, mainHand.Range.Value);
-                projectileGameObject.GetComponent<HurtEnemy>().SetupHurtObject(Stats.ActiveSkill.Damage, PlayerAttackEnum.ActiveSkill, null, Stats.ActiveSkill);
-                Stats.ActiveSkill = null;
+                AttackWithActiveSkill();
             }
         }
         else
@@ -583,38 +555,72 @@ public class PlayerController : MonoBehaviour
             {
                 if (Stats.TotalMana >= attackPower.Attack.Skill.ManaConsumption)
                 {
-                    Stats.TotalMana -= attackPower.Attack.Skill.ManaConsumption;
-                    Stats.Mana -= attackPower.Attack.Skill.ManaConsumption;
-                    manaRecoveryCounter = Stats.TotalMana <= 0 ? Stats.TotalManaRecoveryTime * 2 : Stats.TotalManaRecoveryTime;
-                    attackCounter = attackPower.Attack.Skill.AttackRecoveryTime;
-                    State.Add(StateEnum.Attacking);
-                    if (PlayerAttackType == PlayerAttackEnum.Left || PlayerAttackType == PlayerAttackEnum.ActiveSkill)
-                    {
-                        animationController.SetAttackingLeft(true);
-                        animationController.SetIsPreparingLeftAttack(false);
-                    }
-                    else
-                    {
-                        animationController.SetAttackingRight(true);
-                        animationController.SetIsPreparingRightAttack(false);
-                    }
-
-                    var posCollider = transform.GetChild(0).gameObject;
-                    var mousePosition = Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
-                    var playerPosition = new Vector3(posCollider.transform.position.x, posCollider.transform.position.y, 0);
-                    Vector2 direction = mousePosition - playerPosition;
-
-                    var projectileGameObject = Instantiate(attackPower.Attack.Skill.Projectile, GameObject.Find("Projectiles").transform);
-                    ProjectileController pc = projectileGameObject.GetComponent<ProjectileController>();
-                    //projectileGameObject.transform.position = moveCollider.transform.position - new Vector3(pc.Offset.x, pc.Offset.y, 0);
-
-                    Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
-                    pc.Setup(gameObject, rotation, attackPower.Attack.Skill.Range);
-
-                    projectileGameObject.GetComponent<HurtEnemy>().SetupHurtObject(attackPower.Attack.Skill.Damage, PlayerAttackType, null, attackPower.Attack.Skill);
+                    AttackWithSkill(attackPower);
                 }
             }
         }
+    }
+
+    private void AttackWithActiveSkill()
+    {
+        Stats.TotalMana -= Stats.ActiveSkill.ManaConsumption;
+        Stats.Mana -= Stats.ActiveSkill.ManaConsumption;
+        manaRecoveryCounter = Stats.TotalMana <= 0 ? Stats.TotalManaRecoveryTime * 2 : Stats.TotalManaRecoveryTime;
+        attackCounter = Stats.ActiveSkill.AttackRecoveryTime;
+        State.Add(StateEnum.Attacking);
+        if (PlayerAttackType == PlayerAttackEnum.Left || PlayerAttackType == PlayerAttackEnum.ActiveSkill)
+        {
+            animationController.SetAttackingLeft(true);
+            animationController.SetIsPreparingLeftAttack(false);
+        }
+        else
+        {
+            animationController.SetAttackingRight(true);
+            animationController.SetIsPreparingRightAttack(false);
+        }
+
+        var playerPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        Vector3 direction = playerPosition;
+
+        var projectileGameObject = Instantiate(Stats.ActiveSkill.Projectile, GameObject.Find("Projectiles").transform);
+        ProjectileController pc = projectileGameObject.GetComponent<ProjectileController>();
+        //projectileGameObject.transform.position = moveCollider.transform.position - new Vector3(pc.Offset.x, pc.Offset.y, 0);
+
+        Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg);
+        pc.Setup(gameObject, rotation, Stats.ActiveSkill.Range);
+        projectileGameObject.GetComponent<HurtEnemy>().SetupHurtObject(Stats.ActiveSkill.Damage, PlayerAttackEnum.ActiveSkill, null, Stats.ActiveSkill);
+        Stats.ActiveSkill = null;
+    }
+
+    private void AttackWithSkill(AttackPower attackPower)
+    {
+        Stats.TotalMana -= attackPower.Attack.Skill.ManaConsumption;
+        Stats.Mana -= attackPower.Attack.Skill.ManaConsumption;
+        manaRecoveryCounter = Stats.TotalMana <= 0 ? Stats.TotalManaRecoveryTime * 2 : Stats.TotalManaRecoveryTime;
+        attackCounter = attackPower.Attack.Skill.AttackRecoveryTime;
+        State.Add(StateEnum.Attacking);
+        if (PlayerAttackType == PlayerAttackEnum.Left || PlayerAttackType == PlayerAttackEnum.ActiveSkill)
+        {
+            //animationController.SetAttackingLeft(true);
+            animationController.SetIsPreparingLeftAttack(false);
+        }
+        else
+        {
+            //animationController.SetAttackingRight(true);
+            animationController.SetIsPreparingRightAttack(false);
+        }
+
+        var playerPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        Vector3 direction = playerPosition;
+
+        var projectileGameObject = Instantiate(attackPower.Attack.Skill.Projectile, GameObject.Find("Projectiles").transform);
+        ProjectileController pc = projectileGameObject.GetComponent<ProjectileController>();
+        //projectileGameObject.transform.position = moveCollider.transform.position - new Vector3(pc.Offset.x, pc.Offset.y, 0);
+
+        Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg);
+        pc.Setup(gameObject, rotation, attackPower.Attack.Skill.Range);
+
+        projectileGameObject.GetComponent<HurtEnemy>().SetupHurtObject(attackPower.Attack.Skill.Damage, PlayerAttackType, null, attackPower.Attack.Skill);
     }
 
     private void AttackWithRanged(AttackPower attackPower, InventoryItem mainHand, InventoryItem offHand, ItemCategoryEnum itemCategory)
@@ -644,7 +650,7 @@ public class PlayerController : MonoBehaviour
 
             var projectileGameObject = Instantiate(offHand.Projectile, GameObject.Find("Projectiles").transform);
             ProjectileController pc = projectileGameObject.GetComponent<ProjectileController>();
-            projectileGameObject.transform.position = playerPosition;// + transform.forward;
+            projectileGameObject.transform.position = playerPosition;
 
             Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg);
             pc.Setup(gameObject, transform.rotation, mainHand.Range.Value);
@@ -666,26 +672,24 @@ public class PlayerController : MonoBehaviour
             State.Add(StateEnum.Attacking);
             if (PlayerAttackType == PlayerAttackEnum.Left || PlayerAttackType == PlayerAttackEnum.ActiveSkill)
             {
-                animationController.SetAttackingLeft(true);
+                //animationController.SetAttackingLeft(true);
                 animationController.SetIsPreparingLeftAttack(false);
             }
             else
             {
-                animationController.SetAttackingRight(true);
+                //animationController.SetAttackingRight(true);
                 animationController.SetIsPreparingRightAttack(false);
             }
 
-            var posCollider = transform.GetChild(0).gameObject;
-            var mousePosition = Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
-            var playerPosition = new Vector3(posCollider.transform.position.x, posCollider.transform.position.y, 0);
-            Vector2 direction = mousePosition - playerPosition;
+            var playerPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            Vector3 direction = playerPosition;
 
             var projectileGameObject = Instantiate(mainHand.Projectile, GameObject.Find("Projectiles").transform);
             ProjectileController pc = projectileGameObject.GetComponent<ProjectileController>();
-            //projectileGameObject.transform.position = moveCollider.transform.position - new Vector3(pc.Offset.x, pc.Offset.y, 0);
+            projectileGameObject.transform.position = playerPosition;
 
-            Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
-            pc.Setup(gameObject, rotation, mainHand.Range.Value);
+            Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg);
+            pc.Setup(gameObject, transform.rotation, mainHand.Range.Value);
 
             projectileGameObject.GetComponent<HurtEnemy>().SetupHurtObject(attackPower.Damage, PlayerAttackType, attackPower.Attack.Item);
             if (!canAttackUnlimited)
