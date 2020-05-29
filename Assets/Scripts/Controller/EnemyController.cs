@@ -627,6 +627,7 @@ public class EnemyController : MonoBehaviour
         if (Vector3.Distance(myPosition, PlayerShadow.transform.position) <= 1.5f)
         {
             Destroy(PlayerShadow);
+            fieldOfView.SetFoV(defaultFoV);
             if (!State.Exists(s => s == StateEnum.Inspecting))
             {
                 State.Add(StateEnum.Inspecting);
