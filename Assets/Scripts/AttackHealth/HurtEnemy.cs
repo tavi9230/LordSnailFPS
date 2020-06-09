@@ -36,6 +36,7 @@ public class HurtEnemy : MonoBehaviour
         if (!isProjectile && playerController.fieldOfView.visibleTargets.Count > 0
             && playerController.fieldOfView.visibleTargets.Find(t => t.GetComponentInParent<EnemyController>() != null && t.GetComponentInParent<EnemyController>().Equals(other.GetComponentInParent<EnemyController>())))
         {
+            Debug.Log("player MELEE attack!");
             PlayerAttack(isProjectile, other);
         }
         // if player attacks with projectile

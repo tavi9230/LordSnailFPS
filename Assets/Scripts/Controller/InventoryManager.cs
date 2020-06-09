@@ -284,8 +284,7 @@ public class InventoryManager : MonoBehaviour
         var alternateRightHand = new InventoryItem(gameManager.InventoryItems["shield1"], true);
         Inventory.Add("alternateRightHand", alternateRightHand);
 
-        var alternateLeftHand = new InventoryItem(gameManager.InventoryItems["ammo1"], true);
-        alternateLeftHand.Quantity.Value = 200;
+        var alternateLeftHand = new InventoryItem(gameManager.InventoryItems["sword1"], true);
         Inventory.Add("alternateLeftHand", alternateLeftHand);
 
         for (var i = 0; i < Constants.DEFAULT_MAX_INVENTORY_SLOTS; i++)
