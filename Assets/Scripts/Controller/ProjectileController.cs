@@ -18,7 +18,7 @@ public class ProjectileController : MonoBehaviour
     private Vector3 direction;
     private Ray ray;
     #endregion
-    
+
     void Start()
     {
         startPosition = Owner.gameObject.transform.GetChild(2).position;
@@ -30,7 +30,16 @@ public class ProjectileController : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, 100))
             {
-                direction = hit.point;
+                if (!hit.collider.transform.parent.CompareTag("Player"))
+                {
+                    direction = hit.point;
+                }
+                else
+                {
+                    direction = Input.mousePosition;
+                    direction.z = range * 5;
+                    direction = Camera.main.ScreenToWorldPoint(direction);
+                }
             }
             else
             {
@@ -46,14 +55,14 @@ public class ProjectileController : MonoBehaviour
             // TODO: Check when enemy shoots
             direction = location;
         }
-        
+
         Destroy(gameObject, destroyCounter);
     }
-    
+
     void Update()
     {
         Debug.DrawLine(startPosition, location, Color.blue);
-        
+
         myRB.velocity = transform.forward * moveSpeed;
 
         if (Vector3.Distance(startPosition, transform.position) > range * 5)
