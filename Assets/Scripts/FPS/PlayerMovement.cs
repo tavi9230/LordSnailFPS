@@ -33,6 +33,8 @@ public class PlayerMovement : MonoBehaviour
             velocity.y = -2f;
         }
 
+        RotateArms();
+
         if (!playerController.State.Exists(s => s == StateEnum.Attacking))
         {
             forward = Camera.main.transform.forward;
@@ -47,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
 
             Vector3 rightMovement = right * playerController.Stats.TotalSpeed * Time.deltaTime * x;
             Vector3 upMovement = forward * playerController.Stats.TotalSpeed * Time.deltaTime * z;
-            
+
             Vector3 move = rightMovement + upMovement;
 
             controller.Move(move);
@@ -62,5 +64,27 @@ public class PlayerMovement : MonoBehaviour
             controller.Move(velocity * Time.deltaTime);
             animationController.SetIsMoving(x != 0 || z != 0);
         }
+    }
+
+    void RotateArms()
+    {
+        // TODO: Apply rotation to attack hand
+        //if (playerController.State.Exists(s => s == StateEnum.IsChargingLeftAttack))
+        //{
+        //    var body = playerController.gameObject.transform.GetChild(playerController.gameObject.transform.childCount - 1);
+        //    float mouseX = Input.GetAxis("Mouse X") * 100 * Time.deltaTime;
+        //    float mouseY = Input.GetAxis("Mouse Y") * 100 * Time.deltaTime;
+        //    float xRotation = 0f;
+        //    float yRotation = 0f;
+        //    xRotation -= mouseX;
+        //    xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+
+        //    yRotation -= mouseY;
+        //    yRotation = Mathf.Clamp(yRotation, -90f, 90f);
+
+        //    var leftShoulder = body.transform.GetChild(1).GetChild(0).GetChild(0).GetChild(0);
+        //    Debug.Log(leftShoulder.transform.rotation.z + mouseY);
+        //    leftShoulder.Rotate(0, 0, leftShoulder.transform.rotation.z + mouseY);
+        //}
     }
 }
