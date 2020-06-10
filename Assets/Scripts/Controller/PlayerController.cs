@@ -115,6 +115,16 @@ public class PlayerController : MonoBehaviour
             attackCounter -= Time.deltaTime;
             if (attackCounter <= 0)
             {
+                var itemHolder = new List<GameObject>(GameObject.FindGameObjectsWithTag("LeftItemHolder")).Find(g => g.transform.IsChildOf(transform));
+                var hitbox = itemHolder.transform.GetChild(0).GetChild(0);
+                //hitbox.transform.position = new Vector3(hitbox.transform.position.x, 0, hitbox.transform.position.z);
+                hitbox.gameObject.SetActive(false);
+
+                itemHolder = new List<GameObject>(GameObject.FindGameObjectsWithTag("RightItemHolder")).Find(g => g.transform.IsChildOf(transform));
+                hitbox = itemHolder.transform.GetChild(0).GetChild(0);
+                //hitbox.transform.position = new Vector3(hitbox.transform.position.x, 0, hitbox.transform.position.z);
+                hitbox.gameObject.SetActive(false);
+
                 animationController.SetAttackingLeft(false);
                 animationController.SetAttackingRight(false);
                 State.Remove(StateEnum.Attacking);
@@ -278,11 +288,9 @@ public class PlayerController : MonoBehaviour
         Debug.DrawLine(transform.position, direction, Color.blue);
         if (Physics.Linecast(Camera.main.transform.position, direction, out hit))
         {
-            Debug.Log(hit.collider);
             var enemyController = hit.collider.gameObject.GetComponentInParent<EnemyController>();
             if (enemyController != null)
             {
-                Debug.Log(hit.collider);
                 TooltipHandler.DisplayEnemyTooltip(uiManager, enemyController.Stats.Name, enemyController.Stats.TotalHealth, enemyController.Stats.TotalMaxHealth);
             }
             else
@@ -751,11 +759,19 @@ public class PlayerController : MonoBehaviour
         {
             animationController.SetAttackingLeft(true);
             animationController.SetIsPreparingLeftAttack(false);
+            var itemHolder = new List<GameObject>(GameObject.FindGameObjectsWithTag("LeftItemHolder")).Find(g => g.transform.IsChildOf(transform));
+            var hitbox = itemHolder.transform.GetChild(0).GetChild(0);
+            //hitbox.transform.position = new Vector3(hitbox.transform.position.x, -.5f, hitbox.transform.position.z);
+            hitbox.gameObject.SetActive(true);
         }
         else
         {
             animationController.SetAttackingRight(true);
             animationController.SetIsPreparingRightAttack(false);
+            var itemHolder = new List<GameObject>(GameObject.FindGameObjectsWithTag("RightItemHolder")).Find(g => g.transform.IsChildOf(transform));
+            var hitbox = itemHolder.transform.GetChild(0).GetChild(0);
+            //hitbox.transform.position = new Vector3(hitbox.transform.position.x, .5f, hitbox.transform.position.z);
+            hitbox.gameObject.SetActive(true);
         }
     }
 

@@ -281,7 +281,7 @@ public class InventoryManager : MonoBehaviour
         Inventory.Add("feet", feet);
 
         //var alternateRightHand = new InventoryItem(gameManager.InventoryItems["bow1"], true);
-        var alternateRightHand = new InventoryItem(gameManager.InventoryItems["shield1"], true);
+        var alternateRightHand = new InventoryItem(gameManager.InventoryItems["sword1"], true);
         Inventory.Add("alternateRightHand", alternateRightHand);
 
         var alternateLeftHand = new InventoryItem(gameManager.InventoryItems["sword1"], true);

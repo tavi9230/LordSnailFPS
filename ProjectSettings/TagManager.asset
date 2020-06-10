@@ -18,6 +18,8 @@ TagManager:
   - ItemDetails
   - Floor
   - PatrolPoint
+  - LeftItemHolder
+  - RightItemHolder
   layers:
   - Default
   - TransparentFX
