@@ -101,6 +101,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        CheckInFront();
         if (Input.GetKeyDown(KeyCode.M))
         {
             LevelUp();
@@ -254,6 +255,44 @@ public class PlayerController : MonoBehaviour
         {
             State.Remove(StateEnum.DraggingStart);
             SetDraggedObjectPosition();
+        }
+    }
+
+    private void CheckInFront()
+    {
+        Vector3 fwd = Camera.main.transform.TransformDirection(Vector3.forward);
+        Vector3 direction = new Vector3();
+
+        RaycastHit hitCam;
+        if (Physics.Raycast(Camera.main.transform.position, fwd, out hitCam, 500))
+        {
+            direction = hitCam.point;
+        }
+        else
+        {
+            direction = fwd * 500;
+        }
+        Debug.DrawLine(Camera.main.transform.position, direction, Color.green);
+
+        RaycastHit hit;
+        Debug.DrawLine(transform.position, direction, Color.blue);
+        if (Physics.Linecast(Camera.main.transform.position, direction, out hit))
+        {
+            Debug.Log(hit.collider);
+            var enemyController = hit.collider.gameObject.GetComponentInParent<EnemyController>();
+            if (enemyController != null)
+            {
+                Debug.Log(hit.collider);
+                TooltipHandler.DisplayEnemyTooltip(uiManager, enemyController.Stats.Name, enemyController.Stats.TotalHealth, enemyController.Stats.TotalMaxHealth);
+            }
+            else
+            {
+                TooltipHandler.HideTooltip(uiManager);
+            }
+        }
+        else
+        {
+            TooltipHandler.HideTooltip(uiManager);
         }
     }
 
@@ -644,7 +683,7 @@ public class PlayerController : MonoBehaviour
                 //animationController.SetAttackingRight(true);
                 animationController.SetIsPreparingRightAttack(false);
             }
-            
+
             var playerPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
             Vector3 direction = playerPosition;
 

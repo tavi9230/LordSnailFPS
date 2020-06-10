@@ -129,7 +129,12 @@ public class EnemyController : MonoBehaviour
             //    new Vector3(5, 0, -3)
             //};
             foreach (Transform pp in gameManager.PatrolPoints)
-                PatrolPoints.Add(pp.transform.position);
+            {
+                if (pp.gameObject.activeSelf)
+                {
+                    PatrolPoints.Add(pp.transform.position);
+                }
+            }
         }
     }
 
@@ -886,16 +891,6 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    public void OnMouseEnter()
-    {
-        TooltipHandler.DisplayEnemyTooltip(uiManager, Stats.Name, Stats.TotalHealth, Stats.TotalMaxHealth);
-    }
-
-    public void OnMouseExit()
-    {
-        TooltipHandler.HideTooltip(uiManager);
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         CheckIfStashedAways(other);
@@ -1145,7 +1140,7 @@ public class EnemyController : MonoBehaviour
         }
 
         animationController.SetIsDead(true);
-        navMeshAgent.isStopped = true;
+        //navMeshAgent.isStopped = true;
         gameManager.CombatEnemyList.Remove(gameObject);
     }
 
