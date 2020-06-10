@@ -27637,7 +27637,7 @@ GameObject:
   m_TagString: SolidObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &659955023
 Transform:
@@ -27647,7 +27647,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 659955022}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.1, y: 1.5, z: -1.504}
+  m_LocalPosition: {x: 1.1, y: 1.5, z: -1.92}
   m_LocalScale: {x: 5, y: 2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 1886417627}
@@ -58385,7 +58385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewRadius: 5
-  viewAngle: 90
+  viewAngle: 120
   targetMask:
     serializedVersion: 2
     m_Bits: 3072
