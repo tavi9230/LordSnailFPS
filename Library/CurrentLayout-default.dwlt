@@ -113,10 +113,10 @@ MonoBehaviour:
     y: 30
     width: 2560
     height: 1308
-  m_MinSize: {x: 917, y: 444}
-  m_MaxSize: {x: 22012, y: 10022}
+  m_MinSize: {x: 915, y: 444}
+  m_MaxSize: {x: 22010, y: 10022}
   vertical: 0
-  controlID: 141
+  controlID: 57
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -141,7 +141,7 @@ MonoBehaviour:
   m_MinSize: {x: 202, y: 444}
   m_MaxSize: {x: 4002, y: 8044}
   vertical: 1
-  controlID: 36
+  controlID: 58
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -222,7 +222,7 @@ MonoBehaviour:
   m_MinSize: {x: 204, y: 344}
   m_MaxSize: {x: 4004, y: 8044}
   vertical: 1
-  controlID: 79
+  controlID: 106
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -356,7 +356,7 @@ MonoBehaviour:
   m_ViewDataDictionary: {fileID: 0}
   m_VSyncEnabled: 0
   m_MaximizeOnPlay: 0
-  m_Gizmos: 0
+  m_Gizmos: 1
   m_Stats: 0
   m_SelectedSizes: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
   m_TargetDisplay: 0
@@ -445,9 +445,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -5.35128, y: 2.0619264, z: 3.9434695}
+    m_Target: {x: -1.575386, y: 2.682482, z: 2.2338352}
     speed: 2
-    m_Value: {x: -5.35128, y: 2.0619264, z: 3.9434695}
+    m_Value: {x: -1.575386, y: 2.682482, z: 2.2338352}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -476,13 +476,13 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: -0.00465732, y: 0.9492725, z: -0.013003734, w: -0.31457922}
+    m_Target: {x: 0.34666938, y: -0.43212357, z: 0.18409395, w: 0.8120849}
     speed: 2
-    m_Value: {x: -0.004695678, y: 0.9481969, z: -0.012987955, w: -0.3173829}
+    m_Value: {x: 0.34662038, y: -0.43206248, z: 0.18406793, w: 0.8119701}
   m_Size:
-    m_Target: 2.166139
+    m_Target: 2.1452343
     speed: 2
-    m_Value: 1.8661389
+    m_Value: 2.1452343
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -1073,7 +1073,7 @@ MonoBehaviour:
   m_ViewDataDictionary: {fileID: 0}
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: -4794
+  m_LastSelectedObjectID: 27900
 --- !u!114 &20
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -1103,9 +1103,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 7c680000
-      m_LastClickedID: 26748
-      m_ExpandedIDs: 6afbffff0e740000ba7b0000ea7e0000
+      m_SelectedIDs: e6780000
+      m_LastClickedID: 30950
+      m_ExpandedIDs: 86cfffffacd0ffffaed0ffffb6d0ffffb8d0ffffbed0ffff7ee4ffffd8e5ffffe0e5ffff18e7ffffbce7ffffc4e7ffff5ae8ffff8ee8ffffaae9ffff60eaffffe4eaffff4eebffff68ebffff9aebffffa2ebfffffeebffff78eeffff22f0ffff8af1ffff92f1ffffe8f2ffff64f4ffff6cf4ffff76f5ffff7ef5ffff2ef6ffff6afbffff00680000a0680000c4690000dc6b0000fc6c0000306d00005a6d0000a86e0000b66f0000fa7100001e720000e672000090730000e87300003874000020750000b47500004276000068760000567800007a7800009e7a0000b27a0000ba7b0000cc7d0000f27e0000be8000000a8100007a810000bc810000e8810000ec8100001a83000094840000f884000082850000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1194,19 +1194,19 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Prefabs/BodyParts
+    - Assets/Materials
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Prefabs/BodyParts
+  - Assets/Materials
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Unity Projects\LordSnailFPS
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 84570000
-    m_LastClickedID: 22404
+    m_SelectedIDs: 783f0000
+    m_LastClickedID: 16248
     m_ExpandedIDs: 00000000f0300000e43300007035000064360000a6380000983a0000ea3a0000c63c00006e3f00004444000068460000fe60000006620000a6620000c062000054630000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1262,7 +1262,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: 3053000032270100dc330000709d0000f4690000664a000000000000445f0000fea40700
     m_RenameOverlay:
       m_UserAcceptedRename: 0
