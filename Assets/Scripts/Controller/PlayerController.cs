@@ -768,6 +768,16 @@ public class PlayerController : MonoBehaviour
         {
             animationController.SetAttackingRight(true);
             animationController.SetIsPreparingRightAttack(false);
+
+            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = transform.position + transform.forward;
+            cube.transform.rotation = transform.rotation;
+            cube.transform.localScale = new Vector3(cube.transform.localScale.x, 1.5f, cube.transform.localScale.z);
+            // TODO: Create a prefab for the hitbox and instantiate it here;
+            // Give it dimensions from the item used (should be added to the xml file)
+            // Despawn it when attack is over
+            // Try to modify the y position based on where the player is looking?
+
             var itemHolder = new List<GameObject>(GameObject.FindGameObjectsWithTag("RightItemHolder")).Find(g => g.transform.IsChildOf(transform));
             var hitbox = itemHolder.transform.GetChild(0).GetChild(0);
             //hitbox.transform.position = new Vector3(hitbox.transform.position.x, .5f, hitbox.transform.position.z);
