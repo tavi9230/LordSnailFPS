@@ -45,6 +45,17 @@ public class HurtEnemy : MonoBehaviour
             PlayerAttack(isProjectile, other);
         }
 
+        //if enemy attacks with melee
+        if (!isProjectile && gameObject.GetComponentInParent<EnemyController>() && other.gameObject.GetComponentInParent<PlayerController>() != null)
+        {
+            EnemyAttack(isProjectile, other);
+        }
+        //if enemy attacks with ranged
+        else if (isProjectile && other.gameObject.GetComponentInParent<PlayerController>() != null && projectileController.Owner.CompareTag("Enemy"))
+        {
+            Debug.Log("projectile hit");
+            EnemyAttack(isProjectile, other);
+        }
         //Debug.Log("Hit Enemy");
         //var isProjectile = DamageToGive.Count > 0;
 
@@ -254,6 +265,42 @@ public class HurtEnemy : MonoBehaviour
                         enemyController.StunTimer = 1.2f;
                         enemyController.Conditions.Add(ConditionEnum.Staggered);
                     }
+                }
+            }
+        }
+    }
+
+    private void EnemyAttack(bool isProjectile, Collider other)
+    {
+        HealthManager hm = other.gameObject.GetComponentInParent<HealthManager>();
+        var enemyController = isProjectile ? projectileController.Owner.GetComponent<EnemyController>() : gameObject.GetComponentInParent<EnemyController>();
+        if (enemyController != null)
+        {
+            var dmg = isProjectile ? DamageToGive : enemyController.Stats.RightHandAttack.Damage;
+            var dmgToGive = hm.HurtPlayer(dmg, enemyController);
+
+            if (dmg[DamageTypeEnum.Bludgeoning].MinValue > 0 && dmg[DamageTypeEnum.Bludgeoning].MaxValue > 0)
+            {
+                if (!playerController.Conditions.Exists(c => c == ConditionEnum.KnockedBack))
+                {
+                    playerController.Conditions.Add(ConditionEnum.KnockedBack);
+                    playerController.KnockBackDifference = playerController.gameObject.transform.position - transform.position;
+                }
+            }
+            if (dmg[DamageTypeEnum.Piercing].MinValue > 0 && dmg[DamageTypeEnum.Piercing].MaxValue > 0)
+            {
+                if (!playerController.Conditions.Exists(c => c == ConditionEnum.Bleeding))
+                {
+                    hm.bleedDamage = dmgToGive / 2;
+                    playerController.Conditions.Add(ConditionEnum.Bleeding);
+                }
+            }
+            if (dmg[DamageTypeEnum.Slashing].MinValue > 0 && dmg[DamageTypeEnum.Slashing].MaxValue > 0)
+            {
+                if (!playerController.Conditions.Exists(c => c == ConditionEnum.Staggered))
+                {
+                    playerController.StunTimer = 1.2f;
+                    playerController.Conditions.Add(ConditionEnum.Staggered);
                 }
             }
         }

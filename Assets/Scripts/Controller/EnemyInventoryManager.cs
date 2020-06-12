@@ -17,14 +17,14 @@ public class EnemyInventoryManager : InventoryManager
         uiManager = FindObjectOfType<UIManager>();
         //SetupInventory();
 
-        GameManager gameManager = FindObjectOfType<GameManager>();
+        gameManager = FindObjectOfType<GameManager>();
         Inventory = new Dictionary<string, InventoryItem>();
         Inventory.Add("head", new InventoryItem());
         Inventory.Add("neck", new InventoryItem());
         Inventory.Add("torso", new InventoryItem());
         //Inventory.Add("rightHand", new InventoryItem(gameManager.InventoryItems["ranged1"], true));
-        Inventory.Add("rightHand", new InventoryItem());
-        Inventory.Add("leftHand", new InventoryItem());
+        Inventory.Add("rightHand", new InventoryItem(gameManager.InventoryItems["bow1"], true));
+        Inventory.Add("leftHand", new InventoryItem(gameManager.InventoryItems["ammo1"], true));
         Inventory.Add("hip", new InventoryItem());
         Inventory.Add("hands", new InventoryItem());
         Inventory.Add("rightRing", new InventoryItem());
@@ -89,13 +89,15 @@ public class EnemyInventoryManager : InventoryManager
         InventoryItem item = null;
         if (attackDistance == AttackDistanceEnum.Close)
         {
-            item = new InventoryItem();
+            //item = new InventoryItem();
+            item = new InventoryItem(gameManager.InventoryItems["sword1"], true);
         }
 
         if (attackDistance == AttackDistanceEnum.Far)
         {
             // TODO: Check for ammo
-            item = new InventoryItem();
+            //item = new InventoryItem();
+            item = new InventoryItem(gameManager.InventoryItems["bow1"], true);
         }
 
         return item;

@@ -751,6 +751,7 @@ public class PlayerController : MonoBehaviour
         {
             animationController.SetAttackingLeft(true);
             animationController.SetIsPreparingLeftAttack(false);
+
             hitbox = Instantiate((GameObject)Resources.Load("Prefabs/Hitbox"), transform);
             hitbox.transform.position = transform.position + transform.forward;
             hitbox.transform.rotation = transform.rotation;

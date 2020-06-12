@@ -8,7 +8,7 @@ public class InventoryManager : MonoBehaviour
     public bool IsUsingAlternateWeapons = false;
     public UIManager uiManager { get; set; }
 
-    private GameManager gameManager { get; set; }
+    public GameManager gameManager { get; set; }
     private PlayerController playerController { get; set; }
 
     public virtual void Start()
