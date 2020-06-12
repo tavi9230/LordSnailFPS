@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     private float stunCounter = 0;
     private GameManager gameManager;
     private UIManager uiManager;
+    private GameObject hitbox;
     #endregion
 
     void Awake()
@@ -115,16 +116,7 @@ public class PlayerController : MonoBehaviour
             attackCounter -= Time.deltaTime;
             if (attackCounter <= 0)
             {
-                var itemHolder = new List<GameObject>(GameObject.FindGameObjectsWithTag("LeftItemHolder")).Find(g => g.transform.IsChildOf(transform));
-                var hitbox = itemHolder.transform.GetChild(0).GetChild(0);
-                //hitbox.transform.position = new Vector3(hitbox.transform.position.x, 0, hitbox.transform.position.z);
-                hitbox.gameObject.SetActive(false);
-
-                itemHolder = new List<GameObject>(GameObject.FindGameObjectsWithTag("RightItemHolder")).Find(g => g.transform.IsChildOf(transform));
-                hitbox = itemHolder.transform.GetChild(0).GetChild(0);
-                //hitbox.transform.position = new Vector3(hitbox.transform.position.x, 0, hitbox.transform.position.z);
-                hitbox.gameObject.SetActive(false);
-
+                Destroy(hitbox);
                 animationController.SetAttackingLeft(false);
                 animationController.SetAttackingRight(false);
                 State.Remove(StateEnum.Attacking);
@@ -759,33 +751,22 @@ public class PlayerController : MonoBehaviour
         {
             animationController.SetAttackingLeft(true);
             animationController.SetIsPreparingLeftAttack(false);
-            var itemHolder = new List<GameObject>(GameObject.FindGameObjectsWithTag("LeftItemHolder")).Find(g => g.transform.IsChildOf(transform));
-            var hitbox = itemHolder.transform.GetChild(0).GetChild(0);
-            //hitbox.transform.position = new Vector3(hitbox.transform.position.x, -.5f, hitbox.transform.position.z);
-            hitbox.gameObject.SetActive(true);
+            hitbox = Instantiate((GameObject)Resources.Load("Prefabs/Hitbox"), transform);
+            hitbox.transform.position = transform.position + transform.forward;
+            hitbox.transform.rotation = transform.rotation;
         }
         else
         {
             animationController.SetAttackingRight(true);
             animationController.SetIsPreparingRightAttack(false);
 
-            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = transform.position + transform.forward;
-            cube.transform.rotation = transform.rotation;
-            cube.transform.localScale = new Vector3(cube.transform.localScale.x, 1.5f, cube.transform.localScale.z);
-            // TODO: Create a prefab for the hitbox and instantiate it here;
-            // Give it dimensions from the item used (should be added to the xml file)
-            // Despawn it when attack is over
-            // Try to modify the y position based on where the player is looking?
-
-            var itemHolder = new List<GameObject>(GameObject.FindGameObjectsWithTag("RightItemHolder")).Find(g => g.transform.IsChildOf(transform));
-            var hitbox = itemHolder.transform.GetChild(0).GetChild(0);
-            //hitbox.transform.position = new Vector3(hitbox.transform.position.x, .5f, hitbox.transform.position.z);
-            hitbox.gameObject.SetActive(true);
+            hitbox = Instantiate((GameObject)Resources.Load("Prefabs/Hitbox"), transform);
+            hitbox.transform.position = transform.position + transform.forward;
+            hitbox.transform.rotation = transform.rotation;
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+        private void OnTriggerEnter2D(Collider2D other)
     {
         if (Input.GetKeyDown(KeyCode.X) && !State.Exists(s => s == StateEnum.Crouching) &&
             (other != null && other.gameObject.CompareTag("Enemy") && other.gameObject.GetComponent<EnemyController>().State.Exists(s => s == StateEnum.Dead)

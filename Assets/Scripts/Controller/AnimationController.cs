@@ -12,6 +12,7 @@ public class AnimationController
 
     public void SetIsDead(bool isDead)
     {
+        animator.applyRootMotion = false;
         animator.SetBool("isDead", isDead);
     }
 

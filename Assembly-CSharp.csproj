@@ -143,6 +143,7 @@
     <Compile Include="Assets\Scripts\UI\SkillStatus.cs" />
     <Compile Include="Assets\Scripts\UI\UIManager.cs" />
     <None Include="Assets\Resources\Settings\items.xml" />
+    <None Include="Assets\BodyGuards\ReadMe.txt.txt" />
     <None Include="Assets\Resources\Settings\enemies.xml" />
     <None Include="Assets\Resources\Settings\skills.xml" />
     <None Include="Assets\SampleScenes\Shaders\Skybox-Procedural.shader" />

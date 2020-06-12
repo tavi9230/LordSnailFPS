@@ -1140,7 +1140,6 @@ public class EnemyController : MonoBehaviour
         }
 
         animationController.SetIsDead(true);
-        //navMeshAgent.isStopped = true;
         gameManager.CombatEnemyList.Remove(gameObject);
     }
 
