@@ -33,11 +33,15 @@ public class HurtEnemy : MonoBehaviour
         var isProjectile = DamageToGive.Count > 0;
 
         // if player attacks with melee
-        if (!isProjectile && playerController.fieldOfView.visibleTargets.Count > 0
-            && playerController.fieldOfView.visibleTargets.Find(t => t.GetComponentInParent<EnemyController>() != null && t.GetComponentInParent<EnemyController>().Equals(other.GetComponentInParent<EnemyController>())))
+        //if (!isProjectile && playerController.fieldOfView.visibleTargets.Count > 0
+        //    && playerController.fieldOfView.visibleTargets.Find(t => t.GetComponentInParent<EnemyController>() != null && t.GetComponentInParent<EnemyController>().Equals(other.GetComponentInParent<EnemyController>())))
+        if (!isProjectile && playerController.gameObjectInSight == other.gameObject)
         {
-            Debug.Log("player MELEE attack!");
-            PlayerAttack(isProjectile, other);
+            if (!Physics.Raycast(playerController.fieldOfView.transform.position, playerController.transform.forward, 2, playerController.fieldOfView.obstacleMask))
+            {
+                Debug.Log("player MELEE attack!");
+                PlayerAttack(isProjectile, other);
+            }
         }
         // if player attacks with projectile
         else if (isProjectile && other.GetComponentInParent<EnemyController>() != null && !projectileController.Owner.CompareTag("Enemy"))

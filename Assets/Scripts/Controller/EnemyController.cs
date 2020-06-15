@@ -114,7 +114,7 @@ public class EnemyController : MonoBehaviour
             40,
             40,
             0,
-            90,
+            120,
             5f,
             0,
             10,
@@ -683,83 +683,6 @@ public class EnemyController : MonoBehaviour
 
         return attackRange;
     }
-
-    //private void SetHunt(bool isWithinViewRange, float range)
-    //{
-    //    if (State.Exists(s => s == StateEnum.Inspecting) && shouldStartHunt == false && fieldOfView.IsPlayerInSight)
-    //    {
-    //        shouldStartHunt = true;
-    //        suspicionCounter = suspicionTimer;
-    //        inspectCounter = inspectTimer;
-    //        State.Remove(StateEnum.SawSomethingSuspicious);
-    //        State.Remove(StateEnum.Inspecting);
-    //    }
-    //    else if (State.Exists(s => s == StateEnum.SawSomethingSuspicious) && suspicionCounter > 0)
-    //    {
-    //        suspicionCounter -= Time.deltaTime;
-    //        if (suspicionCounter <= 0)
-    //        {
-    //            shouldStartHunt = true;
-    //        }
-    //    }
-    //    else if (isWithinViewRange)
-    //    {
-    //        if (shouldStartHunt == false && !State.Exists(s => s == StateEnum.SawSomethingSuspicious) && !State.Exists(s => s == StateEnum.InCombat) && !playerController.State.Exists(s => s == StateEnum.Dead) && fieldOfView.IsPlayerInSight)
-    //        {
-    //            State.Add(StateEnum.SawSomethingSuspicious);
-    //            if (PlayerShadow != null)
-    //            {
-    //                Destroy(PlayerShadow);
-    //            }
-    //            PlayerShadow = Instantiate(gameManager.InventoryItems["ammo1"].GameObject, playerPosition, Quaternion.identity);
-    //        }
-    //        else if (shouldStartHunt && !State.Exists(s => s == StateEnum.InCombat) && !playerController.State.Exists(s => s == StateEnum.Dead) && fieldOfView.IsPlayerInSight)
-    //        {
-    //            // TODO: Drop dragged object?
-    //            EnemyEndDragAction();
-    //            State.Remove(StateEnum.Patrolling);
-    //            State.Remove(StateEnum.Lookout);
-    //            if (!State.Exists(s => s == StateEnum.SawSomethingSuspicious))
-    //            {
-    //                State.Add(StateEnum.SawSomethingSuspicious);
-    //            }
-    //            State.Add(StateEnum.InCombat);
-    //            if (!gameManager.CombatEnemyList.Exists(e => e == gameObject))
-    //            {
-    //                gameManager.CombatEnemyList.Add(gameObject); ;
-    //            }
-    //            fieldOfView.SetViewDistance(defaultViewDistance < range ? range : defaultViewDistance);
-    //            fieldOfView.SetFoV(360);
-    //            huntCounter = waitToEndHuntTimer;
-    //            if (PlayerShadow != null)
-    //            {
-    //                Destroy(PlayerShadow);
-    //            }
-    //            PlayerShadow = Instantiate(gameManager.InventoryItems["ammo1"].GameObject, playerPosition, Quaternion.identity);
-    //        }
-    //        else if (State.Exists(s => s == StateEnum.InCombat) && fieldOfView.IsPlayerInSight)
-    //        {
-    //            if (PlayerShadow != null)
-    //            {
-    //                Destroy(PlayerShadow);
-    //            }
-    //            PlayerShadow = Instantiate(gameManager.InventoryItems["ammo1"].GameObject, playerPosition, Quaternion.identity);
-    //            huntCounter = waitToEndHuntTimer;
-    //        }
-    //        else if (State.Exists(s => s == StateEnum.InCombat) && !fieldOfView.IsPlayerInSight)
-    //        {
-    //            huntCounter -= Time.deltaTime;
-    //        }
-    //        else if (!State.Exists(s => s == StateEnum.InCombat))
-    //        {
-    //            huntCounter -= Time.deltaTime;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        huntCounter -= Time.deltaTime;
-    //    }
-    //}
 
     private void SetAttackPower()
     {

@@ -116,7 +116,7 @@ MonoBehaviour:
   m_MinSize: {x: 917, y: 444}
   m_MaxSize: {x: 22012, y: 10022}
   vertical: 0
-  controlID: 198
+  controlID: 57
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -438,16 +438,16 @@ MonoBehaviour:
   m_ShowContextualTools: 0
   m_WindowGUID: 58878d68e7db27140abb3558fe0f8906
   m_Gizmos: 1
-  m_SceneIsLit: 1
+  m_SceneIsLit: 0
   m_SceneLighting: 1
   m_2DMode: 0
   m_isRotationLocked: 0
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 1.0999999, y: 1, z: -1.92}
+    m_Target: {x: -0.07341577, y: -0.05390431, z: -0.0060500074}
     speed: 2
-    m_Value: {x: 1.0999999, y: 1, z: -1.92}
+    m_Value: {x: -0.07341577, y: -0.05390431, z: -0.0060500074}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -476,13 +476,13 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: 0.27278274, y: 0.60897845, z: -0.23578966, w: 0.7067391}
+    m_Target: {x: 0.32691473, y: 0.61481607, z: -0.3106394, w: 0.64713645}
     speed: 2
-    m_Value: {x: 0.27273607, y: 0.6088743, z: -0.23574933, w: 0.70661825}
+    m_Value: {x: 0.3268895, y: 0.61476856, z: -0.31061542, w: 0.64708644}
   m_Size:
-    m_Target: 7.063161
+    m_Target: 0.6404234
     speed: 2
-    m_Value: 7.063161
+    m_Value: 0.6404234
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -1073,7 +1073,7 @@ MonoBehaviour:
   m_ViewDataDictionary: {fileID: 0}
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: -6056
+  m_LastSelectedObjectID: 27748
 --- !u!114 &20
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -1103,23 +1103,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 86760000
-      m_LastClickedID: 30342
-      m_ExpandedIDs: 6afbffff86760000367e0000
+      m_SelectedIDs: 7ecb0300
+      m_LastClickedID: 248702
+      m_ExpandedIDs: 5cabffff7ecb0300
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: 
-        m_OriginalName: 
+        m_Name: Body
+        m_OriginalName: Body
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 0
+        m_UserData: 30010
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 11
+        m_OriginalEventType: 0
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 10}
       m_SearchString: 
@@ -1194,20 +1194,20 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Prefabs
+    - Assets/Resources/Prefabs/Items/Ammo/Bow
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Prefabs
+  - Assets/Resources/Prefabs/Items/Ammo/Bow
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Unity Projects\LordSnailFPS
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 70360000
-    m_LastClickedID: 13936
-    m_ExpandedIDs: 00000000f4300000e83300007a350000b4380000fc3a0000fc3c0000a43f000080440000706200001063000072660000
+    m_SelectedIDs: 7a390000
+    m_LastClickedID: 14714
+    m_ExpandedIDs: 00000000f4300000e83300007a350000b4380000fc3a0000fc3c0000a43f00008044000070620000106300002a63000072660000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1262,7 +1262,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: 3053000032270100dc330000709d0000f4690000664a000000000000445f0000fea40700
     m_RenameOverlay:
       m_UserAcceptedRename: 0

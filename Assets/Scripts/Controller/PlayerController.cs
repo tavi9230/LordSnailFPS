@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     public float StunTimer = 0;
     public Dictionary<KeyCode, HotbarItem> Hotbar;
     public FieldOfView fieldOfView;
+    public GameObject gameObjectInSight;
 
     private float staminaRecoveryCounter = 0f;
     private float healthRecoveryCounter = 0f;
@@ -266,7 +267,7 @@ public class PlayerController : MonoBehaviour
         Vector3 direction = new Vector3();
 
         RaycastHit hitCam;
-        if (Physics.Raycast(Camera.main.transform.position, fwd, out hitCam, 500))
+        if (Physics.Raycast(Camera.main.transform.position, fwd, out hitCam))
         {
             direction = hitCam.point;
         }
@@ -280,6 +281,7 @@ public class PlayerController : MonoBehaviour
         Debug.DrawLine(transform.position, direction, Color.blue);
         if (Physics.Linecast(Camera.main.transform.position, direction, out hit))
         {
+            gameObjectInSight = hit.collider.gameObject;
             var enemyController = hit.collider.gameObject.GetComponentInParent<EnemyController>();
             if (enemyController != null)
             {
@@ -292,6 +294,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            gameObjectInSight = null;
             TooltipHandler.HideTooltip(uiManager);
         }
     }
@@ -751,20 +754,15 @@ public class PlayerController : MonoBehaviour
         {
             animationController.SetAttackingLeft(true);
             animationController.SetIsPreparingLeftAttack(false);
-
-            hitbox = Instantiate((GameObject)Resources.Load("Prefabs/Hitbox"), transform);
-            hitbox.transform.position = transform.position + transform.forward;
-            hitbox.transform.rotation = transform.rotation;
         }
         else
         {
             animationController.SetAttackingRight(true);
             animationController.SetIsPreparingRightAttack(false);
-
-            hitbox = Instantiate((GameObject)Resources.Load("Prefabs/Hitbox"), transform);
-            hitbox.transform.position = transform.position + transform.forward;
-            hitbox.transform.rotation = transform.rotation;
         }
+        hitbox = Instantiate((GameObject)Resources.Load("Prefabs/Hitbox"), transform);
+        hitbox.transform.position = transform.position + transform.forward;
+        hitbox.transform.rotation = transform.rotation;
     }
 
         private void OnTriggerEnter2D(Collider2D other)

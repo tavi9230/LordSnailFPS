@@ -110,7 +110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Offset: {x: 0, y: 0}
   Owner: {fileID: 0}
-  moveSpeed: 8
+  moveSpeed: 15
 --- !u!114 &1602980432588281817
 MonoBehaviour:
   m_ObjectHideFlags: 0

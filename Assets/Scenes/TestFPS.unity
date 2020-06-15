@@ -11828,6 +11828,7 @@ MonoBehaviour:
   KnockBackDifference: {x: 0, y: 0, z: 0}
   StunTimer: 0
   fieldOfView: {fileID: 0}
+  gameObjectInSight: {fileID: 0}
   knockbackTimer: 0.25
 --- !u!114 &353086796
 MonoBehaviour:
@@ -27815,6 +27816,7 @@ MonoBehaviour:
   KnockBackDifference: {x: 0, y: 0, z: 0}
   StunTimer: 0
   fieldOfView: {fileID: 0}
+  gameObjectInSight: {fileID: 0}
   knockbackTimer: 0.25
 --- !u!114 &865013749
 MonoBehaviour:
@@ -40591,9 +40593,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.2
-  m_Height: 2.1
+  m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0.1, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1257168908
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -68408,7 +68410,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1001 &5363766696481973604
 PrefabInstance:
   m_ObjectHideFlags: 0

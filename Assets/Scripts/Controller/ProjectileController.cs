@@ -84,8 +84,8 @@ public class ProjectileController : MonoBehaviour
         {
             if (col.gameObject.CompareTag("HidingObject")
                 || col.gameObject.CompareTag("SolidObject")
-                || (col.gameObject.transform.CompareTag("Player") && col.gameObject.transform.tag != Owner.tag)
-                || (col.gameObject.transform.CompareTag("Enemy") && col.gameObject.transform.tag != Owner.tag && !col.gameObject.transform.GetComponentInParent<EnemyController>().State.Exists(s => s == StateEnum.Dead)))
+                || (col.gameObject.transform.parent.CompareTag("Player") && col.gameObject.transform.parent.tag != Owner.tag)
+                || (col.gameObject.transform.parent.CompareTag("Enemy") && col.gameObject.transform.parent.tag != Owner.tag && !col.gameObject.transform.GetComponentInParent<EnemyController>().State.Exists(s => s == StateEnum.Dead)))
             {
                 Destroy(gameObject);
             }
