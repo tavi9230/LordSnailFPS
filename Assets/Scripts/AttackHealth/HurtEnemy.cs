@@ -31,11 +31,8 @@ public class HurtEnemy : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         var isProjectile = DamageToGive.Count > 0;
-
         // if player attacks with melee
-        //if (!isProjectile && playerController.fieldOfView.visibleTargets.Count > 0
-        //    && playerController.fieldOfView.visibleTargets.Find(t => t.GetComponentInParent<EnemyController>() != null && t.GetComponentInParent<EnemyController>().Equals(other.GetComponentInParent<EnemyController>())))
-        if (!isProjectile && playerController.gameObjectInSight == other.gameObject && other.GetComponentInParent<PlayerController>() != null)
+        if (!isProjectile && playerController.gameObjectInSight == other.gameObject && gameObject.GetComponentInParent<PlayerController>() != null)
         {
             if (!Physics.Raycast(playerController.fieldOfView.transform.position, playerController.transform.forward, 2, playerController.fieldOfView.obstacleMask))
             {
@@ -44,14 +41,13 @@ public class HurtEnemy : MonoBehaviour
             }
         }
         // if player attacks with projectile
-        else if (isProjectile && other.GetComponentInParent<EnemyController>() != null && !projectileController.Owner.CompareTag("Enemy")
-            && other.GetComponentInParent<PlayerController>() != null)
+        else if (isProjectile && other.GetComponentInParent<EnemyController>() != null && projectileController.Owner.CompareTag("Player"))
         {
             PlayerAttack(isProjectile, other);
         }
 
         //if enemy attacks with melee
-        if (!isProjectile && gameObject.GetComponentInParent<EnemyController>() && other.gameObject.GetComponentInParent<PlayerController>() != null)
+        if (!isProjectile && gameObject.GetComponentInParent<EnemyController>() != null && other.gameObject.GetComponentInParent<PlayerController>() != null)
         {
             EnemyAttack(isProjectile, other);
         }
@@ -61,91 +57,13 @@ public class HurtEnemy : MonoBehaviour
             Debug.Log("projectile hit");
             EnemyAttack(isProjectile, other);
         }
-        //Debug.Log("Hit Enemy");
-        //var isProjectile = DamageToGive.Count > 0;
 
-        //// Check owner of attack and if enemy, shouldn't hurt
-        //if ((other.GetComponentInParent<EnemyController>() != null && isProjectile && !projectileController.Owner.CompareTag("Enemy"))
-        //    || (other.GetComponentInParent<EnemyController>() != null && !isProjectile && gameObject.GetComponentInParent<EnemyController>() == null))
-        //{
-        //    EnemyController enemyController = other.GetComponentInParent<EnemyController>();
-        //    if (!enemyController.State.Exists(s => s == StateEnum.Dead))
-        //    {
-        //        EnemyHealthManager enemyHealthManager = other.gameObject.GetComponent<EnemyHealthManager>();
-        //        var dmg = isProjectile ? DamageToGive : GetDamage();
-        //        var dmgToGive = enemyHealthManager.HurtEnemy(dmg, playerController, playerAttackType);
-
-        //        if (dmg[DamageTypeEnum.Bludgeoning].MinValue > 0 && dmg[DamageTypeEnum.Bludgeoning].MaxValue > 0)
-        //        {
-        //            if (!enemyController.Conditions.Exists(c => c == ConditionEnum.KnockedBack))
-        //            {
-        //                enemyController.Conditions.Add(ConditionEnum.KnockedBack);
-        //                enemyController.KnockBackDifference = enemyController.gameObject.transform.position - transform.position;
-        //            }
-        //        }
-        //        if (dmg[DamageTypeEnum.Piercing].MinValue > 0 && dmg[DamageTypeEnum.Piercing].MaxValue > 0)
-        //        {
-        //            if (!enemyController.Conditions.Exists(c => c == ConditionEnum.Bleeding))
-        //            {
-        //                enemyHealthManager.bleedDamage = dmgToGive / 2;
-        //                enemyController.Conditions.Add(ConditionEnum.Bleeding);
-        //            }
-        //        }
-        //        if (dmg[DamageTypeEnum.Slashing].MinValue > 0 && dmg[DamageTypeEnum.Slashing].MaxValue > 0)
-        //        {
-        //            if (!enemyController.Conditions.Exists(c => c == ConditionEnum.Staggered))
-        //            {
-        //                enemyController.StunTimer = 1.2f;
-        //                enemyController.Conditions.Add(ConditionEnum.Staggered);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //if (other.gameObject.CompareTag("HidingObject"))
-        //{
-        //    ObjectHealthManager objectHealthManager = other.gameObject.GetComponent<ObjectHealthManager>();
-        //    var dmg = isProjectile ? DamageToGive : GetDamage();
-        //    objectHealthManager.HurtObject(dmg);
-        //}
-
-        //// Check owner of attack and if player, shouldn't hurt
-        //if ((other.GetComponentInParent<PlayerController>() != null && isProjectile && !projectileController.Owner.CompareTag("Player"))
-        //    || (other.GetComponentInParent<PlayerController>() != null && !isProjectile && gameObject.GetComponentInParent<PlayerController>() == null))
-        //{
-        //    HealthManager hm = other.gameObject.GetComponent<HealthManager>();
-        //    var enemyController = projectileController != null ? projectileController.Owner.GetComponent<EnemyController>() : gameObject.GetComponentInParent<EnemyController>();
-        //    if (enemyController != null)
-        //    {
-        //        var dmg = DamageToGive.Count > 0 ? DamageToGive : enemyController.Stats.RightHandAttack.Damage;
-        //        var dmgToGive = hm.HurtPlayer(dmg, enemyController);
-
-        //        if (dmg[DamageTypeEnum.Bludgeoning].MinValue > 0 && dmg[DamageTypeEnum.Bludgeoning].MaxValue > 0)
-        //        {
-        //            if (!playerController.Conditions.Exists(c => c == ConditionEnum.KnockedBack))
-        //            {
-        //                playerController.Conditions.Add(ConditionEnum.KnockedBack);
-        //                playerController.KnockBackDifference = playerController.gameObject.transform.position - transform.position;
-        //            }
-        //        }
-        //        if (dmg[DamageTypeEnum.Piercing].MinValue > 0 && dmg[DamageTypeEnum.Piercing].MaxValue > 0)
-        //        {
-        //            if (!playerController.Conditions.Exists(c => c == ConditionEnum.Bleeding))
-        //            {
-        //                hm.bleedDamage = dmgToGive / 2;
-        //                playerController.Conditions.Add(ConditionEnum.Bleeding);
-        //            }
-        //        }
-        //        if (dmg[DamageTypeEnum.Slashing].MinValue > 0 && dmg[DamageTypeEnum.Slashing].MaxValue > 0)
-        //        {
-        //            if (!playerController.Conditions.Exists(c => c == ConditionEnum.Staggered))
-        //            {
-        //                playerController.StunTimer = 1.2f;
-        //                playerController.Conditions.Add(ConditionEnum.Staggered);
-        //            }
-        //        }
-        //    }
-        //}
+        if (other.gameObject.CompareTag("HidingObject"))
+        {
+            ObjectHealthManager objectHealthManager = other.gameObject.GetComponent<ObjectHealthManager>();
+            var dmg = isProjectile ? DamageToGive : GetDamage();
+            objectHealthManager.HurtObject(dmg);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)

@@ -7,11 +7,10 @@ public class PlayerCollisionChecker : MonoBehaviour
 
     public void Start()
     {
-        sprite = gameObject.GetComponentInParent<SpriteRenderer>();
         playerController = gameObject.GetComponentInParent<PlayerController>();
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("HideableObject"))
         {
@@ -19,11 +18,11 @@ public class PlayerCollisionChecker : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("HideableObject"))
         {
-            sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, 1f);
+            playerController.animationController.SetCrouching(false);
             playerController.RemoveCondition(ConditionEnum.Invisible);
             playerController.AddCondition(ConditionEnum.Visible);
         }
@@ -31,7 +30,7 @@ public class PlayerCollisionChecker : MonoBehaviour
 
     private void HidePlayer()
     {
-        sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, 0.5f);
+        playerController.animationController.SetCrouching(true);
         playerController.RemoveCondition(ConditionEnum.Visible);
         playerController.AddCondition(ConditionEnum.Invisible);
     }

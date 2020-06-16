@@ -205,12 +205,14 @@ public class PlayerController : MonoBehaviour
                     if (State.Exists(s => s == StateEnum.Crouching))
                     {
                         State.Remove(StateEnum.Crouching);
+                        animationController.SetCrouching(false);
                         InventoryManager.UpdateStats(Stats);
                         //GameObject.Find("Map").transform.GetChild(2).gameObject.layer = Constants.LAYER_DEFAULT;
                     }
                     else
                     {
                         State.Add(StateEnum.Crouching);
+                        animationController.SetCrouching(true);
                         InventoryManager.UpdateStats(Stats);
                         //GameObject.Find("Map").transform.GetChild(2).gameObject.layer = Constants.LAYER_SOLID_OBJECTS;
                     }

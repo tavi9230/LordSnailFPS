@@ -7,7 +7,7 @@
     Hidden,
     Dragging,
     DraggingStart,
-    InCombat,
+    Hunting,
     Crouching,
     Attacking,
     IsChargingLeftAttack,

@@ -311,30 +311,37 @@ public class EnemyController : MonoBehaviour
             var isWithinViewRange = playerController.State.Exists(s => s == StateEnum.Dead) ? false : Vector3.Distance(playerPosition, myPosition) <= Stats.ViewDistance;
 
             RecalculateStamina(true);
-            
+
             CheckKnockback();
             CheckStaggered();
             CheckInspectingState();
-            CheckCombatState();
+            CheckHuntState();
             CheckHealth();
 
             if (!Conditions.Exists(c => c == ConditionEnum.Stunned) && !State.Exists(s => s == StateEnum.Inspecting))
             {
-                // When seeing something suspicious for the first time
-                if (PlayerShadow == null && fieldOfView.IsPlayerInSight
-                    && !State.Exists(s => s == StateEnum.SawSomethingSuspicious)
-                    && !State.Exists(s => s == StateEnum.InCombat))
+                if (playerController.Conditions.Exists(c => c == ConditionEnum.Visible))
                 {
-                    if (Vector3.Distance(myPosition, playerPosition) >= 3f)
-                    {
-                        State.Remove(StateEnum.Lookout);
-                        State.Remove(StateEnum.Patrolling);
-                        State.Add(StateEnum.SawSomethingSuspicious);
-                        PlayerShadow = Instantiate(gameManager.InventoryItems["ammo1"].GameObject, playerPosition, Quaternion.identity);
-                    }
-                    else
+                    if (fieldOfView.IsPlayerInSight && Vector3.Distance(myPosition, playerPosition) < 3f)
                     {
                         StartHunt();
+                    }
+                    // When seeing something suspicious for the first time
+                    if (PlayerShadow == null && fieldOfView.IsPlayerInSight
+                        && !State.Exists(s => s == StateEnum.SawSomethingSuspicious)
+                        && !State.Exists(s => s == StateEnum.Hunting))
+                    {
+                        if (Vector3.Distance(myPosition, playerPosition) >= 3f)
+                        {
+                            State.Remove(StateEnum.Lookout);
+                            State.Remove(StateEnum.Patrolling);
+                            State.Add(StateEnum.SawSomethingSuspicious);
+                            PlayerShadow = Instantiate(gameManager.InventoryItems["ammo1"].GameObject, playerPosition, Quaternion.identity);
+                        }
+                        else
+                        {
+                            StartHunt();
+                        }
                     }
                 }
 
@@ -359,7 +366,7 @@ public class EnemyController : MonoBehaviour
                     }
                 }
 
-                if (State.Exists(s => s == StateEnum.InCombat))
+                if (State.Exists(s => s == StateEnum.Hunting))
                 {
                     State.Remove(StateEnum.Dragging);
                     DraggedObject = null;
@@ -368,6 +375,7 @@ public class EnemyController : MonoBehaviour
                     //if in combat but not in range, go to player
                     if (fieldOfView.IsPlayerInSight && Vector3.Distance(myPosition, playerPosition) > attackRange)
                     {
+                        fieldOfView.SetFoV(360);
                         huntCounter = waitToEndHuntTimer;
                         Destroy(PlayerShadow);
                         PlayerShadow = Instantiate((GameObject)Resources.Load("Prefabs/PlayerShadow"), playerPosition, Quaternion.identity);
@@ -379,7 +387,10 @@ public class EnemyController : MonoBehaviour
                     // if in combat and in range, attack the player
                     else if (fieldOfView.IsPlayerInSight && Vector3.Distance(myPosition, playerPosition) <= attackRange)
                     {
+                        fieldOfView.SetFoV(360);
+                        navMeshAgent.isStopped = true;
                         Destroy(PlayerShadow);
+                        PlayerShadow = Instantiate((GameObject)Resources.Load("Prefabs/PlayerShadow"), playerPosition, Quaternion.identity);
                         huntCounter = waitToEndHuntTimer;
                         Vector3 lookAt = new Vector3(playerPosition.x, transform.position.y, playerPosition.z);
                         transform.LookAt(lookAt);
@@ -398,8 +409,6 @@ public class EnemyController : MonoBehaviour
                         else
                         {
                             // TODO: Search for player or go to random spots?
-                            // TODO: Check playerPosition +/- offset
-                            //MoveToPoint(gameManager.MapManager.GetGridPosition(playerPosition));
                             GoToPoint(playerPosition);
                             if (Vector3.Distance(myPosition, playerPosition) <= 1.5f)
                             {
@@ -414,13 +423,13 @@ public class EnemyController : MonoBehaviour
                     }
                 }
                 // if no combat and no suspicion state
-                else if (!State.Exists(s => s == StateEnum.InCombat))
+                else if (!State.Exists(s => s == StateEnum.Hunting))
                 {
                     if (!State.Exists(s => s == StateEnum.SawSomethingSuspicious))
                     {
                         fieldOfView.SetFoV(defaultFoV);
 
-                        if (fieldOfView.IsPlayerInSight)
+                        if (fieldOfView.IsPlayerInSight && playerController.Conditions.Exists(c => c == ConditionEnum.Visible))
                         {
                             StartHunt();
                         }
@@ -500,6 +509,7 @@ public class EnemyController : MonoBehaviour
 
     private void GoToPoint(Vector3 point)
     {
+        navMeshAgent.isStopped = false;
         navMeshAgent.speed = Stats.TotalSpeed;
         navMeshAgent.SetDestination(point);
     }
@@ -594,13 +604,10 @@ public class EnemyController : MonoBehaviour
                 State.Remove(StateEnum.Inspecting);
                 Debug.Log("End Inspecting");
             }
-            if (fieldOfView.IsPlayerInSight)
+            if (fieldOfView.IsPlayerInSight && playerController.Conditions.Exists(c => c == ConditionEnum.Visible))
             {
                 State.Remove(StateEnum.Inspecting);
-                if (!State.Exists(s => s == StateEnum.InCombat))
-                {
-                    StartHunt();
-                }
+                StartHunt();
             }
         }
     }
@@ -616,13 +623,16 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void CheckCombatState()
+    private void CheckHuntState()
     {
-        if (State.Exists(s => s == StateEnum.InCombat) && huntCounter <= 0)
+        if (State.Exists(s => s == StateEnum.Hunting))
         {
-            State.Remove(StateEnum.InCombat);
-            huntCounter = waitToEndHuntTimer;
-            Debug.Log("End Hunt");
+            if (huntCounter <= 0)
+            {
+                State.Remove(StateEnum.Hunting);
+                huntCounter = waitToEndHuntTimer;
+                Debug.Log("End Hunt");
+            }
         }
     }
 
@@ -686,7 +696,7 @@ public class EnemyController : MonoBehaviour
 
     private void SetAttackPower()
     {
-        if (State.Exists(s => s == StateEnum.InCombat) && !State.Exists(s => s == StateEnum.Attacking))
+        if (State.Exists(s => s == StateEnum.Hunting) && !State.Exists(s => s == StateEnum.Attacking))
         {
             List<Damage> playerResistances = new List<Damage>();
             foreach (DamageTypeEnum dmgType in playerController.Stats.Resistances.Keys)
@@ -1135,13 +1145,12 @@ public class EnemyController : MonoBehaviour
 
     public void StartHunt()
     {
-        Debug.Log("START HUNT");
         fieldOfView.SetFoV(360);
         State.Remove(StateEnum.Patrolling);
         State.Remove(StateEnum.Lookout);
-        if (!State.Exists(s => s == StateEnum.InCombat))
+        if (!State.Exists(s => s == StateEnum.Hunting))
         {
-            State.Add(StateEnum.InCombat);
+            State.Add(StateEnum.Hunting);
         }
         huntCounter = waitToEndHuntTimer;
     }
