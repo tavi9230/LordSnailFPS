@@ -84,22 +84,191 @@ public class EnemyInventoryManager : InventoryManager
         }
     }
 
-    public InventoryItem GetBestWeapon(List<Damage> playerResistances, AttackDistanceEnum attackDistance)
+    public InventoryItem GetBestWeapon(Stats stats, List<Damage> playerResistances, AttackDistanceEnum attackDistance)
     {
         InventoryItem item = null;
         if (attackDistance == AttackDistanceEnum.Close)
         {
-            //item = new InventoryItem();
-            item = new InventoryItem(gameManager.InventoryItems["sword1"], true);
+            item = GetBestMeleeWeapon();
+            //item = new InventoryItem(gameManager.InventoryItems["sword1"], true);
         }
 
         if (attackDistance == AttackDistanceEnum.Far)
         {
-            // TODO: Check for ammo
-            //item = new InventoryItem();
-            item = new InventoryItem(gameManager.InventoryItems["bow1"], true);
+            item = GetBestRangedWeapon();
+            if (item == null)
+            {
+                item = GetBestMeleeWeapon();
+            }
+            //item = new InventoryItem(gameManager.InventoryItems["bow1"], true);
+        }
+
+        if (item == null)
+        {
+            item = GetFist(stats);
         }
 
         return item;
+    }
+
+    private bool IsMeleeWeapon(string hand)
+    {
+        return (Inventory[hand].ItemCategory == ItemCategoryEnum.Axe
+            || Inventory[hand].ItemCategory == ItemCategoryEnum.Club
+            || Inventory[hand].ItemCategory == ItemCategoryEnum.Dagger
+            || Inventory[hand].ItemCategory == ItemCategoryEnum.Hammer
+            || Inventory[hand].ItemCategory == ItemCategoryEnum.Spear
+            || Inventory[hand].ItemCategory == ItemCategoryEnum.Sword
+            || Inventory[hand].ItemCategory == ItemCategoryEnum.Other)
+                && Inventory[hand].Type == ItemTypeEnum.Weapon
+                && Inventory[hand].Range.Value <= 2
+                && Inventory[hand].Durability.Value > 0;
+    }
+
+    private bool IsRangedWeapon(string hand, string otherHand)
+    {
+        return (Inventory[hand].ItemCategory == ItemCategoryEnum.Bow
+                || Inventory[hand].ItemCategory == ItemCategoryEnum.Crossbow
+                || Inventory[hand].ItemCategory == ItemCategoryEnum.Other)
+                    && Inventory[hand].Type == ItemTypeEnum.Weapon
+                    && Inventory[hand].Range.Value >= 2
+                    && Inventory[hand].Durability.Value > 0
+                    && Inventory[otherHand].Quantity.Value > 0;
+    }
+
+    private InventoryItem GetBestMeleeWeapon()
+    {
+        InventoryItem item = null;
+        //item = new InventoryItem();
+        if (IsMeleeWeapon("leftHand"))
+        {
+            item = new InventoryItem(Inventory["leftHand"], true);
+        }
+        if (IsMeleeWeapon("rightHand"))
+        {
+            if (item != null)
+            {
+                if (CompareTotalDamage(item, Inventory["rightHand"]) == -1)
+                {
+                    item = new InventoryItem(Inventory["rightHand"], true);
+                }
+            }
+            else
+            {
+                item = new InventoryItem(Inventory["rightHand"], true);
+            }
+        }
+        if (IsMeleeWeapon("alternateLeftHand"))
+        {
+            if (item != null)
+            {
+                if (CompareTotalDamage(item, Inventory["alternateLeftHand"]) == -1)
+                {
+                    item = new InventoryItem(Inventory["alternateLeftHand"], true);
+                }
+            }
+            else
+            {
+                item = new InventoryItem(Inventory["alternateLeftHand"], true);
+            }
+        }
+        if (IsMeleeWeapon("alternateRightHand"))
+        {
+            if (item != null)
+            {
+                if (CompareTotalDamage(item, Inventory["alternateRightHand"]) == -1)
+                {
+                    item = new InventoryItem(Inventory["alternateRightHand"], true);
+                }
+            }
+            else
+            {
+                item = new InventoryItem(Inventory["alternateRightHand"], true);
+            }
+        }
+
+        //item = new InventoryItem(gameManager.InventoryItems["sword1"], true);
+        return item;
+    }
+
+    private InventoryItem GetBestRangedWeapon()
+    {
+        InventoryItem item = null;
+        if (IsRangedWeapon("leftHand", "rightHand"))
+        {
+            item = new InventoryItem(Inventory["leftHand"], true);
+        }
+        if (IsRangedWeapon("rightHand", "leftHand"))
+        {
+            if (item != null)
+            {
+                if (CompareTotalDamage(item, Inventory["rightHand"]) == -1)
+                {
+                    item = new InventoryItem(Inventory["rightHand"], true);
+                }
+            }
+            else
+            {
+                item = new InventoryItem(Inventory["rightHand"], true);
+            }
+        }
+        if (IsRangedWeapon("alternateLeftHand", "alternateRightHand"))
+        {
+            if (item != null)
+            {
+                if (CompareTotalDamage(item, Inventory["alternateLeftHand"]) == -1)
+                {
+                    item = new InventoryItem(Inventory["alternateLeftHand"], true);
+                }
+            }
+            else
+            {
+                item = new InventoryItem(Inventory["alternateLeftHand"], true);
+            }
+        }
+        if (IsRangedWeapon("alternateRightHand", "alternateLeftHand"))
+        {
+            if (item != null)
+            {
+                if (CompareTotalDamage(item, Inventory["alternateRightHand"]) == -1)
+                {
+                    item = new InventoryItem(Inventory["alternateRightHand"], true);
+                }
+            }
+            else
+            {
+                item = new InventoryItem(Inventory["alternateRightHand"], true);
+            }
+        }
+
+        //item = new InventoryItem(gameManager.InventoryItems["bow1"], true);
+        return item;
+    }
+
+    private int CompareTotalDamage(InventoryItem item, InventoryItem itemToCompare)
+    {
+        float itemSum = 0;
+        float itemToCompareSum = 0;
+        foreach (var dmgType in item.Damage.Keys)
+        {
+            itemSum += item.Damage[dmgType].MaxValue;
+        }
+        foreach (var dmgType in itemToCompare.Damage.Keys)
+        {
+            itemToCompareSum += itemToCompare.Damage[dmgType].MaxValue;
+        }
+
+        if (itemSum > itemToCompareSum)
+        {
+            return 1;
+        }
+        else if (itemSum == itemToCompareSum)
+        {
+            return 0;
+        }
+        else
+        {
+            return -1;
+        }
     }
 }

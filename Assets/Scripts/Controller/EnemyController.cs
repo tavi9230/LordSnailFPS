@@ -702,8 +702,9 @@ public class EnemyController : MonoBehaviour
             Stats.RightHandAttack.Attack.Skill = null;
             Stats.LeftHandAttack.Attack.Item = null;
             Stats.LeftHandAttack.Attack.Skill = null;
-            InventoryItem bestMeleeWpn = InventoryManager.GetBestWeapon(playerResistances, AttackDistanceEnum.Close);
-            InventoryItem bestRangedWpn = InventoryManager.GetBestWeapon(playerResistances, AttackDistanceEnum.Far);
+            // TODO: Also equip the best melee/ranged wpn in the correct hand
+            InventoryItem bestMeleeWpn = InventoryManager.GetBestWeapon(Stats, playerResistances, AttackDistanceEnum.Close);
+            InventoryItem bestRangedWpn = InventoryManager.GetBestWeapon(Stats, playerResistances, AttackDistanceEnum.Far);
             Skill bestCloseSkill = Stats.GetBestSkill(playerResistances, AttackDistanceEnum.Close);
             Skill bestRangedSkill = Stats.GetBestSkill(playerResistances, AttackDistanceEnum.Far);
 

@@ -30,7 +30,8 @@ public class ProjectileController : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, 100))
             {
-                if (!hit.collider.transform.parent.CompareTag("Player"))
+                if (!hit.collider.transform.CompareTag("Player")
+                    || hit.collider.transform.parent != null && hit.collider.transform.parent.CompareTag("Player"))
                 {
                     direction = hit.point;
                 }
