@@ -4,6 +4,7 @@ public class PlayerCollisionChecker : MonoBehaviour
 {
     private SpriteRenderer sprite;
     private PlayerController playerController;
+    private bool isHidden;
 
     public void Start()
     {
@@ -22,9 +23,25 @@ public class PlayerCollisionChecker : MonoBehaviour
     {
         if (other.gameObject.CompareTag("HideableObject"))
         {
-            playerController.animationController.SetCrouching(false);
-            playerController.RemoveCondition(ConditionEnum.Invisible);
-            playerController.AddCondition(ConditionEnum.Visible);
+            bool shouldUncrouch = true;
+            Collider[] colliders = Physics.OverlapSphere(transform.position, .1f);
+            foreach(var collider in colliders)
+            {
+                if (collider.CompareTag("HideableObject"))
+                {
+                    shouldUncrouch = false;
+                }
+            }
+            if (shouldUncrouch)
+            {
+                Debug.Log("exit bush");
+                if (!playerController.State.Exists(s => s == StateEnum.Crouching))
+                {
+                    playerController.animationController.SetCrouching(false);
+                }
+                playerController.RemoveCondition(ConditionEnum.Invisible);
+                playerController.AddCondition(ConditionEnum.Visible);
+            }
         }
     }
 

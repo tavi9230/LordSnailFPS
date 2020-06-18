@@ -116,7 +116,7 @@ MonoBehaviour:
   m_MinSize: {x: 913, y: 344}
   m_MaxSize: {x: 22010, y: 10022}
   vertical: 0
-  controlID: 211
+  controlID: 215
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -222,7 +222,7 @@ MonoBehaviour:
   m_MinSize: {x: 204, y: 344}
   m_MaxSize: {x: 4004, y: 8044}
   vertical: 1
-  controlID: 79
+  controlID: 119
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -268,8 +268,8 @@ MonoBehaviour:
     y: 944
     width: 446
     height: 364
-  m_MinSize: {x: 104, y: 122}
-  m_MaxSize: {x: 4004, y: 4022}
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 21}
   m_Panes:
   - {fileID: 21}
@@ -445,9 +445,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -0.9478508, y: -0.0017788857, z: -4.6212273}
+    m_Target: {x: 0.86280674, y: 1.009265, z: 1.7641869}
     speed: 2
-    m_Value: {x: -0.9478508, y: -0.0017788857, z: -4.6212273}
+    m_Value: {x: 0.86280674, y: 1.009265, z: 1.7641869}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -476,13 +476,13 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: 0.11743332, y: -0.6851091, z: 0.112481065, w: 0.7103069}
+    m_Target: {x: -0.00020913978, y: 0.43895078, z: 0.00086602365, w: -0.8987117}
     speed: 2
-    m_Value: {x: 0.117412604, y: -0.6849882, z: 0.112461224, w: 0.7101816}
+    m_Value: {x: -0.00020910201, y: 0.4388715, z: 0.00086586725, w: -0.8985494}
   m_Size:
-    m_Target: 9.099483
+    m_Target: 7.2383933
     speed: 2
-    m_Value: 9.099483
+    m_Value: 7.2383933
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -1073,7 +1073,7 @@ MonoBehaviour:
   m_ViewDataDictionary: {fileID: 0}
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: 27752
+  m_LastSelectedObjectID: -5120
 --- !u!114 &20
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -1103,9 +1103,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 686c0000
-      m_LastClickedID: 27752
-      m_ExpandedIDs: 70eeffff3efbffff24690000926b0000686c00003e750000
+      m_SelectedIDs: 00ecffff
+      m_LastClickedID: -5120
+      m_ExpandedIDs: d6e2ffffcae4ffff10ecffff88eeffff6afbffff30690000766c0000ac7000004c7500006a770000ca790000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1194,20 +1194,20 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Animations/Player
+    - Assets/Art
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Animations/Player
+  - Assets/Art
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Unity Projects\LordSnailFPS
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 084e0000
-    m_LastClickedID: 19976
-    m_ExpandedIDs: 00000000fc300000f033000082350000bc380000043b0000043d0000ac3f0000884400006e6100007862000018630000326300007a660000
+    m_SelectedIDs: b84b0000
+    m_LastClickedID: 19384
+    m_ExpandedIDs: 00000000f6300000ea3300007c350000b6380000fe3a0000003d0000aa3f000088440000726100007c6200001e6300003863000082660000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1235,7 +1235,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000fc300000f033000082350000bc380000043b0000043d0000ac3f0000884400007862000018630000326300007a660000
+    m_ExpandedIDs: 00000000f6300000ea3300007c350000b6380000fe3a0000003d0000aa3f000088440000726100007c6200001e6300003863000082660000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1262,7 +1262,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: 3053000032270100dc330000709d0000f4690000664a000000000000445f0000fea40700
     m_RenameOverlay:
       m_UserAcceptedRename: 0

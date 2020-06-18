@@ -194,17 +194,51 @@ public class FieldOfView : MonoBehaviour
         for (int i = 0; i < targetsInViewRadius.Length; i++)
         {
             Transform target = targetsInViewRadius[i].transform;
-            Vector3 dirToTarget = (target.position - transform.position).normalized;
+            Vector3 targetPosition = GetTargetPosition(target);
+
+            Vector3 dirToTarget = (targetPosition - transform.position).normalized;
             if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)
             {
-                Vector3 targetPos = new Vector3(target.position.x, transform.position.y, target.position.z);
+                Vector3 targetPos = new Vector3(targetPosition.x, transform.position.y, targetPosition.z);
                 float disToTarget = Vector3.Distance(transform.position, targetPos);
+                // TODO: Check why when near enemy, player is not detected
                 if (!Physics.Raycast(transform.position, dirToTarget, disToTarget, obstacleMask))
                 {
+                    if (transform.GetComponentInParent<EnemyController>())
+                    {
+                        Debug.DrawLine(transform.position, targetPosition, Color.white);
+                    }
                     visibleTargets.Add(target);
                 }
             }
         }
+    }
+
+    Vector3 GetTargetPosition(Transform target)
+    {
+        if (target.GetComponentInParent<PlayerController>() && transform.GetComponentInParent<EnemyController>())
+        {
+            Vector3 position;
+            PlayerController playerController = target.GetComponentInParent<PlayerController>();
+            Transform body = target.GetChild(target.childCount - 1);
+            if (playerController.State.Exists(s => s == StateEnum.Crouching) || playerController.Conditions.Exists(c => c == ConditionEnum.Invisible))
+            {
+                if (body.position.y > 0)
+                {
+                    position = body.position;
+                }
+                else
+                {
+                    position = new Vector3(body.position.x, .45f, body.position.z);
+                }
+            }
+            else
+            {
+                position = body.position;
+            }
+            return position;
+        }
+        return target.position;
     }
 
     public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)

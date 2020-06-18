@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class ProjectileController : MonoBehaviour
@@ -81,15 +82,22 @@ public class ProjectileController : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
-        if (col != null && col.gameObject != null)
+        try
         {
-            if (col.gameObject.CompareTag("HidingObject")
-                || col.gameObject.CompareTag("SolidObject")
-                || (col.gameObject.transform.parent.CompareTag("Player") && col.gameObject.transform.parent.tag != Owner.tag)
-                || (col.gameObject.transform.parent.CompareTag("Enemy") && col.gameObject.transform.parent.tag != Owner.tag && !col.gameObject.transform.GetComponentInParent<EnemyController>().State.Exists(s => s == StateEnum.Dead)))
+            if (col != null && col.gameObject != null)
             {
-                Destroy(gameObject);
+                if (col.gameObject.CompareTag("HidingObject")
+                    || col.gameObject.CompareTag("SolidObject")
+                    || (col.gameObject.transform.parent != null && col.gameObject.transform.parent.CompareTag("Player") && col.gameObject.transform.parent.tag != Owner.tag)
+                    || (col.gameObject.transform.parent != null && col.gameObject.transform.parent.CompareTag("Enemy") && col.gameObject.transform.parent.tag != Owner.tag && !col.gameObject.transform.GetComponentInParent<EnemyController>().State.Exists(s => s == StateEnum.Dead)))
+                {
+                    Destroy(gameObject);
+                }
             }
+        }
+        catch(Exception e)
+        {
+            Debug.Log(e.Message);
         }
     }
 }

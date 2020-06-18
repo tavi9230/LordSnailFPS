@@ -1,13 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
 {
+    private float crouchOffset = .8f;
+    private float standingOffset = 1.3f;
     private Animator animator;
 
     public void Start()
     {
         animator = GetComponent<Animator>();
+        standingOffset = Camera.main.transform.parent.position.y;
+        crouchOffset = standingOffset - .5f;
+    }
+
+    private IEnumerator PanCamera(bool isCrouching)
+    {
+        float timeToWait = isCrouching ? .1f : 0f;
+        yield return new WaitForSeconds(timeToWait);
+        float yOffset = isCrouching ? crouchOffset : standingOffset;
+        Camera.main.transform.parent.position = new Vector3(Camera.main.transform.parent.position.x, yOffset, Camera.main.transform.parent.position.z);
     }
 
     public void SetIsMoving(bool isMoving)
@@ -24,6 +36,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void SetCrouching(bool isCrouching)
     {
+        StartCoroutine(PanCamera(isCrouching));
         animator.SetBool("isCrouching", isCrouching);
     }
 
