@@ -26,7 +26,7 @@ namespace UnityStandardAssets.Cameras
         private const float k_LookDistance = 100f;    // How far in front of the pivot the character's look target is.
         private Vector3 m_PivotEulers;
         private Quaternion m_PivotTargetRot;
-        private Quaternion m_TransformTargetRot;
+        public Quaternion m_TransformTargetRot;
 
         protected override void Awake()
         {
@@ -82,8 +82,12 @@ namespace UnityStandardAssets.Cameras
             // Rotate the rig (the root object) around Y axis only:
             m_TransformTargetRot = Quaternion.Euler(0f, m_LookAngle, 0f);
 
-            var player = GameObject.Find("Player").transform;
-            player.localRotation = m_TransformTargetRot;
+            //var uimanager = GameObject.Find("UI");
+            //if (uimanager.GetComponent<UIManager>().PlayerInfoUI.activeSelf == false)
+            //{
+            //    var player = GameObject.Find("Player").transform;
+            //    player.localRotation = m_TransformTargetRot;
+            //}
             //player.GetChild(2).localRotation = m_TransformTargetRot;
             //var fov = GameObject.Find("Player").transform.GetChild(1).transform;
             //fov.localRotation = m_TransformTargetRot;

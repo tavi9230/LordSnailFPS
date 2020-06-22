@@ -62,14 +62,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\SampleScenes\Menu\Scripts\MenuSceneLoader.cs" />
-    <Compile Include="Assets\SampleScenes\Menu\Scripts\PauseMenu.cs" />
-    <Compile Include="Assets\SampleScenes\Menu\Scripts\SceneAndURLLoader.cs" />
-    <Compile Include="Assets\SampleScenes\Scripts\CameraSwitch.cs" />
-    <Compile Include="Assets\SampleScenes\Scripts\LevelReset.cs" />
-    <Compile Include="Assets\SampleScenes\Scripts\ParticleSceneControls.cs" />
-    <Compile Include="Assets\SampleScenes\Scripts\PlaceTargetWithMouse.cs" />
-    <Compile Include="Assets\SampleScenes\Scripts\SlowMoButton.cs" />
     <Compile Include="Assets\Scripts\AttackHealth\Attack.cs" />
     <Compile Include="Assets\Scripts\AttackHealth\EnemyHealthManager.cs" />
     <Compile Include="Assets\Scripts\AttackHealth\HealthManager.cs" />
@@ -143,10 +135,8 @@
     <Compile Include="Assets\Scripts\UI\SkillStatus.cs" />
     <Compile Include="Assets\Scripts\UI\UIManager.cs" />
     <None Include="Assets\Resources\Settings\items.xml" />
-    <None Include="Assets\BodyGuards\ReadMe.txt.txt" />
     <None Include="Assets\Resources\Settings\enemies.xml" />
     <None Include="Assets\Resources\Settings\skills.xml" />
-    <None Include="Assets\SampleScenes\Shaders\Skybox-Procedural.shader" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

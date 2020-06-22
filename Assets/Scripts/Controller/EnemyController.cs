@@ -840,6 +840,13 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    public void OpenEnemyInventory()
+    {
+        uiManager.InspectedEnemy = gameObject;
+        uiManager.CloseEnemyInfo();
+        uiManager.OpenEnemyInventory(InventoryManager, gameObject);
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         CheckIfStashedAways(other);

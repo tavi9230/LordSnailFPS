@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
             velocity.y += gravity * Time.deltaTime;
 
             controller.Move(velocity * Time.deltaTime);
-            animationController.SetIsMoving(x != 0 || z != 0);
+            //animationController.SetIsMoving(x != 0 || z != 0);
         }
     }
 

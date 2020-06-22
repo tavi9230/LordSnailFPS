@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Cameras;
 
 public class PlayerController : MonoBehaviour
 {
@@ -103,6 +104,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (uiManager.PlayerInfoUI.activeSelf == false)
+        {
+            gameObject.transform.localRotation = GameObject.Find("FreeLookCameraRig").GetComponent<FreeLookCam>().m_TransformTargetRot;
+        }
+
         CheckInFront();
         if (Input.GetKeyDown(KeyCode.M))
         {
@@ -111,6 +117,17 @@ public class PlayerController : MonoBehaviour
         RecalculateStamina(true);
         RecalculateHealth();
         RecalculateMana();
+
+        if (Input.GetKeyDown(KeyCode.E) && 
+            (gameObjectInSight.CompareTag("Enemy") || gameObjectInSight.transform.parent != null && gameObjectInSight.transform.parent.CompareTag("Enemy")))
+        {
+            EnemyController ec = gameObjectInSight.GetComponent<EnemyController>();
+            if (ec == null)
+            {
+                ec = gameObjectInSight.transform.parent.GetComponent<EnemyController>();
+            }
+            ec.OpenEnemyInventory();
+        }
 
         if (State.Exists(s => s == StateEnum.Attacking))
         {
@@ -767,7 +784,7 @@ public class PlayerController : MonoBehaviour
         hitbox.transform.rotation = transform.rotation;
     }
 
-        private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (Input.GetKeyDown(KeyCode.X) && !State.Exists(s => s == StateEnum.Crouching) &&
             (other != null && other.gameObject.CompareTag("Enemy") && other.gameObject.GetComponent<EnemyController>().State.Exists(s => s == StateEnum.Dead)

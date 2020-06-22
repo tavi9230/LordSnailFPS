@@ -34,11 +34,29 @@ public class HurtEnemy : MonoBehaviour
         // if player attacks with melee
         if (!isProjectile && playerController.gameObjectInSight == other.gameObject && gameObject.GetComponentInParent<PlayerController>() != null)
         {
-            if (!Physics.Raycast(playerController.fieldOfView.transform.position, playerController.transform.forward, 2, playerController.fieldOfView.obstacleMask))
-            {
-                Debug.Log("player MELEE attack!");
-                PlayerAttack(isProjectile, other);
-            }
+            // TODO: Don't hit through walls
+            Debug.Log("player MELEE attack!");
+            PlayerAttack(isProjectile, other);
+
+            //Vector3 tpoint = playerController.fieldOfView.transform.position + playerController.transform.forward * 2f;
+            //Debug.DrawLine(playerController.transform.position, tpoint, Color.magenta, 5);
+            //RaycastHit hit;
+            //if (Physics.Raycast(playerController.transform.position, playerController.transform.forward, out hit, 2))
+            //{
+            //    Debug.Log(hit.collider);
+            //    if (hit.collider.gameObject == other.gameObject)
+            //    {
+            //        Debug.Log("player MELEE attack!");
+            //        PlayerAttack(isProjectile, other);
+            //    }
+            //}
+
+            //if (!Physics.Raycast(playerController.fieldOfView.transform.position, playerController.transform.forward, 2, playerController.fieldOfView.obstacleMask))
+            //{
+            //    Debug.Log("player MELEE attack!");
+            //    PlayerAttack(isProjectile, other);
+            //}
+
         }
         // if player attacks with projectile
         else if (isProjectile && other.GetComponentInParent<EnemyController>() != null && projectileController.Owner.CompareTag("Player"))

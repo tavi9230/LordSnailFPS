@@ -327,7 +327,7 @@ public class UIManager : MonoBehaviour
         {
             itemDetails.RefreshDetails(item);
         }
-        
+
         if (SkillDetailsUI.activeSelf)
         {
             //Refresh SkillDetails
@@ -785,7 +785,7 @@ public class UIManager : MonoBehaviour
             }
             else
             {
-                if (inventoryManager.Inventory["inventory" + i].GameObject != null)
+                if (inventoryManager.Inventory.ContainsKey("inventory" + i) && inventoryManager.Inventory["inventory" + i].GameObject != null)
                 {
                     var inventoryItem = inventoryItems.transform.GetChild(i);
                     var removeButton = inventoryItem.transform.GetChild(1);
