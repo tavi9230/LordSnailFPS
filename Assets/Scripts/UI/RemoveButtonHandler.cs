@@ -43,7 +43,9 @@ public class RemoveButtonHandler : MonoBehaviour, IPointerClickHandler
         else if (mainParentName.StartsWith("EnemyInfo") && gameObject.transform.parent.name.StartsWith("Inventory"))
         {
             ItemStatus itemStatus = transform.parent.gameObject.transform.GetChild(0).transform.GetChild(0).GetComponent<ItemStatus>();
-            if (Vector3.Distance(FindObjectOfType<PlayerController>().transform.position, itemStatus.Owner.GetComponent<EnemyController>().transform.position) <= 1.5)
+            var playerPos = FindObjectOfType<PlayerController>().transform.position;
+            var targetPos = itemStatus.Owner.GetComponent<EnemyController>().transform.position;
+            if (Vector3.Distance(playerPos, targetPos) <= 2.5)
             {
                 itemStatus.Owner.GetComponent<EnemyController>().InventoryManager.DropItem(itemStatus.location, itemStatus.index, itemStatus.Owner);
             }

@@ -94,18 +94,21 @@ public class InventoryManager : MonoBehaviour
         return index;
     }
 
-    public void DropItem(InventoryLocationEnum location, int index, GameObject owner)
+    private Stats GetOwnerStats(GameObject owner)
     {
         Stats stats = owner.GetComponent<EnemyController>() == null
             ? owner.GetComponent<PlayerController>().Stats
             : owner.GetComponent<EnemyController>().Stats;
+        return stats;
+    }
+
+    public void DropItem(InventoryLocationEnum location, int index, GameObject owner)
+    {
+        Stats stats = GetOwnerStats(owner);
         GameObject pickups = GameObject.Find("Pickups");
 
         var item = GetItemByLocationAndIndex(location, index);
-        if (playerController != null)
-        {
-            SetItemByLocationAndIndex(location, index, new InventoryItem());
-        }
+        SetItemByLocationAndIndex(location, index, new InventoryItem(), stats);
         var pickup = Instantiate(item.GameObject, pickups.transform);
         pickup.GetComponent<Pickable>().SetInventoryItem(new InventoryItem(item));
         pickup.transform.position = owner.transform.position;
@@ -115,7 +118,7 @@ public class InventoryManager : MonoBehaviour
     public void RemoveItem(InventoryLocationEnum location, int index, Stats stats)
     {
         var item = GetItemByLocationAndIndex(location, index);
-        SetItemByLocationAndIndex(location, index, new InventoryItem());
+        SetItemByLocationAndIndex(location, index, new InventoryItem(), stats);
         UpdateStats(stats);
     }
 
@@ -161,8 +164,8 @@ public class InventoryManager : MonoBehaviour
 
         if (CanSwitchItem(iitemLocation, iitemToReplaceLocation, itemLocation, itemToReplaceLocation))
         {
-            SetItemByLocationAndIndex(itemLocation, itemIndex, iitemToReplaceLocation);
-            SetItemByLocationAndIndex(itemToReplaceLocation, itemToReplaceIndex, iitemLocation);
+            SetItemByLocationAndIndex(itemLocation, itemIndex, iitemToReplaceLocation, playerController.Stats);
+            SetItemByLocationAndIndex(itemToReplaceLocation, itemToReplaceIndex, iitemLocation, playerController.Stats);
         }
 
         UpdateStatsAndRefreshUI(playerController.Stats);
@@ -188,47 +191,50 @@ public class InventoryManager : MonoBehaviour
         return new InventoryItem();
     }
 
-    public void SetItemByLocationAndIndex(InventoryLocationEnum itemLocation, int itemIndex, InventoryItem inventoryItem)
+    public void SetItemByLocationAndIndex(InventoryLocationEnum itemLocation, int itemIndex, InventoryItem inventoryItem, Stats stats)
     {
         string iitemLocation = Helpers.GetItemLocationString(itemLocation, itemIndex);
 
         if (itemLocation == InventoryLocationEnum.Inventory)
         {
-            bool shouldRefreshHotbar = false;
-            foreach (var key in playerController.Hotbar.Keys)
+            if (playerController != null)
             {
-                if (playerController.Hotbar[key].Item != null)
+                bool shouldRefreshHotbar = false;
+                foreach (var key in playerController.Hotbar.Keys)
                 {
-                    if (playerController.Hotbar[key].Item.Compare(Inventory[Helpers.GetItemLocationString(itemLocation, itemIndex)]))
+                    if (playerController.Hotbar[key].Item != null)
                     {
-                        playerController.Hotbar[key].Item = null;
-                        shouldRefreshHotbar = true;
+                        if (playerController.Hotbar[key].Item.Compare(Inventory[Helpers.GetItemLocationString(itemLocation, itemIndex)]))
+                        {
+                            playerController.Hotbar[key].Item = null;
+                            shouldRefreshHotbar = true;
+                        }
                     }
                 }
-            }
-            if (shouldRefreshHotbar)
-            {
-                uiManager.ResetHotbar();
+                if (shouldRefreshHotbar)
+                {
+                    uiManager.ResetHotbar();
+                }
             }
         }
 
         Inventory[iitemLocation] = new InventoryItem(inventoryItem);
-        if (itemLocation == InventoryLocationEnum.LeftHand && playerController.Stats.LeftHandAttack.Attack.Item != null)
+        if (itemLocation == InventoryLocationEnum.LeftHand && stats.LeftHandAttack.Attack.Item != null)
         {
-            playerController.Stats.LeftHandAttack.Attack.Replace(Inventory[iitemLocation], true);
+            stats.LeftHandAttack.Attack.Replace(Inventory[iitemLocation], true);
         }
-        if (itemLocation == InventoryLocationEnum.RightHand && playerController.Stats.RightHandAttack.Attack.Item != null)
+        if (itemLocation == InventoryLocationEnum.RightHand && stats.RightHandAttack.Attack.Item != null)
         {
-            playerController.Stats.RightHandAttack.Attack.Replace(Inventory[iitemLocation], true);
+            stats.RightHandAttack.Attack.Replace(Inventory[iitemLocation], true);
         }
 
         if (itemLocation == InventoryLocationEnum.AlternateLeftHand)
         {
-            playerController.Stats.LeftHandAttack.Attack.Replace(Inventory[iitemLocation]);
+            stats.LeftHandAttack.Attack.Replace(Inventory[iitemLocation]);
         }
         if (itemLocation == InventoryLocationEnum.AlternateRightHand)
         {
-            playerController.Stats.RightHandAttack.Attack.Replace(Inventory[iitemLocation]);
+            stats.RightHandAttack.Attack.Replace(Inventory[iitemLocation]);
         }
     }
 
