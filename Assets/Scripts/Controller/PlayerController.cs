@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.Cameras;
 
@@ -118,16 +119,24 @@ public class PlayerController : MonoBehaviour
         RecalculateHealth();
         RecalculateMana();
 
-        if (Input.GetKeyDown(KeyCode.E) && 
-            (gameObjectInSight.CompareTag("Enemy") || gameObjectInSight.transform.parent != null && gameObjectInSight.transform.parent.CompareTag("Enemy")))
+        try
         {
-            EnemyController ec = gameObjectInSight.GetComponent<EnemyController>();
-            if (ec == null)
+            if (Input.GetKeyDown(KeyCode.E) && gameObjectInSight != null &&
+                        (gameObjectInSight.CompareTag("Enemy") || gameObjectInSight.transform.parent != null && gameObjectInSight.transform.parent.CompareTag("Enemy")))
             {
-                ec = gameObjectInSight.transform.parent.GetComponent<EnemyController>();
+                EnemyController ec = gameObjectInSight.GetComponent<EnemyController>();
+                if (ec == null)
+                {
+                    ec = gameObjectInSight.transform.parent.GetComponent<EnemyController>();
+                }
+                ec.OpenEnemyInventory();
             }
-            ec.OpenEnemyInventory();
         }
+        catch(Exception e)
+        {
+            Debug.Log("Game object in sight: " + gameObjectInSight);
+        }
+        
 
         if (State.Exists(s => s == StateEnum.Attacking))
         {

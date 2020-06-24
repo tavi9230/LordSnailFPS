@@ -1102,6 +1102,7 @@ public class EnemyController : MonoBehaviour
 
     public void ShowDeadState()
     {
+        InventoryManager.UpdateStatsAndRefreshUI(Stats, gameObject);
         gameObject.layer = Constants.LAYER_SOLID_OBJECTS;
         if (fieldOfView != null)
         {

@@ -40,6 +40,8 @@ public class UIManager : MonoBehaviour
     private GameObject InventoryUI;
     private GameObject PlayerAttributesUI;
     private GameObject PlayerResistancesUI;
+
+    private GameObject EnemyInfoOwner;
     #endregion
 
     private void Awake()
@@ -92,6 +94,14 @@ public class UIManager : MonoBehaviour
 
         ShowActiveHandSlots(leftHand, playerController.Stats.LeftHandAttack);
         ShowActiveHandSlots(rightHand, playerController.Stats.RightHandAttack);
+
+        if (EnemyInfoUI.activeSelf == true)
+        {
+            if (Vector3.Distance(playerController.gameObject.transform.position, EnemyInfoOwner.transform.position) > 4)
+            {
+                CloseEnemyInfo();
+            }
+        }
     }
 
     private void ShowActiveHandSlots(Transform hand, AttackPower attackPower)
@@ -642,6 +652,7 @@ public class UIManager : MonoBehaviour
         attributesUI.SetActive(true);
         resistancesUI.SetActive(true);
         attackPowerUI.SetActive(true);
+        EnemyInfoOwner = owner;
     }
 
     public void CloseEnemyInfo()
@@ -651,6 +662,7 @@ public class UIManager : MonoBehaviour
             EnemyInfoUI.transform.GetChild(i).gameObject.SetActive(false);
         }
         EnemyInfoUI.SetActive(false);
+        EnemyInfoOwner = null;
     }
 
     private void PopulateBodyInventory(GameObject inventoryUI, InventoryManager inventoryManager, GameObject owner)

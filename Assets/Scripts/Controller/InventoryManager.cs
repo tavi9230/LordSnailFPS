@@ -108,18 +108,18 @@ public class InventoryManager : MonoBehaviour
         GameObject pickups = GameObject.Find("Pickups");
 
         var item = GetItemByLocationAndIndex(location, index);
-        SetItemByLocationAndIndex(location, index, new InventoryItem(), stats);
+        SetItemByLocationAndIndex(location, index, new InventoryItem(), owner);
         var pickup = Instantiate(item.GameObject, pickups.transform);
         pickup.GetComponent<Pickable>().SetInventoryItem(new InventoryItem(item));
         pickup.transform.position = owner.transform.position;
         UpdateStatsAndRefreshUI(stats, owner);
     }
 
-    public void RemoveItem(InventoryLocationEnum location, int index, Stats stats)
+    public void RemoveItem(InventoryLocationEnum location, int index, GameObject owner)
     {
         var item = GetItemByLocationAndIndex(location, index);
-        SetItemByLocationAndIndex(location, index, new InventoryItem(), stats);
-        UpdateStats(stats);
+        SetItemByLocationAndIndex(location, index, new InventoryItem(), owner);
+        UpdateStats(GetOwnerStats(owner));
     }
 
     public bool PickUp(InventoryItem inventoryItem)
@@ -157,18 +157,21 @@ public class InventoryManager : MonoBehaviour
         return false;
     }
 
-    public void SwitchItems(InventoryLocationEnum itemLocation, int itemIndex, InventoryLocationEnum itemToReplaceLocation, int itemToReplaceIndex)
+    public void SwitchItems(InventoryLocationEnum itemLocation, int itemIndex, GameObject itemOwner, InventoryLocationEnum itemToReplaceLocation, int itemToReplaceIndex, GameObject itemToReplaceOwner)
     {
-        var iitemLocation = GetItemByLocationAndIndex(itemLocation, itemIndex);
-        var iitemToReplaceLocation = GetItemByLocationAndIndex(itemToReplaceLocation, itemToReplaceIndex);
+        InventoryItem iitemLocation = GetItemByLocationAndIndex(itemLocation, itemIndex, itemOwner);
+        InventoryItem iitemToReplaceLocation = GetItemByLocationAndIndex(itemToReplaceLocation, itemToReplaceIndex, itemToReplaceOwner);
 
         if (CanSwitchItem(iitemLocation, iitemToReplaceLocation, itemLocation, itemToReplaceLocation))
         {
-            SetItemByLocationAndIndex(itemLocation, itemIndex, iitemToReplaceLocation, playerController.Stats);
-            SetItemByLocationAndIndex(itemToReplaceLocation, itemToReplaceIndex, iitemLocation, playerController.Stats);
+            SetItemByLocationAndIndex(itemLocation, itemIndex, iitemToReplaceLocation, itemOwner);
+            SetItemByLocationAndIndex(itemToReplaceLocation, itemToReplaceIndex, iitemLocation, itemToReplaceOwner);
         }
-
-        UpdateStatsAndRefreshUI(playerController.Stats);
+        if (itemOwner != itemToReplaceOwner)
+        {
+            UpdateStatsAndRefreshUI(GetOwnerStats(itemToReplaceOwner), itemToReplaceOwner);
+        }
+        UpdateStatsAndRefreshUI(GetOwnerStats(itemOwner), itemOwner);
     }
 
     private bool CanSwitchItem(InventoryItem item, InventoryItem itemToReplace, InventoryLocationEnum itemLocation, InventoryLocationEnum itemToReplaceLocation)
@@ -181,19 +184,27 @@ public class InventoryManager : MonoBehaviour
         return false;
     }
 
-    public InventoryItem GetItemByLocationAndIndex(InventoryLocationEnum itemLocation, int itemIndex)
+    public InventoryItem GetItemByLocationAndIndex(InventoryLocationEnum itemLocation, int itemIndex, GameObject owner = null)
     {
         if (itemLocation != InventoryLocationEnum.None)
         {
             var iitemLocation = Helpers.GetItemLocationString(itemLocation, itemIndex);
-            return Inventory[iitemLocation];
+            if (owner == null || owner.GetComponent<EnemyController>() == null)
+            {
+                return Inventory[iitemLocation];
+            }
+            else
+            {
+                return owner.GetComponent<EnemyController>().InventoryManager.Inventory[iitemLocation];
+            }
         }
         return new InventoryItem();
     }
 
-    public void SetItemByLocationAndIndex(InventoryLocationEnum itemLocation, int itemIndex, InventoryItem inventoryItem, Stats stats)
+    public void SetItemByLocationAndIndex(InventoryLocationEnum itemLocation, int itemIndex, InventoryItem inventoryItem, GameObject itemOwner)
     {
         string iitemLocation = Helpers.GetItemLocationString(itemLocation, itemIndex);
+        Stats itemOwnerStats = GetOwnerStats(itemOwner);
 
         if (itemLocation == InventoryLocationEnum.Inventory)
         {
@@ -218,23 +229,34 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
-        Inventory[iitemLocation] = new InventoryItem(inventoryItem);
-        if (itemLocation == InventoryLocationEnum.LeftHand && stats.LeftHandAttack.Attack.Item != null)
+        EnemyController ec = itemOwner.GetComponent<EnemyController>();
+        InventoryItem itm;
+        if (ec != null)
         {
-            stats.LeftHandAttack.Attack.Replace(Inventory[iitemLocation], true);
+            ec.InventoryManager.Inventory[iitemLocation] = new InventoryItem(inventoryItem);
+            itm = new InventoryItem(ec.InventoryManager.Inventory[iitemLocation]);
         }
-        if (itemLocation == InventoryLocationEnum.RightHand && stats.RightHandAttack.Attack.Item != null)
+        else
         {
-            stats.RightHandAttack.Attack.Replace(Inventory[iitemLocation], true);
+            Inventory[iitemLocation] = new InventoryItem(inventoryItem);
+            itm = new InventoryItem(Inventory[iitemLocation]);
+        }
+        if (itemLocation == InventoryLocationEnum.LeftHand && itemOwnerStats.LeftHandAttack.Attack.Item != null)
+        {
+            itemOwnerStats.LeftHandAttack.Attack.Replace(itm, true);
+        }
+        if (itemLocation == InventoryLocationEnum.RightHand && itemOwnerStats.RightHandAttack.Attack.Item != null)
+        {
+            itemOwnerStats.RightHandAttack.Attack.Replace(itm, true);
         }
 
         if (itemLocation == InventoryLocationEnum.AlternateLeftHand)
         {
-            stats.LeftHandAttack.Attack.Replace(Inventory[iitemLocation]);
+            itemOwnerStats.LeftHandAttack.Attack.Replace(itm);
         }
         if (itemLocation == InventoryLocationEnum.AlternateRightHand)
         {
-            stats.RightHandAttack.Attack.Replace(Inventory[iitemLocation]);
+            itemOwnerStats.RightHandAttack.Attack.Replace(itm);
         }
     }
 

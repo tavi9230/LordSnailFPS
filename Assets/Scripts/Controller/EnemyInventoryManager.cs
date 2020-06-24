@@ -32,12 +32,12 @@ public class EnemyInventoryManager : InventoryManager
         Inventory.Add("feet", new InventoryItem());
         Inventory.Add("alternateRightHand", new InventoryItem());
         Inventory.Add("alternateLeftHand", new InventoryItem());
+
+        UpdateStats(enemyController.Stats);
         for (var i = 0; i < enemyController.Stats.MaxInventorySlots; i++)
         {
             Inventory.Add("inventory" + i, new InventoryItem());
         }
-
-        UpdateStats(enemyController.Stats);
 
         enemyController.Stats.RightHandAttack.Attack.Item = new InventoryItem(Inventory["rightHand"], false);
         enemyController.Stats.LeftHandAttack.Attack.Item = new InventoryItem(Inventory["leftHand"], false);

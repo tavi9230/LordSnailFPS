@@ -13,10 +13,13 @@ public class ItemDropHandler : MonoBehaviour, IDropHandler
             EnemyController itemToReplaceEnemyController = itemToReplace.Owner.GetComponent<EnemyController>();
 
             var inventoryManager = FindObjectOfType<PlayerController>().InventoryManager;
-            if (itemToReplace.location != InventoryLocationEnum.None && itemEnemyController == null && itemEnemyController == null)
+            if (itemToReplace.location != InventoryLocationEnum.None)
             {
-                // TODO: send owner down to method in order for player to be able to switch items with enemy (also do some logic there)
-                inventoryManager.SwitchItems(item.location, item.index, itemToReplace.location, itemToReplace.index);
+                if(itemEnemyController != null && itemEnemyController.State.Exists(s => s == StateEnum.Dead)
+                    || itemEnemyController == null)
+                {
+                    inventoryManager.SwitchItems(item.location, item.index, item.Owner, itemToReplace.location, itemToReplace.index, itemToReplace.Owner);
+                }
             }
         }
     }

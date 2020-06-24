@@ -32,12 +32,12 @@ public class ItemButtonHandler : MonoBehaviour, IPointerClickHandler
         }
         // if enemy inventory and dead
         if (enemyController != null && enemyController.State.Exists(s => s == StateEnum.Dead)
-            && Vector3.Distance(playerController.transform.position, enemyController.transform.position) <= 1.5)
+            && Vector3.Distance(playerController.transform.position, enemyController.transform.position) <= 2.5)
         {
             if (playerController.PickUp(itemStatus.InventoryItem))
             {
                 // TODO: Check this out. Remove item works with player controller. It should either be controller neutral or pass the controller?
-                enemyController.InventoryManager.RemoveItem(itemStatus.location, itemStatus.index, enemyController.Stats);
+                enemyController.InventoryManager.RemoveItem(itemStatus.location, itemStatus.index, enemyController.gameObject);
                 uiManager.RefreshInventory(itemStatus.Owner);
             }
         }
