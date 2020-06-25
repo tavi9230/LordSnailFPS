@@ -336,7 +336,7 @@ public class EnemyController : MonoBehaviour
                             State.Remove(StateEnum.Lookout);
                             State.Remove(StateEnum.Patrolling);
                             State.Add(StateEnum.SawSomethingSuspicious);
-                            PlayerShadow = Instantiate(gameManager.InventoryItems["ammo1"].GameObject, playerPosition, Quaternion.identity);
+                            PlayerShadow = Instantiate((GameObject)Resources.Load("Prefabs/PlayerShadow"), playerPosition, Quaternion.identity);
                         }
                         else
                         {
@@ -1109,10 +1109,7 @@ public class EnemyController : MonoBehaviour
             Destroy(fieldOfView.gameObject);
         }
 
-        if (PlayerShadow != null)
-        {
-            Destroy(PlayerShadow);
-        }
+        Destroy(PlayerShadow);
 
         if (!State.Exists(s => s == StateEnum.Dead))
         {
@@ -1153,6 +1150,12 @@ public class EnemyController : MonoBehaviour
 
     public void StartHunt()
     {
+        if (!gameManager.CombatEnemyList.Contains(gameObject))
+        {
+            gameManager.CombatEnemyList.Add(gameObject);
+            Destroy(PlayerShadow);
+            PlayerShadow = Instantiate((GameObject)Resources.Load("Prefabs/PlayerShadow"), playerPosition, Quaternion.identity);
+        }
         fieldOfView.SetFoV(360);
         State.Remove(StateEnum.Patrolling);
         State.Remove(StateEnum.Lookout);

@@ -92,9 +92,6 @@ public class FreeLookCam : PivotBasedCameraRig
             var player = GameObject.Find("Player").transform;
             player.localRotation = m_TransformTargetRot;
         }
-        //player.GetChild(2).localRotation = m_TransformTargetRot;
-        //var fov = GameObject.Find("Player").transform.GetChild(1).transform;
-        //fov.localRotation = m_TransformTargetRot;
 
         if (m_VerticalAutoReturn)
         {
