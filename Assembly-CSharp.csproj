@@ -67,6 +67,10 @@
     <Compile Include="Assets\Scripts\AttackHealth\HealthManager.cs" />
     <Compile Include="Assets\Scripts\AttackHealth\HurtEnemy.cs" />
     <Compile Include="Assets\Scripts\AttackHealth\ObjectHealthManager.cs" />
+    <Compile Include="Assets\Scripts\Camera\AbstractTargetFollower.cs" />
+    <Compile Include="Assets\Scripts\Camera\FreeLookCam.cs" />
+    <Compile Include="Assets\Scripts\Camera\PivotBasedCameraRig.cs" />
+    <Compile Include="Assets\Scripts\Camera\ProtectCameraFromWallClip.cs" />
     <Compile Include="Assets\Scripts\Controller\AnimationController.cs" />
     <Compile Include="Assets\Scripts\Controller\CameraController.cs" />
     <Compile Include="Assets\Scripts\Controller\EnemyController.cs" />

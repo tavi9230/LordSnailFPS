@@ -105,11 +105,6 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (uiManager.PlayerInfoUI.activeSelf == false)
-        {
-            gameObject.transform.localRotation = GameObject.Find("FreeLookCameraRig").GetComponent<FreeLookCam>().m_TransformTargetRot;
-        }
-
         CheckInFront();
         if (Input.GetKeyDown(KeyCode.M))
         {
