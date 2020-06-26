@@ -264,8 +264,32 @@
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Cinemachine">
+      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Cinemachine.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst">
+      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.Burst.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.VSCode.Editor">
       <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ProBuilder">
+      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.ProBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Polybrush">
+      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.Polybrush.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Polybrush.Editor">
+      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.Polybrush.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst.Editor">
+      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.Burst.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ProBuilder.Editor">
+      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.ProBuilder.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ProBuilder.AssetIdRemapUtility">
+      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.ProBuilder.AssetIdRemapUtility.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
@@ -282,11 +306,23 @@
     <Reference Include="Unity.Rider.Editor">
       <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Mathematics">
+      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.Mathematics.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.2D.Sprite.Editor">
       <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Tilemap.Editor">
       <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="com.unity.cinemachine.editor">
+      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/com.unity.cinemachine.editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ProBuilder.AddOns.Editor">
+      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.ProBuilder.AddOns.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mathematics.Editor">
+      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.Mathematics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
@@ -294,44 +330,8 @@
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.ProBuilder">
-      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.ProBuilder.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.ProBuilder.Editor">
-      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.ProBuilder.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.ProBuilder.AssetIdRemapUtility">
-      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.ProBuilder.AssetIdRemapUtility.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.ProBuilder.AddOns.Editor">
-      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.ProBuilder.AddOns.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Cinemachine">
-      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Cinemachine.dll</HintPath>
-    </Reference>
-    <Reference Include="com.unity.cinemachine.editor">
-      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/com.unity.cinemachine.editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Polybrush">
-      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.Polybrush.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Polybrush.Editor">
-      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.Polybrush.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="com.unity.quicksearch">
       <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/com.unity.quicksearch.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Mathematics">
-      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.Mathematics.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Mathematics.Editor">
-      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.Mathematics.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Burst">
-      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.Burst.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Burst.Editor">
-      <HintPath>C:/Unity Projects/LordSnailFPS/Library/ScriptAssemblies/Unity.Burst.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.6f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

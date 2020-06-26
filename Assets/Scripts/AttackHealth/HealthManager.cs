@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HealthManager : MonoBehaviour
 {
     #region Variables
+    
     public List<BodyPartHitChance> bodyPartHitChance = new List<BodyPartHitChance>();
 
     public float bleedingCounter = 0f;
@@ -81,7 +83,7 @@ public class HealthManager : MonoBehaviour
     {
         float damageToGive = Attack.CalculateDamage(playerController, enemyController, damageList);
 
-        int hit = Random.Range(1, 100);
+        int hit = UnityEngine.Random.Range(1, 100);
         var hitBodyPart = bodyPartHitChance.Find(b => b.MinChance <= hit && b.MaxChance >= hit);
         InventoryItem item = playerController.InventoryManager.GetItemByLocationAndIndex(hitBodyPart.Location, 0);
 

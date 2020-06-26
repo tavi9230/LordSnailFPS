@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    //public delegate void HurtEventDelegate(Dictionary<DamageTypeEnum, Damage> damageList);
+    //public event HurtEventDelegate OnHurt;
+
     public List<GameObject> CombatEnemyList;
     public List<GameObject> EnemyList;
     public Dictionary<string, InventoryItem> InventoryItems;
@@ -71,7 +75,7 @@ public class GameManager : MonoBehaviour
 
         if (enemy.PreferedFightStyle == PreferedFightStyleEnum.None)
         {
-            int rand = Random.Range(0, 3);
+            int rand = UnityEngine.Random.Range(0, 3);
             stats.PreferedFightStyle = (PreferedFightStyleEnum)rand;
         }
 

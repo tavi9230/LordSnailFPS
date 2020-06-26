@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityStandardAssets.Cameras;
 
 public class PlayerController : MonoBehaviour
 {
